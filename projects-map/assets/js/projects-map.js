@@ -8,7 +8,9 @@
     });
 
     function initMap() {
-        var map = L.map('projects-map').setView([20, 0], 2);
+        var map = L.map('projects-map', {
+            maxZoom: projectsMapData.max_zoom
+        }).setView([20, 0], 2);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

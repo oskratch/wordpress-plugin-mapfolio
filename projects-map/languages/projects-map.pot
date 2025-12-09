@@ -146,6 +146,14 @@ msgstr ""
 msgid "Open links in new tab"
 msgstr ""
 
+#: includes/class-projects-map-admin.php:92
+msgid "Maximum Zoom Level"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:95
+msgid "Maximum zoom level allowed on the map (1-18)"
+msgstr ""
+
 #: includes/class-projects-map-admin.php:212
 msgid "Projects Map Settings"
 msgstr ""

@@ -72,11 +72,13 @@ class Projects_Map_Admin {
     public function register_settings() {
         register_setting('projects_map_settings', 'projects_map_height', array('sanitize_callback' => 'sanitize_text_field'));
         register_setting('projects_map_settings', 'projects_map_new_tab', array('sanitize_callback' => 'absint'));
+        register_setting('projects_map_settings', 'projects_map_max_zoom', array('sanitize_callback' => 'absint'));
 
         add_settings_section('projects_map_general', __('General Settings', 'projects-map'), null, 'projects-map-settings');
 
         add_settings_field('projects_map_height', __('Map Height', 'projects-map'), array($this, 'height_field'), 'projects-map-settings', 'projects_map_general');
         add_settings_field('projects_map_new_tab', __('Open links in new tab', 'projects-map'), array($this, 'new_tab_field'), 'projects-map-settings', 'projects_map_general');
+        add_settings_field('projects_map_max_zoom', __('Maximum Zoom Level', 'projects-map'), array($this, 'max_zoom_field'), 'projects-map-settings', 'projects_map_general');
     }
 
     public function height_field() {
@@ -88,6 +90,12 @@ class Projects_Map_Admin {
     public function new_tab_field() {
         $value = get_option('projects_map_new_tab', 0);
         echo '<input type="checkbox" name="projects_map_new_tab" value="1"' . checked(1, $value, false) . '>';
+    }
+
+    public function max_zoom_field() {
+        $value = get_option('projects_map_max_zoom', 10);
+        echo '<input type="number" name="projects_map_max_zoom" value="' . esc_attr($value) . '" min="1" max="18">';
+        echo '<p class="description">' . __('Maximum zoom level allowed on the map (1-18)', 'projects-map') . '</p>';
     }
 
     public function settings_page() {

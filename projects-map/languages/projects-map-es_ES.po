@@ -147,6 +147,14 @@ msgstr "Altura del Mapa"
 msgid "Open links in new tab"
 msgstr "Abrir enlaces en nueva pestaña"
 
+#: includes/class-projects-map-admin.php:92
+msgid "Maximum Zoom Level"
+msgstr "Nivel Máximo de Zoom"
+
+#: includes/class-projects-map-admin.php:95
+msgid "Maximum zoom level allowed on the map (1-18)"
+msgstr "Nivel máximo de zoom permitido en el mapa (1-18)"
+
 #: includes/class-projects-map-admin.php:212
 msgid "Projects Map Settings"
 msgstr "Configuración del Mapa de Proyectos"

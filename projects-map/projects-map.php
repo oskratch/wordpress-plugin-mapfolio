@@ -80,6 +80,7 @@ function projects_map_enqueue_scripts() {
             'projects' => $projects,
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('projects_map_nonce'),
+            'max_zoom' => get_option('projects_map_max_zoom', 10),
             'strings' => array(
                 'see_more' => __('See more', 'projects-map')
             )
