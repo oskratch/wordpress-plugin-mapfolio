@@ -139,18 +139,14 @@ msgid "General Settings"
 msgstr ""
 
 #: includes/class-projects-map-admin.php:202
-msgid "Map Width"
-msgstr ""
-
-#: includes/class-projects-map-admin.php:206
 msgid "Map Height"
 msgstr ""
 
-#: includes/class-projects-map-admin.php:210
+#: includes/class-projects-map-admin.php:206
 msgid "Open links in new tab"
 msgstr ""
 
-#: includes/class-projects-map-admin.php:216
+#: includes/class-projects-map-admin.php:212
 msgid "Projects Map Settings"
 msgstr ""
 

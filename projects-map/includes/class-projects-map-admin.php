@@ -70,21 +70,13 @@ class Projects_Map_Admin {
     }
 
     public function register_settings() {
-        register_setting('projects_map_settings', 'projects_map_width', array('sanitize_callback' => 'sanitize_text_field'));
         register_setting('projects_map_settings', 'projects_map_height', array('sanitize_callback' => 'sanitize_text_field'));
         register_setting('projects_map_settings', 'projects_map_new_tab', array('sanitize_callback' => 'absint'));
 
         add_settings_section('projects_map_general', __('General Settings', 'projects-map'), null, 'projects-map-settings');
 
-        add_settings_field('projects_map_width', __('Map Width', 'projects-map'), array($this, 'width_field'), 'projects-map-settings', 'projects_map_general');
         add_settings_field('projects_map_height', __('Map Height', 'projects-map'), array($this, 'height_field'), 'projects-map-settings', 'projects_map_general');
         add_settings_field('projects_map_new_tab', __('Open links in new tab', 'projects-map'), array($this, 'new_tab_field'), 'projects-map-settings', 'projects_map_general');
-    }
-
-    public function width_field() {
-        $value = get_option('projects_map_width', '100%');
-        echo '<input type="text" name="projects_map_width" value="' . esc_attr($value) . '" placeholder="100%">';
-        echo '<p class="description">' . __('You can use % or px, e.g., 100% or 500px', 'projects-map') . '</p>';
     }
 
     public function height_field() {

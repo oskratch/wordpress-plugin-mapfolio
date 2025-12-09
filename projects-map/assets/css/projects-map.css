@@ -3,6 +3,10 @@
     height: auto;
 }
 
+.leaflet-container {
+    width: 100% !important;
+}
+
 .custom-marker {
     border: none;
     background: transparent;

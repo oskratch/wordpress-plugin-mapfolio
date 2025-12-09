@@ -12,12 +12,11 @@ class Projects_Map_Shortcode {
 
     public function render_map($atts) {
         $atts = shortcode_atts(array(
-            'width' => get_option('projects_map_width', '100%'),
             'height' => get_option('projects_map_height', '500px'),
             'new_tab' => get_option('projects_map_new_tab', 0)
         ), $atts);
 
-        $width = esc_attr($atts['width']);
+        $width = '100%';
         $height = esc_attr($atts['height']);
         $new_tab = intval($atts['new_tab']);
 

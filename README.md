@@ -11,9 +11,13 @@ A WordPress plugin to display a world map with project locations. Allows creatin
 
 - Admin menu to manage project entries
 - Custom database table for projects
-- Shortcode to display the interactive map
+- Settings page for map configuration (width, height, link behavior)
+- Shortcode to display the interactive map with customizable attributes
 - Clustering: shows project count per country when zoomed out, individual points when zoomed in
+- Custom marker colors for each project
+- Media uploader for project images
 - Hover tooltips with project details and "see more" link
+- Responsive admin forms
 - Translatable (English and Spanish support)
 
 ## Installation
@@ -28,12 +32,27 @@ A WordPress plugin to display a world map with project locations. Allows creatin
 
 1. Go to the WordPress admin dashboard.
 2. Navigate to "Projects Map" > "Add New Project".
-3. Fill in the fields: Country, Title, Description, Image URL, and Project URL.
+3. Fill in the fields: Country, Latitude, Longitude, Title, Description, Image (upload or URL), Project URL, and Marker Color.
 4. Save the project.
+
+### Configuring Settings
+
+1. Go to "Projects Map" > "Settings".
+2. Set Map Height (e.g., 500px).
+3. Choose whether links open in new tab.
 
 ### Displaying the Map
 
 Insert the shortcode `[projects_map]` into any page or post content.
+
+#### Shortcode Attributes
+
+You can customize the map with attributes:
+
+- `height`: Map height, e.g., `[projects_map height="400px"]`
+- `new_tab`: Open links in new tab (0 or 1), e.g., `[projects_map new_tab="1"]`
+
+Example: `[projects_map height="600px" new_tab="1"]`
 
 ## License
 
