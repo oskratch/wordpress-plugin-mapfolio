@@ -17,6 +17,11 @@
         var markers = L.markerClusterGroup();
         var newTab = $('#projects-map').data('new-tab');
 
+        // Calculate adaptive popup max width based on map container width
+        var mapContainer = $('#projects-map');
+        var mapWidth = mapContainer.width();
+        var popupMaxWidth = Math.min(500, mapWidth - 40);
+
         projectsMapData.projects.forEach(function(project) {
             var icon = L.divIcon({
                 className: 'custom-marker',
@@ -26,12 +31,12 @@
             });
 
             var marker = L.marker([project.lat, project.lng], {icon: icon});
-            var popupContent = '<div class="project-popup">';
+            var popupContent = '<div class="project-popup" style="max-width: ' + popupMaxWidth + 'px;">';
             if (project.image) {
-                popupContent += '<img src="' + project.image + '" alt="' + project.title + '" style="max-width:100px;"><br>';
+                popupContent += '<img src="' + project.image + '" alt="' + project.title + '">';
             }
-            popupContent += '<strong>' + project.title + '</strong><br>';
-            popupContent += project.description + '<br>';
+            popupContent += '<h3>' + project.title + '</h3>';
+            popupContent += '<p>' + project.description + '</p>';
             if (project.url) {
                 popupContent += '<a href="' + project.url + '"' + (newTab ? ' target="_blank"' : '') + '>' + projectsMapData.strings.see_more + '</a>';
             }
