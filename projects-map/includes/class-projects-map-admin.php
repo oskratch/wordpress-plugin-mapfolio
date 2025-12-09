@@ -8,6 +8,7 @@ class Projects_Map_Admin {
 
     public function __construct() {
         add_action('admin_menu', array($this, 'add_admin_menu'));
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
         add_action('admin_post_add_project', array($this, 'handle_add_project'));
         add_action('admin_post_edit_project', array($this, 'handle_edit_project'));
         add_action('admin_post_delete_project', array($this, 'handle_delete_project'));
@@ -49,12 +50,27 @@ class Projects_Map_Admin {
         );
     }
 
+    public function enqueue_admin_scripts($hook) {
+        if (strpos($hook, 'projects-map-add') !== false) {
+            wp_enqueue_media();
+            wp_enqueue_script('projects-map-admin-js', PROJECTS_MAP_PLUGIN_URL . 'assets/js/admin.js', array('jquery'), PROJECTS_MAP_VERSION, true);
+            wp_localize_script('projects-map-admin-js', 'projectsMapAdmin', array(
+                'choose_image' => __('Choose Image', 'projects-map')
+            ));
+        }
+    }
+
     public function admin_page() {
         $projects = Projects_Map_DB::get_all_projects();
         ?>
         <div class="wrap">
-            <h1><?php _e('Projects Map', 'projects-map'); ?></h1>
+            <h1 class="wp-heading-inline"><?php _e('Projects Map', 'projects-map'); ?></h1>
             <a href="<?php echo admin_url('admin.php?page=projects-map-add'); ?>" class="page-title-action"><?php _e('Add New Project', 'projects-map'); ?></a>
+            <hr class="wp-header-end">
+            <h2 class="screen-reader-text"><?php _e('Filter projects list', 'projects-map'); ?></h2>
+            <ul class="subsubsub">
+                <li class="all"><a href="#" class="current"><?php _e('All', 'projects-map'); ?> <span class="count">(<?php echo count($projects); ?>)</span></a></li>
+            </ul>
             <table class="wp-list-table widefat fixed striped">
                 <thead>
                     <tr>
@@ -98,6 +114,16 @@ class Projects_Map_Admin {
         ?>
         <div class="wrap">
             <h1><?php echo isset($_GET['id']) ? __('Edit Project', 'projects-map') : __('Add New Project', 'projects-map'); ?></h1>
+            <style>
+                .projects-map-input {
+                    width: 100%;
+                }
+                @media (min-width: 768px) {
+                    .projects-map-input {
+                        width: 50%;
+                    }
+                }
+            </style>
             <form method="post" action="<?php echo admin_url('admin-post.php'); ?>">
                 <?php wp_nonce_field(isset($_GET['id']) ? 'edit_project_' . $_GET['id'] : 'add_project'); ?>
                 <input type="hidden" name="action" value="<?php echo isset($_GET['id']) ? 'edit_project' : 'add_project'; ?>">
@@ -107,31 +133,37 @@ class Projects_Map_Admin {
                 <table class="form-table">
                     <tr>
                         <th><label for="country"><?php _e('Country', 'projects-map'); ?></label></th>
-                        <td><input type="text" name="country" id="country" value="<?php echo esc_attr($project['country']); ?>" required></td>
+                        <td><input type="text" name="country" id="country" value="<?php echo esc_attr($project['country']); ?>" required class="projects-map-input"></td>
                     </tr>
                     <tr>
                         <th><label for="lat"><?php _e('Latitude', 'projects-map'); ?></label></th>
-                        <td><input type="number" step="any" name="lat" id="lat" value="<?php echo esc_attr($project['lat']); ?>" required></td>
+                        <td><input type="number" step="any" name="lat" id="lat" value="<?php echo esc_attr($project['lat']); ?>" required class="projects-map-input"></td>
                     </tr>
                     <tr>
                         <th><label for="lng"><?php _e('Longitude', 'projects-map'); ?></label></th>
-                        <td><input type="number" step="any" name="lng" id="lng" value="<?php echo esc_attr($project['lng']); ?>" required></td>
+                        <td><input type="number" step="any" name="lng" id="lng" value="<?php echo esc_attr($project['lng']); ?>" required class="projects-map-input"></td>
                     </tr>
                     <tr>
                         <th><label for="title"><?php _e('Title', 'projects-map'); ?></label></th>
-                        <td><input type="text" name="title" id="title" value="<?php echo esc_attr($project['title']); ?>" required></td>
+                        <td><input type="text" name="title" id="title" value="<?php echo esc_attr($project['title']); ?>" required class="projects-map-input"></td>
                     </tr>
                     <tr>
                         <th><label for="description"><?php _e('Description', 'projects-map'); ?></label></th>
-                        <td><textarea name="description" id="description" rows="5" required><?php echo esc_textarea($project['description']); ?></textarea></td>
+                        <td><textarea name="description" id="description" rows="5" required class="projects-map-input"><?php echo esc_textarea($project['description']); ?></textarea></td>
                     </tr>
                     <tr>
-                        <th><label for="image"><?php _e('Image URL', 'projects-map'); ?></label></th>
-                        <td><input type="url" name="image" id="image" value="<?php echo esc_attr($project['image']); ?>"></td>
+                        <th><label for="image"><?php _e('Image', 'projects-map'); ?></label></th>
+                        <td>
+                            <input type="text" name="image" id="image" value="<?php echo esc_attr($project['image']); ?>" class="projects-map-input">
+                            <button type="button" class="button" id="upload_image_button"><?php _e('Upload Image', 'projects-map'); ?></button>
+                            <?php if ($project['image']): ?>
+                                <br><img src="<?php echo esc_url($project['image']); ?>" style="max-width:100px; margin-top:5px;">
+                            <?php endif; ?>
+                        </td>
                     </tr>
                     <tr>
                         <th><label for="url"><?php _e('Project URL', 'projects-map'); ?></label></th>
-                        <td><input type="url" name="url" id="url" value="<?php echo esc_attr($project['url']); ?>"></td>
+                        <td><input type="url" name="url" id="url" value="<?php echo esc_attr($project['url']); ?>" class="projects-map-input"></td>
                     </tr>
                 </table>
                 <?php submit_button(); ?>

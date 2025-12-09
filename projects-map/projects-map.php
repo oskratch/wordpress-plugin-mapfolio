@@ -1,7 +1,6 @@
 <?php
 /**
  * Plugin Name: Projects Map
- * Plugin URI: https://metalinked.net
  * Description: A WordPress plugin to display a world map with project locations. Manage projects from admin and display via shortcode.
  * Version: 1.0.0
  * Author: Òscar Periche
@@ -56,7 +55,7 @@ function projects_map_enqueue_scripts() {
         wp_enqueue_style('leaflet-markercluster-css', 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css');
         wp_enqueue_style('leaflet-markercluster-default-css', 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css');
         wp_enqueue_script('leaflet-markercluster-js', 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js', array('leaflet-js'), null, true);
-        wp_enqueue_script('projects-map-js', PROJECTS_MAP_PLUGIN_URL . 'assets/js/projects-map.js', array('leaflet-js', 'leaflet-markercluster-js'), PROJECTS_MAP_VERSION, true);
+        wp_enqueue_script('projects-map-js', PROJECTS_MAP_PLUGIN_URL . 'assets/js/projects-map.js', array('jquery', 'leaflet-js', 'leaflet-markercluster-js'), PROJECTS_MAP_VERSION, true);
         wp_enqueue_style('projects-map-css', PROJECTS_MAP_PLUGIN_URL . 'assets/css/projects-map.css', array(), PROJECTS_MAP_VERSION);
         
         // Localize script with data
