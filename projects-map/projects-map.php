@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Projects Map
  * Description: A WordPress plugin to display a world map with project locations. Manage projects from admin and display via shortcode.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Òscar Periche
  * License: GPL v2 or later
  * Text Domain: projects-map
@@ -28,7 +28,23 @@ require_once PROJECTS_MAP_PLUGIN_DIR . 'includes/class-projects-map-shortcode.ph
 register_activation_hook(__FILE__, 'projects_map_activate');
 function projects_map_activate() {
     Projects_Map_DB::create_table();
+    update_option('projects_map_version', PROJECTS_MAP_VERSION);
 }
+
+// Upgrade hook
+// add_action('plugins_loaded', 'projects_map_upgrade_check');
+// function projects_map_upgrade_check() {
+//     projects_map_check_color_column();
+// }
+
+// function projects_map_check_color_column() {
+//     global $wpdb;
+//     $table_name = $wpdb->prefix . 'projects_map';
+//     $column_exists = $wpdb->get_results("SHOW COLUMNS FROM {$table_name} LIKE 'color'");
+//     if (empty($column_exists)) {
+//         $wpdb->query("ALTER TABLE {$table_name} ADD color VARCHAR(20) DEFAULT 'blue' NOT NULL");
+//     }
+// }
 
 // Deactivation hook
 register_deactivation_hook(__FILE__, 'projects_map_deactivate');

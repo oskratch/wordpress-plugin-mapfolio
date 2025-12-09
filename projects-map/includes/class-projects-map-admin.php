@@ -19,7 +19,7 @@ class Projects_Map_Admin {
         add_menu_page(
             __('Projects Map', 'projects-map'),
             __('Projects Map', 'projects-map'),
-            'manage_options',
+            'edit_posts',
             'projects-map',
             array($this, 'admin_page'),
             'dashicons-location-alt',
@@ -29,7 +29,7 @@ class Projects_Map_Admin {
             'projects-map',
             __('All Projects', 'projects-map'),
             __('All Projects', 'projects-map'),
-            'manage_options',
+            'edit_posts',
             'projects-map',
             array($this, 'admin_page')
         );
@@ -37,7 +37,7 @@ class Projects_Map_Admin {
             'projects-map',
             __('Add New Project', 'projects-map'),
             __('Add New Project', 'projects-map'),
-            'manage_options',
+            'edit_posts',
             'projects-map-add',
             array($this, 'add_project_page')
         );
@@ -53,7 +53,7 @@ class Projects_Map_Admin {
             'projects-map',
             __('Info', 'projects-map'),
             __('Info', 'projects-map'),
-            'manage_options',
+            'edit_posts',
             'projects-map-info',
             array($this, 'info_page')
         );
@@ -119,6 +119,7 @@ class Projects_Map_Admin {
             <table class="wp-list-table widefat fixed striped">
                 <thead>
                     <tr>
+                        <th style="width:30px;"></th>
                         <th><?php _e('ID', 'projects-map'); ?></th>
                         <th><?php _e('Country', 'projects-map'); ?></th>
                         <th><?php _e('Title', 'projects-map'); ?></th>
@@ -129,6 +130,7 @@ class Projects_Map_Admin {
                 <tbody>
                     <?php foreach ($projects as $project): ?>
                         <tr>
+                            <td><div style="width:20px; height:20px; background-color:<?php echo esc_attr($project['color'] ?? 'blue'); ?>; border:1px solid #ccc;"></div></td>
                             <td><?php echo esc_html($project['id']); ?></td>
                             <td><?php echo esc_html($project['country']); ?></td>
                             <td><?php echo esc_html($project['title']); ?></td>
@@ -139,7 +141,7 @@ class Projects_Map_Admin {
                                     <?php wp_nonce_field('delete_project_' . $project['id']); ?>
                                     <input type="hidden" name="action" value="delete_project">
                                     <input type="hidden" name="id" value="<?php echo $project['id']; ?>">
-                                    <button type="submit" onclick="return confirm('<?php _e('Are you sure?', 'projects-map'); ?>')"><?php _e('Delete', 'projects-map'); ?></button>
+                                    <a href="#" onclick="if(confirm('<?php _e('Are you sure?', 'projects-map'); ?>')) { this.parentNode.submit(); return false; }" style="color:red;"><?php _e('Delete', 'projects-map'); ?></a>
                                 </form>
                             </td>
                         </tr>
@@ -153,6 +155,10 @@ class Projects_Map_Admin {
     public function add_project_page() {
         if (isset($_GET['id'])) {
             $project = Projects_Map_DB::get_project($_GET['id']);
+            if (!$project) {
+                wp_die(__('Project not found', 'projects-map'));
+            }
+            if (!isset($project['color'])) $project['color'] = 'blue';
         } else {
             $project = array('id' => '', 'country' => '', 'lat' => '', 'lng' => '', 'title' => '', 'description' => '', 'image' => '', 'url' => '', 'color' => 'blue');
         }
@@ -239,7 +245,7 @@ class Projects_Map_Admin {
     }
 
     public function handle_add_project() {
-        if (!wp_verify_nonce($_POST['_wpnonce'], 'add_project') || !current_user_can('manage_options')) {
+        if (!wp_verify_nonce($_POST['_wpnonce'], 'add_project') || !current_user_can('edit_posts')) {
             wp_die(__('Security check failed', 'projects-map'));
         }
         $data = array(
@@ -258,7 +264,7 @@ class Projects_Map_Admin {
     }
 
     public function handle_edit_project() {
-        if (!wp_verify_nonce($_POST['_wpnonce'], 'edit_project_' . $_POST['id']) || !current_user_can('manage_options')) {
+        if (!wp_verify_nonce($_POST['_wpnonce'], 'edit_project_' . $_POST['id']) || !current_user_can('edit_posts')) {
             wp_die(__('Security check failed', 'projects-map'));
         }
         $data = array(
@@ -277,7 +283,7 @@ class Projects_Map_Admin {
     }
 
     public function handle_delete_project() {
-        if (!wp_verify_nonce($_POST['_wpnonce'], 'delete_project_' . $_POST['id']) || !current_user_can('manage_options')) {
+        if (!wp_verify_nonce($_POST['_wpnonce'], 'delete_project_' . $_POST['id']) || !current_user_can('edit_posts')) {
             wp_die(__('Security check failed', 'projects-map'));
         }
         Projects_Map_DB::delete_project($_POST['id']);
