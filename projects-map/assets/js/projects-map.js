@@ -33,7 +33,7 @@
             });
 
             var marker = L.marker([project.lat, project.lng], {icon: icon});
-            var popupContent = '<div class="project-popup" style="max-width: ' + popupMaxWidth + 'px;">';
+            var popupContent = '<div class="project-popup">';
             if (project.image) {
                 popupContent += '<img src="' + project.image + '" alt="' + project.title + '">';
             }
@@ -43,7 +43,7 @@
                 popupContent += '<a href="' + project.url + '"' + (newTab ? ' target="_blank"' : '') + '>' + projectsMapData.strings.see_more + '</a>';
             }
             popupContent += '</div>';
-            marker.bindPopup(popupContent);
+            marker.bindPopup(popupContent, {maxWidth: popupMaxWidth});
             markers.addLayer(marker);
         });
 
