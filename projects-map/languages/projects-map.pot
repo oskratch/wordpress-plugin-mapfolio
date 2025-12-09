@@ -153,3 +153,7 @@ msgstr ""
 #: includes/class-projects-map-admin.php:204
 msgid "You can use % or px, e.g., 100% or 500px"
 msgstr ""
+
+#: assets/js/admin.js:6
+msgid "Choose Image"
+msgstr ""
