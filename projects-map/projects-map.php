@@ -1,7 +1,6 @@
 <?php
 /**
  * Plugin Name: Projects Map
- * Plugin URI: https://metalinked.net
  * Description: A WordPress plugin to display a world map with project locations. Manage projects from admin and display via shortcode.
  * Version: 1.0.0
  * Author: Òscar Periche
