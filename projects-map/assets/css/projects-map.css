@@ -1,6 +1,11 @@
 #projects-map {
     width: 100%;
-    height: 500px;
+    height: auto;
+}
+
+.custom-marker {
+    border: none;
+    background: transparent;
 }
 
 .project-popup {

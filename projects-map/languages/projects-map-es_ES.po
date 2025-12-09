@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Projects Map 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-09 12:00+0000\n"
-"PO-Revision-Date: 2025-12-09 10:38+0100\n"
+"PO-Revision-Date: 2025-12-09 10:52+0100\n"
 "Last-Translator: Òscar Periche <oscar@metalinked.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "Language: es_ES\n"
@@ -127,6 +127,34 @@ msgstr "El mapa usa agrupamiento: aleja el zoom para ver el conteo de proyectos 
 msgid "See more"
 msgstr "Ver más"
 
-#: assets/js/admin.js:6
-msgid "Choose Image"
-msgstr "Elegir Imagen"
+#: includes/class-projects-map-admin.php:32
+msgid "Settings"
+msgstr "Configuración"
+
+#: includes/class-projects-map-admin.php:137
+msgid "Marker Color"
+msgstr "Color del Marcador"
+
+#: includes/class-projects-map-admin.php:200
+msgid "General Settings"
+msgstr "Configuración General"
+
+#: includes/class-projects-map-admin.php:202
+msgid "Map Width"
+msgstr "Ancho del Mapa"
+
+#: includes/class-projects-map-admin.php:206
+msgid "Map Height"
+msgstr "Altura del Mapa"
+
+#: includes/class-projects-map-admin.php:210
+msgid "Open links in new tab"
+msgstr "Abrir enlaces en nueva pestaña"
+
+#: includes/class-projects-map-admin.php:216
+msgid "Projects Map Settings"
+msgstr "Configuración del Mapa de Proyectos"
+
+#: includes/class-projects-map-admin.php:204
+msgid "You can use % or px, e.g., 100% or 500px"
+msgstr "Puedes usar % o px, ej., 100% o 500px"

@@ -126,6 +126,34 @@ msgstr ""
 msgid "See more"
 msgstr ""
 
-#: assets/js/admin.js:6
-msgid "Choose Image"
+#: includes/class-projects-map-admin.php:32
+msgid "Settings"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:137
+msgid "Marker Color"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:200
+msgid "General Settings"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:202
+msgid "Map Width"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:206
+msgid "Map Height"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:210
+msgid "Open links in new tab"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:216
+msgid "Projects Map Settings"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:204
+msgid "You can use % or px, e.g., 100% or 500px"
 msgstr ""

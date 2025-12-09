@@ -8,6 +8,7 @@ class Projects_Map_Admin {
 
     public function __construct() {
         add_action('admin_menu', array($this, 'add_admin_menu'));
+        add_action('admin_init', array($this, 'register_settings'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
         add_action('admin_post_add_project', array($this, 'handle_add_project'));
         add_action('admin_post_edit_project', array($this, 'handle_edit_project'));
@@ -42,6 +43,14 @@ class Projects_Map_Admin {
         );
         add_submenu_page(
             'projects-map',
+            __('Settings', 'projects-map'),
+            __('Settings', 'projects-map'),
+            'manage_options',
+            'projects-map-settings',
+            array($this, 'settings_page')
+        );
+        add_submenu_page(
+            'projects-map',
             __('Info', 'projects-map'),
             __('Info', 'projects-map'),
             'manage_options',
@@ -58,6 +67,50 @@ class Projects_Map_Admin {
                 'choose_image' => __('Choose Image', 'projects-map')
             ));
         }
+    }
+
+    public function register_settings() {
+        register_setting('projects_map_settings', 'projects_map_width', array('sanitize_callback' => 'sanitize_text_field'));
+        register_setting('projects_map_settings', 'projects_map_height', array('sanitize_callback' => 'sanitize_text_field'));
+        register_setting('projects_map_settings', 'projects_map_new_tab', array('sanitize_callback' => 'absint'));
+
+        add_settings_section('projects_map_general', __('General Settings', 'projects-map'), null, 'projects-map-settings');
+
+        add_settings_field('projects_map_width', __('Map Width', 'projects-map'), array($this, 'width_field'), 'projects-map-settings', 'projects_map_general');
+        add_settings_field('projects_map_height', __('Map Height', 'projects-map'), array($this, 'height_field'), 'projects-map-settings', 'projects_map_general');
+        add_settings_field('projects_map_new_tab', __('Open links in new tab', 'projects-map'), array($this, 'new_tab_field'), 'projects-map-settings', 'projects_map_general');
+    }
+
+    public function width_field() {
+        $value = get_option('projects_map_width', '100%');
+        echo '<input type="text" name="projects_map_width" value="' . esc_attr($value) . '" placeholder="100%">';
+        echo '<p class="description">' . __('You can use % or px, e.g., 100% or 500px', 'projects-map') . '</p>';
+    }
+
+    public function height_field() {
+        $value = get_option('projects_map_height', '500px');
+        echo '<input type="text" name="projects_map_height" value="' . esc_attr($value) . '" placeholder="500px">';
+        echo '<p class="description">' . __('You can use % or px, e.g., 100% or 500px', 'projects-map') . '</p>';
+    }
+
+    public function new_tab_field() {
+        $value = get_option('projects_map_new_tab', 0);
+        echo '<input type="checkbox" name="projects_map_new_tab" value="1"' . checked(1, $value, false) . '>';
+    }
+
+    public function settings_page() {
+        ?>
+        <div class="wrap">
+            <h1><?php _e('Projects Map Settings', 'projects-map'); ?></h1>
+            <form method="post" action="options.php">
+                <?php
+                settings_fields('projects_map_settings');
+                do_settings_sections('projects-map-settings');
+                submit_button();
+                ?>
+            </form>
+        </div>
+        <?php
     }
 
     public function admin_page() {
@@ -109,7 +162,7 @@ class Projects_Map_Admin {
         if (isset($_GET['id'])) {
             $project = Projects_Map_DB::get_project($_GET['id']);
         } else {
-            $project = array('id' => '', 'country' => '', 'lat' => '', 'lng' => '', 'title' => '', 'description' => '', 'image' => '', 'url' => '');
+            $project = array('id' => '', 'country' => '', 'lat' => '', 'lng' => '', 'title' => '', 'description' => '', 'image' => '', 'url' => '', 'color' => 'blue');
         }
         ?>
         <div class="wrap">
@@ -165,6 +218,10 @@ class Projects_Map_Admin {
                         <th><label for="url"><?php _e('Project URL', 'projects-map'); ?></label></th>
                         <td><input type="url" name="url" id="url" value="<?php echo esc_attr($project['url']); ?>" class="projects-map-input"></td>
                     </tr>
+                    <tr>
+                        <th><label for="color"><?php _e('Marker Color', 'projects-map'); ?></label></th>
+                        <td><input type="color" name="color" id="color" value="<?php echo esc_attr($project['color']); ?>" class="projects-map-input"></td>
+                    </tr>
                 </table>
                 <?php submit_button(); ?>
             </form>
@@ -200,7 +257,8 @@ class Projects_Map_Admin {
             'title' => sanitize_text_field($_POST['title']),
             'description' => sanitize_textarea_field($_POST['description']),
             'image' => esc_url_raw($_POST['image']),
-            'url' => esc_url_raw($_POST['url'])
+            'url' => esc_url_raw($_POST['url']),
+            'color' => sanitize_hex_color($_POST['color']) ?: 'blue'
         );
         Projects_Map_DB::insert_project($data);
         wp_redirect(admin_url('admin.php?page=projects-map'));
@@ -218,7 +276,8 @@ class Projects_Map_Admin {
             'title' => sanitize_text_field($_POST['title']),
             'description' => sanitize_textarea_field($_POST['description']),
             'image' => esc_url_raw($_POST['image']),
-            'url' => esc_url_raw($_POST['url'])
+            'url' => esc_url_raw($_POST['url']),
+            'color' => sanitize_hex_color($_POST['color']) ?: 'blue'
         );
         Projects_Map_DB::update_project($_POST['id'], $data);
         wp_redirect(admin_url('admin.php?page=projects-map'));

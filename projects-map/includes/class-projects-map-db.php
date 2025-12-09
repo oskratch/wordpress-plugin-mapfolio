@@ -20,6 +20,7 @@ class Projects_Map_DB {
             description text NOT NULL,
             image varchar(500) DEFAULT '' NOT NULL,
             url varchar(500) DEFAULT '' NOT NULL,
+            color varchar(20) DEFAULT 'blue' NOT NULL,
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             PRIMARY KEY (id)
         ) $charset_collate;";
