@@ -1,0 +1,74 @@
+<?php
+/**
+ * Plugin Name: Projects Map
+ * Plugin URI: https://metalinked.net
+ * Description: A WordPress plugin to display a world map with project locations. Manage projects from admin and display via shortcode.
+ * Version: 1.0.0
+ * Author: Òscar Periche
+ * License: GPL v2 or later
+ * Text Domain: projects-map
+ * Domain Path: /languages
+ */
+
+// Prevent direct access
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// Define constants
+define('PROJECTS_MAP_VERSION', '1.0.0');
+define('PROJECTS_MAP_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('PROJECTS_MAP_PLUGIN_URL', plugin_dir_url(__FILE__));
+
+// Include files
+require_once PROJECTS_MAP_PLUGIN_DIR . 'includes/class-projects-map-db.php';
+require_once PROJECTS_MAP_PLUGIN_DIR . 'includes/class-projects-map-admin.php';
+require_once PROJECTS_MAP_PLUGIN_DIR . 'includes/class-projects-map-shortcode.php';
+
+// Activation hook
+register_activation_hook(__FILE__, 'projects_map_activate');
+function projects_map_activate() {
+    Projects_Map_DB::create_table();
+}
+
+// Deactivation hook
+register_deactivation_hook(__FILE__, 'projects_map_deactivate');
+function projects_map_deactivate() {
+    // Cleanup if needed
+}
+
+// Load textdomain
+add_action('plugins_loaded', 'projects_map_load_textdomain');
+function projects_map_load_textdomain() {
+    load_plugin_textdomain('projects-map', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+}
+
+// Initialize classes
+new Projects_Map_Admin();
+new Projects_Map_Shortcode();
+
+// Enqueue scripts and styles
+add_action('wp_enqueue_scripts', 'projects_map_enqueue_scripts');
+function projects_map_enqueue_scripts() {
+    if (has_shortcode(get_post()->post_content, 'projects_map')) {
+        wp_enqueue_style('leaflet-css', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
+        wp_enqueue_script('leaflet-js', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', array(), null, true);
+        wp_enqueue_style('leaflet-markercluster-css', 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css');
+        wp_enqueue_style('leaflet-markercluster-default-css', 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css');
+        wp_enqueue_script('leaflet-markercluster-js', 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js', array('leaflet-js'), null, true);
+        wp_enqueue_script('projects-map-js', PROJECTS_MAP_PLUGIN_URL . 'assets/js/projects-map.js', array('leaflet-js', 'leaflet-markercluster-js'), PROJECTS_MAP_VERSION, true);
+        wp_enqueue_style('projects-map-css', PROJECTS_MAP_PLUGIN_URL . 'assets/css/projects-map.css', array(), PROJECTS_MAP_VERSION);
+        
+        // Localize script with data
+        $projects = Projects_Map_DB::get_all_projects();
+        wp_localize_script('projects-map-js', 'projectsMapData', array(
+            'projects' => $projects,
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('projects_map_nonce'),
+            'strings' => array(
+                'see_more' => __('See more', 'projects-map')
+            )
+        ));
+    }
+}
+?>
