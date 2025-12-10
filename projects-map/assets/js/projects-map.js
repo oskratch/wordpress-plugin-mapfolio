@@ -44,7 +44,14 @@
                 popupContent += '<a href="' + project.url + '"' + (newTab ? ' target="_blank"' : '') + '>' + projectsMapData.strings.see_more + '</a>';
             }
             popupContent += '</div>';
-            marker.bindPopup(popupContent, {maxWidth: popupMaxWidth});
+            marker.bindPopup(popupContent, {
+                maxWidth: popupMaxWidth,
+                autoPan: true,
+                keepInView: true,
+                autoPanPadding: [100, 50],
+                autoPanPaddingTopLeft: [20, 20],
+                autoPanPaddingBottomRight: [100, 50]
+            });
             markers.addLayer(marker);
         });
 
