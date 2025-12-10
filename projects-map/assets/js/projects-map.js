@@ -9,8 +9,9 @@
 
     function initMap() {
         var map = L.map('projects-map', {
-            maxZoom: projectsMapData.max_zoom
-        }).setView([20, 0], 2);
+            maxZoom: projectsMapData.max_zoom,
+            minZoom: projectsMapData.min_zoom
+        }).setView([20, 0], projectsMapData.default_zoom);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

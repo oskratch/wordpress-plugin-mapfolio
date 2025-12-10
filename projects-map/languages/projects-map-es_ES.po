@@ -155,6 +155,22 @@ msgstr "Nivel Máximo de Zoom"
 msgid "Maximum zoom level allowed on the map (1-18)"
 msgstr "Nivel máximo de zoom permitido en el mapa (1-18)"
 
+#: includes/class-projects-map-admin.php:100
+msgid "Minimum Zoom Level"
+msgstr "Nivel Mínimo de Zoom"
+
+#: includes/class-projects-map-admin.php:103
+msgid "Minimum zoom level allowed on the map (1-18)"
+msgstr "Nivel mínimo de zoom permitido en el mapa (1-18)"
+
+#: includes/class-projects-map-admin.php:108
+msgid "Default Zoom Level"
+msgstr "Nivel de Zoom por Defecto"
+
+#: includes/class-projects-map-admin.php:111
+msgid "Initial zoom level when the map loads (1-18)"
+msgstr "Nivel de zoom inicial cuando se carga el mapa (1-18)"
+
 #: includes/class-projects-map-admin.php:212
 msgid "Projects Map Settings"
 msgstr "Configuración del Mapa de Proyectos"

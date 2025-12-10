@@ -73,12 +73,16 @@ class Projects_Map_Admin {
         register_setting('projects_map_settings', 'projects_map_height', array('sanitize_callback' => 'sanitize_text_field'));
         register_setting('projects_map_settings', 'projects_map_new_tab', array('sanitize_callback' => 'absint'));
         register_setting('projects_map_settings', 'projects_map_max_zoom', array('sanitize_callback' => 'absint'));
+        register_setting('projects_map_settings', 'projects_map_min_zoom', array('sanitize_callback' => 'absint'));
+        register_setting('projects_map_settings', 'projects_map_default_zoom', array('sanitize_callback' => 'absint'));
 
         add_settings_section('projects_map_general', __('General Settings', 'projects-map'), null, 'projects-map-settings');
 
         add_settings_field('projects_map_height', __('Map Height', 'projects-map'), array($this, 'height_field'), 'projects-map-settings', 'projects_map_general');
         add_settings_field('projects_map_new_tab', __('Open links in new tab', 'projects-map'), array($this, 'new_tab_field'), 'projects-map-settings', 'projects_map_general');
         add_settings_field('projects_map_max_zoom', __('Maximum Zoom Level', 'projects-map'), array($this, 'max_zoom_field'), 'projects-map-settings', 'projects_map_general');
+        add_settings_field('projects_map_min_zoom', __('Minimum Zoom Level', 'projects-map'), array($this, 'min_zoom_field'), 'projects-map-settings', 'projects_map_general');
+        add_settings_field('projects_map_default_zoom', __('Default Zoom Level', 'projects-map'), array($this, 'default_zoom_field'), 'projects-map-settings', 'projects_map_general');
     }
 
     public function height_field() {
@@ -96,6 +100,18 @@ class Projects_Map_Admin {
         $value = get_option('projects_map_max_zoom', 10);
         echo '<input type="number" name="projects_map_max_zoom" value="' . esc_attr($value) . '" min="1" max="18">';
         echo '<p class="description">' . __('Maximum zoom level allowed on the map (1-18)', 'projects-map') . '</p>';
+    }
+
+    public function min_zoom_field() {
+        $value = get_option('projects_map_min_zoom', 1);
+        echo '<input type="number" name="projects_map_min_zoom" value="' . esc_attr($value) . '" min="1" max="18">';
+        echo '<p class="description">' . __('Minimum zoom level allowed on the map (1-18)', 'projects-map') . '</p>';
+    }
+
+    public function default_zoom_field() {
+        $value = get_option('projects_map_default_zoom', 2);
+        echo '<input type="number" name="projects_map_default_zoom" value="' . esc_attr($value) . '" min="1" max="18">';
+        echo '<p class="description">' . __('Initial zoom level when the map loads (1-18)', 'projects-map') . '</p>';
     }
 
     public function settings_page() {
