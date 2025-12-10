@@ -37,20 +37,22 @@
 }
 
 .project-popup h3 {
-    margin: 0 0 10px 0;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 1.2;
+    margin: 0 0 10px 0 !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    line-height: 1.2 !important;
 }
 
 .project-popup p {
-    margin-bottom: 10px;
+    margin-bottom: 10px !important;
+    font-size: 14px !important;
 }
 
 .project-popup a {
-    color: #000;
-    text-decoration: underline;
-    font-weight: normal;
+    color: #000 !important;
+    text-decoration: underline !important;
+    font-weight: normal !important;
+    font-size: 14px !important;
 }
 
 .project-popup a:hover {
@@ -58,8 +60,8 @@
 }
 
 .project-popup img {
-    margin-bottom: 5px;
-    max-width: 100%;
-    height: auto;
-    display: block;
+    margin-bottom: 10px !important;
+    max-width: 100% !important;
+    height: auto !important;
+    display: block !important;
 }
