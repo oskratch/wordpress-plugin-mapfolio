@@ -8,6 +8,18 @@
     });
 
     function initMap() {
+        var debug = $('#projects-map').data('debug');
+        
+        if (debug) {
+            console.log('=== PROJECTS MAP PLUGIN LOADED ===');
+            console.log('jQuery version:', $.fn.jquery);
+            console.log('Leaflet loaded:', typeof L !== 'undefined');
+            console.log('Projects Map: Document ready, map container found');
+            console.log('Projects Map: Initializing map...');
+            console.log('Projects Map: Raw debug data attribute:', $('#projects-map').attr('data-debug'));
+            console.log('Projects Map: Parsed debug value:', debug, 'Type:', typeof debug);
+        }
+        
         var map = L.map('projects-map', {
             maxZoom: projectsMapData.max_zoom,
             minZoom: projectsMapData.min_zoom
@@ -19,7 +31,6 @@
 
         var markers = L.markerClusterGroup();
         var newTab = $('#projects-map').data('new-tab');
-        var debug = $('#projects-map').data('debug');
 
         // Calculate adaptive popup max width based on map container width
         var mapContainer = $('#projects-map');
