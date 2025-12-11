@@ -257,6 +257,22 @@ class Projects_Map_Admin {
             <h1><?php _e('Projects Map Info', 'projects-map'); ?></h1>
             <p><?php _e('To display the projects map on your site, use the following shortcode:', 'projects-map'); ?></p>
             <code>[projects_map]</code>
+            <h2><?php _e('Shortcode Attributes', 'projects-map'); ?></h2>
+            <ul>
+                <li><code>height</code>: <?php _e('Map height (default: 500px)', 'projects-map'); ?></li>
+                <li><code>new_tab</code>: <?php _e('Open links in new tab (0 or 1, default: 0)', 'projects-map'); ?></li>
+                <li><code>debug</code>: <?php _e('Enable debug mode (0 or 1, default: 0)', 'projects-map'); ?></li>
+            </ul>
+            <p><?php _e('Example: [projects_map height="600px" new_tab="1" debug="1"]', 'projects-map'); ?></p>
+            <h2><?php _e('Debug Mode', 'projects-map'); ?></h2>
+            <p><?php _e('When debug mode is enabled, detailed information is logged to the browser console to help troubleshoot issues:', 'projects-map'); ?></p>
+            <ul>
+                <li><?php _e('jQuery loading status', 'projects-map'); ?></li>
+                <li><?php _e('Map container existence', 'projects-map'); ?></li>
+                <li><?php _e('Project data and count', 'projects-map'); ?></li>
+                <li><?php _e('Marker creation process', 'projects-map'); ?></li>
+                <li><?php _e('JavaScript errors', 'projects-map'); ?></li>
+            </ul>
             <h2><?php _e('Instructions', 'projects-map'); ?></h2>
             <ol>
                 <li><?php _e('Add projects from the "All Projects" menu.', 'projects-map'); ?></li>

@@ -170,6 +170,54 @@ msgstr ""
 msgid "Initial zoom level when the map loads (1-18)"
 msgstr ""
 
+#: includes/class-projects-map-admin.php:258
+msgid "Shortcode Attributes"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:260
+msgid "Map height (default: 500px)"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:261
+msgid "Open links in new tab (0 or 1, default: 0)"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:262
+msgid "Enable debug mode (0 or 1, default: 0)"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:264
+msgid "Example: [projects_map height=\"600px\" new_tab=\"1\" debug=\"1\"]"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:265
+msgid "Debug Mode"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:266
+msgid "When debug mode is enabled, detailed information is logged to the browser console to help troubleshoot issues:"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:268
+msgid "jQuery loading status"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:269
+msgid "Map container existence"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:270
+msgid "Project data and count"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:271
+msgid "Marker creation process"
+msgstr ""
+
+#: includes/class-projects-map-admin.php:272
+msgid "JavaScript errors"
+msgstr ""
+
 #: includes/class-projects-map-admin.php:212
 msgid "Projects Map Settings"
 msgstr ""

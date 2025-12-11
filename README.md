@@ -51,8 +51,21 @@ You can customize the map with attributes:
 
 - `height`: Map height, e.g., `[projects_map height="400px"]`
 - `new_tab`: Open links in new tab (0 or 1), e.g., `[projects_map new_tab="1"]`
+- `debug`: Enable debug mode (0 or 1), e.g., `[projects_map debug="1"]`
 
-Example: `[projects_map height="600px" new_tab="1"]`
+Example: `[projects_map height="600px" new_tab="1" debug="1"]`
+
+### Debug Mode
+
+When debug mode is enabled (`debug="1"`), the plugin outputs detailed information to the browser console to help troubleshoot issues:
+
+- jQuery loading status
+- Map container existence
+- Project data and count
+- Marker creation process
+- JavaScript errors
+
+This is useful for diagnosing problems with map display or marker rendering.
 
 ## License
 
