@@ -154,9 +154,10 @@ class Projects_Map_Admin {
             <table class="wp-list-table widefat fixed striped">
                 <thead>
                     <tr>
+                        <th><?php _e('Category', 'projects-map'); ?></th>
                         <th><?php _e('Title', 'projects-map'); ?></th>
-                        <th><?php _e('Color', 'projects-map'); ?></th>
-                        <th><?php _e('Actions', 'projects-map'); ?></th>
+                        <th><?php _e('Country', 'projects-map'); ?></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -279,7 +280,7 @@ class Projects_Map_Admin {
                     <tr>
                         <th><?php _e('Title', 'projects-map'); ?></th>
                         <th><?php _e('Color', 'projects-map'); ?></th>
-                        <th><?php _e('Actions', 'projects-map'); ?></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
