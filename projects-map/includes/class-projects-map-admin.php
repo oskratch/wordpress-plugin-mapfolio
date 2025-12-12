@@ -323,6 +323,16 @@ class Projects_Map_Admin {
         ?>
         <div class="wrap">
             <h1><?php echo isset($_GET['id']) ? __('Edit Category', 'projects-map') : __('Add New Category', 'projects-map'); ?></h1>
+            <style>
+                .projects-map-input {
+                    width: 100%;
+                }
+                @media (min-width: 768px) {
+                    .projects-map-input {
+                        width: 50%;
+                    }
+                }
+            </style>
             <form method="post" action="<?php echo admin_url('admin-post.php'); ?>">
                 <?php wp_nonce_field(isset($_GET['id']) ? 'edit_category_' . $_GET['id'] : 'add_category'); ?>
                 <input type="hidden" name="action" value="<?php echo isset($_GET['id']) ? 'edit_category' : 'add_category'; ?>">
