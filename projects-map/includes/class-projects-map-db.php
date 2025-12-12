@@ -17,6 +17,7 @@ class Projects_Map_DB {
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             title varchar(255) NOT NULL,
             color varchar(20) DEFAULT '#0080c0' NOT NULL,
+            sort_order int(11) DEFAULT 0 NOT NULL,
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             PRIMARY KEY (id)
         ) $charset_collate;";
@@ -45,7 +46,8 @@ class Projects_Map_DB {
         if (!$default_category) {
             $wpdb->insert($categories_table, array(
                 'title' => 'Default',
-                'color' => '#0080c0'
+                'color' => '#0080c0',
+                'sort_order' => 0
             ));
         }
     }
@@ -97,7 +99,7 @@ class Projects_Map_DB {
     public static function get_all_categories() {
         global $wpdb;
         $table_name = $wpdb->prefix . 'projects_map_categories';
-        $results = $wpdb->get_results("SELECT * FROM $table_name ORDER BY title ASC", ARRAY_A);
+        $results = $wpdb->get_results("SELECT * FROM $table_name ORDER BY sort_order ASC, title ASC", ARRAY_A);
         return $results;
     }
 

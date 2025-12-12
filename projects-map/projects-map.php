@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Projects Map
  * Description: A WordPress plugin to display a world map with project locations. Manage projects from admin and display via shortcode.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: Òscar Periche
  * License: GPL v2 or later
  * Text Domain: projects-map
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define constants
-define('PROJECTS_MAP_VERSION', '1.0.2');
+define('PROJECTS_MAP_VERSION', '1.0.3');
 define('PROJECTS_MAP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('PROJECTS_MAP_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -37,6 +37,8 @@ function projects_map_upgrade_check() {
     $current_version = get_option('projects_map_version', '1.0.0');
     if (version_compare($current_version, PROJECTS_MAP_VERSION, '<')) {
         Projects_Map_DB::create_table();
+        // Add sort_order column to categories if not exists
+        projects_map_add_sort_order_column();
         // Migrate existing color data to categories
         projects_map_migrate_colors_to_categories();
         update_option('projects_map_version', PROJECTS_MAP_VERSION);
@@ -48,6 +50,12 @@ function projects_map_migrate_colors_to_categories() {
     $table_name = $wpdb->prefix . 'projects_map';
     $categories_table = $wpdb->prefix . 'projects_map_categories';
 
+    // Check if color column exists
+    $column_exists = $wpdb->get_results("SHOW COLUMNS FROM {$table_name} LIKE 'color'");
+    if (empty($column_exists)) {
+        return; // Already migrated
+    }
+
     // Get projects with old color column
     $projects = $wpdb->get_results("SELECT id, color FROM $table_name WHERE color IS NOT NULL AND color != ''", ARRAY_A);
 
@@ -58,7 +66,8 @@ function projects_map_migrate_colors_to_categories() {
             // Create new category
             $wpdb->insert($categories_table, array(
                 'title' => 'Migrated - ' . $project['color'],
-                'color' => $project['color']
+                'color' => $project['color'],
+                'sort_order' => 0
             ));
             $category_id = $wpdb->insert_id;
         } else {
@@ -68,10 +77,16 @@ function projects_map_migrate_colors_to_categories() {
         $wpdb->update($table_name, array('category_id' => $category_id), array('id' => $project['id']));
     }
 
-    // Drop old color column if exists
-    $column_exists = $wpdb->get_results("SHOW COLUMNS FROM {$table_name} LIKE 'color'");
-    if (!empty($column_exists)) {
-        $wpdb->query("ALTER TABLE {$table_name} DROP COLUMN color");
+    // Drop old color column
+    $wpdb->query("ALTER TABLE {$table_name} DROP COLUMN color");
+}
+
+function projects_map_add_sort_order_column() {
+    global $wpdb;
+    $categories_table = $wpdb->prefix . 'projects_map_categories';
+    $column_exists = $wpdb->get_results("SHOW COLUMNS FROM {$categories_table} LIKE 'sort_order'");
+    if (empty($column_exists)) {
+        $wpdb->query("ALTER TABLE {$categories_table} ADD sort_order int(11) DEFAULT 0 NOT NULL");
     }
 }
 

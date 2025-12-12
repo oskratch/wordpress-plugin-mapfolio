@@ -154,17 +154,14 @@ class Projects_Map_Admin {
             <table class="wp-list-table widefat fixed striped">
                 <thead>
                     <tr>
-                        <th><?php _e('ID', 'projects-map'); ?></th>
-                        <th><?php _e('Category', 'projects-map'); ?></th>
                         <th><?php _e('Title', 'projects-map'); ?></th>
-                        <th><?php _e('Country', 'projects-map'); ?></th>
+                        <th><?php _e('Color', 'projects-map'); ?></th>
                         <th><?php _e('Actions', 'projects-map'); ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($projects as $project): ?>
                         <tr>
-                            <td><?php echo esc_html($project['id']); ?></td>
                             <td><div style="width:20px; height:20px; background-color:<?php echo esc_attr($project['category_color'] ?? '#0080c0'); ?>; border:1px solid #ccc; display:inline-block; margin-right:5px;"></div><?php echo esc_html($project['category_title'] ?? 'Default'); ?></td>
                             <td><?php echo esc_html($project['title']); ?></td>
                             <td><?php echo esc_html($project['country']); ?></td>
@@ -280,8 +277,6 @@ class Projects_Map_Admin {
             <table class="wp-list-table widefat fixed striped">
                 <thead>
                     <tr>
-                        <th style="width:30px;"></th>
-                        <th><?php _e('ID', 'projects-map'); ?></th>
                         <th><?php _e('Title', 'projects-map'); ?></th>
                         <th><?php _e('Color', 'projects-map'); ?></th>
                         <th><?php _e('Actions', 'projects-map'); ?></th>
@@ -290,10 +285,8 @@ class Projects_Map_Admin {
                 <tbody>
                     <?php foreach ($categories as $category): ?>
                         <tr>
-                            <td><div style="width:20px; height:20px; background-color:<?php echo esc_attr($category['color']); ?>; border:1px solid #ccc;"></div></td>
-                            <td><?php echo esc_html($category['id']); ?></td>
                             <td><?php echo esc_html($category['title']); ?></td>
-                            <td><?php echo esc_html($category['color']); ?></td>
+                            <td><div style="width:20px; height:20px; background-color:<?php echo esc_attr($category['color']); ?>; border:1px solid #ccc;"></div></td>
                             <td>
                                 <a href="<?php echo admin_url('admin.php?page=projects-map-add-category&id=' . $category['id']); ?>"><?php _e('Edit', 'projects-map'); ?></a> |
                                 <form method="post" action="<?php echo admin_url('admin-post.php'); ?>" style="display:inline;">
@@ -318,7 +311,7 @@ class Projects_Map_Admin {
                 wp_die(__('Category not found', 'projects-map'));
             }
         } else {
-            $category = array('id' => '', 'title' => '', 'color' => '#0080c0');
+            $category = array('id' => '', 'title' => '', 'color' => '#0080c0', 'sort_order' => 0);
         }
         ?>
         <div class="wrap">
@@ -347,6 +340,10 @@ class Projects_Map_Admin {
                     <tr>
                         <th><label for="color"><?php _e('Color', 'projects-map'); ?></label></th>
                         <td><input type="color" name="color" id="color" value="<?php echo esc_attr($category['color']); ?>" required class="projects-map-input"></td>
+                    </tr>
+                    <tr>
+                        <th><label for="sort_order"><?php _e('Sort Order', 'projects-map'); ?></label></th>
+                        <td><input type="number" name="sort_order" id="sort_order" value="<?php echo esc_attr($category['sort_order']); ?>" min="0" class="projects-map-input" style="width: 100px;"></td>
                     </tr>
                 </table>
                 <?php submit_button(); ?>
@@ -441,7 +438,8 @@ class Projects_Map_Admin {
         }
         $data = array(
             'title' => sanitize_text_field($_POST['title']),
-            'color' => sanitize_hex_color($_POST['color']) ?: '#0080c0'
+            'color' => sanitize_hex_color($_POST['color']) ?: '#0080c0',
+            'sort_order' => intval($_POST['sort_order'])
         );
         Projects_Map_DB::insert_category($data);
         wp_redirect(admin_url('admin.php?page=projects-map-categories'));
@@ -454,7 +452,8 @@ class Projects_Map_Admin {
         }
         $data = array(
             'title' => sanitize_text_field($_POST['title']),
-            'color' => sanitize_hex_color($_POST['color']) ?: '#0080c0'
+            'color' => sanitize_hex_color($_POST['color']) ?: '#0080c0',
+            'sort_order' => intval($_POST['sort_order'])
         );
         Projects_Map_DB::update_category($_POST['id'], $data);
         wp_redirect(admin_url('admin.php?page=projects-map-categories'));
