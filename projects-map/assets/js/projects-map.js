@@ -57,7 +57,7 @@
             try {
                 var icon = L.divIcon({
                     className: 'custom-marker',
-                    html: '<div style="background-color: ' + project.color + '; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 4px rgba(0,0,0,0.5);"></div>',
+                    html: '<div style="background-color: ' + (project.category_color || project.color || '#0080c0') + '; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 4px rgba(0,0,0,0.5);"></div>',
                     iconSize: [20, 20],
                     iconAnchor: [10, 10]
                 });

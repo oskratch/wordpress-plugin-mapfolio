@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Projects Map
  * Description: A WordPress plugin to display a world map with project locations. Manage projects from admin and display via shortcode.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Òscar Periche
  * License: GPL v2 or later
  * Text Domain: projects-map
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define constants
-define('PROJECTS_MAP_VERSION', '1.0.1');
+define('PROJECTS_MAP_VERSION', '1.0.2');
 define('PROJECTS_MAP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('PROJECTS_MAP_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -32,19 +32,48 @@ function projects_map_activate() {
 }
 
 // Upgrade hook
-// add_action('plugins_loaded', 'projects_map_upgrade_check');
-// function projects_map_upgrade_check() {
-//     projects_map_check_color_column();
-// }
+add_action('plugins_loaded', 'projects_map_upgrade_check');
+function projects_map_upgrade_check() {
+    $current_version = get_option('projects_map_version', '1.0.0');
+    if (version_compare($current_version, PROJECTS_MAP_VERSION, '<')) {
+        Projects_Map_DB::create_table();
+        // Migrate existing color data to categories
+        projects_map_migrate_colors_to_categories();
+        update_option('projects_map_version', PROJECTS_MAP_VERSION);
+    }
+}
 
-// function projects_map_check_color_column() {
-//     global $wpdb;
-//     $table_name = $wpdb->prefix . 'projects_map';
-//     $column_exists = $wpdb->get_results("SHOW COLUMNS FROM {$table_name} LIKE 'color'");
-//     if (empty($column_exists)) {
-//         $wpdb->query("ALTER TABLE {$table_name} ADD color VARCHAR(20) DEFAULT 'blue' NOT NULL");
-//     }
-// }
+function projects_map_migrate_colors_to_categories() {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'projects_map';
+    $categories_table = $wpdb->prefix . 'projects_map_categories';
+
+    // Get projects with old color column
+    $projects = $wpdb->get_results("SELECT id, color FROM $table_name WHERE color IS NOT NULL AND color != ''", ARRAY_A);
+
+    foreach ($projects as $project) {
+        // Find or create category by color
+        $category = $wpdb->get_row($wpdb->prepare("SELECT id FROM $categories_table WHERE color = %s", $project['color']), ARRAY_A);
+        if (!$category) {
+            // Create new category
+            $wpdb->insert($categories_table, array(
+                'title' => 'Migrated - ' . $project['color'],
+                'color' => $project['color']
+            ));
+            $category_id = $wpdb->insert_id;
+        } else {
+            $category_id = $category['id'];
+        }
+        // Update project
+        $wpdb->update($table_name, array('category_id' => $category_id), array('id' => $project['id']));
+    }
+
+    // Drop old color column if exists
+    $column_exists = $wpdb->get_results("SHOW COLUMNS FROM {$table_name} LIKE 'color'");
+    if (!empty($column_exists)) {
+        $wpdb->query("ALTER TABLE {$table_name} DROP COLUMN color");
+    }
+}
 
 // Deactivation hook
 register_deactivation_hook(__FILE__, 'projects_map_deactivate');

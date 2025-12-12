@@ -13,6 +13,9 @@ class Projects_Map_Admin {
         add_action('admin_post_add_project', array($this, 'handle_add_project'));
         add_action('admin_post_edit_project', array($this, 'handle_edit_project'));
         add_action('admin_post_delete_project', array($this, 'handle_delete_project'));
+        add_action('admin_post_add_category', array($this, 'handle_add_category'));
+        add_action('admin_post_edit_category', array($this, 'handle_edit_category'));
+        add_action('admin_post_delete_category', array($this, 'handle_delete_category'));
     }
 
     public function add_admin_menu() {
@@ -51,11 +54,19 @@ class Projects_Map_Admin {
         );
         add_submenu_page(
             'projects-map',
-            __('Info', 'projects-map'),
-            __('Info', 'projects-map'),
+            __('Categories', 'projects-map'),
+            __('Categories', 'projects-map'),
             'edit_posts',
-            'projects-map-info',
-            array($this, 'info_page')
+            'projects-map-categories',
+            array($this, 'categories_page')
+        );
+        add_submenu_page(
+            'projects-map',
+            __('Add New Category', 'projects-map'),
+            __('Add New Category', 'projects-map'),
+            'edit_posts',
+            'projects-map-add-category',
+            array($this, 'add_category_page')
         );
     }
 
@@ -143,22 +154,20 @@ class Projects_Map_Admin {
             <table class="wp-list-table widefat fixed striped">
                 <thead>
                     <tr>
-                        <th style="width:30px;"></th>
                         <th><?php _e('ID', 'projects-map'); ?></th>
-                        <th><?php _e('Country', 'projects-map'); ?></th>
+                        <th><?php _e('Category', 'projects-map'); ?></th>
                         <th><?php _e('Title', 'projects-map'); ?></th>
-                        <th><?php _e('Description', 'projects-map'); ?></th>
+                        <th><?php _e('Country', 'projects-map'); ?></th>
                         <th><?php _e('Actions', 'projects-map'); ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($projects as $project): ?>
                         <tr>
-                            <td><div style="width:20px; height:20px; background-color:<?php echo esc_attr($project['color'] ?? 'blue'); ?>; border:1px solid #ccc;"></div></td>
                             <td><?php echo esc_html($project['id']); ?></td>
-                            <td><?php echo esc_html($project['country']); ?></td>
+                            <td><div style="width:20px; height:20px; background-color:<?php echo esc_attr($project['category_color'] ?? '#0080c0'); ?>; border:1px solid #ccc; display:inline-block; margin-right:5px;"></div><?php echo esc_html($project['category_title'] ?? 'Default'); ?></td>
                             <td><?php echo esc_html($project['title']); ?></td>
-                            <td><?php echo esc_html(substr($project['description'], 0, 50)); ?>...</td>
+                            <td><?php echo esc_html($project['country']); ?></td>
                             <td>
                                 <a href="<?php echo admin_url('admin.php?page=projects-map-add&id=' . $project['id']); ?>"><?php _e('Edit', 'projects-map'); ?></a> |
                                 <form method="post" action="<?php echo admin_url('admin-post.php'); ?>" style="display:inline;">
@@ -184,7 +193,7 @@ class Projects_Map_Admin {
             }
             if (!isset($project['color'])) $project['color'] = 'blue';
         } else {
-            $project = array('id' => '', 'country' => '', 'lat' => '', 'lng' => '', 'title' => '', 'description' => '', 'image' => '', 'url' => '', 'color' => 'blue');
+            $project = array('id' => '', 'country' => '', 'lat' => '', 'lng' => '', 'title' => '', 'description' => '', 'image' => '', 'url' => '', 'category_id' => 1);
         }
         ?>
         <div class="wrap">
@@ -241,8 +250,93 @@ class Projects_Map_Admin {
                         <td><input type="url" name="url" id="url" value="<?php echo esc_attr($project['url']); ?>" class="projects-map-input"></td>
                     </tr>
                     <tr>
-                        <th><label for="color"><?php _e('Marker Color', 'projects-map'); ?></label></th>
-                        <td><input type="color" name="color" id="color" value="<?php echo esc_attr($project['color']); ?>" class="projects-map-input"></td>
+                        <th><label for="category_id"><?php _e('Category', 'projects-map'); ?></label></th>
+                        <td>
+                            <select name="category_id" id="category_id" required class="projects-map-input">
+                                <?php
+                                $categories = Projects_Map_DB::get_all_categories();
+                                foreach ($categories as $category) {
+                                    $selected = ($project['category_id'] == $category['id']) ? 'selected' : '';
+                                    echo '<option value="' . esc_attr($category['id']) . '" ' . $selected . '>' . esc_html($category['title']) . ' (' . esc_attr($category['color']) . ')</option>';
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <?php submit_button(); ?>
+            </form>
+        </div>
+        <?php
+    }
+
+    public function categories_page() {
+        $categories = Projects_Map_DB::get_all_categories();
+        ?>
+        <div class="wrap">
+            <h1 class="wp-heading-inline"><?php _e('Categories', 'projects-map'); ?></h1>
+            <a href="<?php echo admin_url('admin.php?page=projects-map-add-category'); ?>" class="page-title-action"><?php _e('Add New Category', 'projects-map'); ?></a>
+            <hr class="wp-header-end">
+            <table class="wp-list-table widefat fixed striped">
+                <thead>
+                    <tr>
+                        <th style="width:30px;"></th>
+                        <th><?php _e('ID', 'projects-map'); ?></th>
+                        <th><?php _e('Title', 'projects-map'); ?></th>
+                        <th><?php _e('Color', 'projects-map'); ?></th>
+                        <th><?php _e('Actions', 'projects-map'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($categories as $category): ?>
+                        <tr>
+                            <td><div style="width:20px; height:20px; background-color:<?php echo esc_attr($category['color']); ?>; border:1px solid #ccc;"></div></td>
+                            <td><?php echo esc_html($category['id']); ?></td>
+                            <td><?php echo esc_html($category['title']); ?></td>
+                            <td><?php echo esc_html($category['color']); ?></td>
+                            <td>
+                                <a href="<?php echo admin_url('admin.php?page=projects-map-add-category&id=' . $category['id']); ?>"><?php _e('Edit', 'projects-map'); ?></a> |
+                                <form method="post" action="<?php echo admin_url('admin-post.php'); ?>" style="display:inline;">
+                                    <?php wp_nonce_field('delete_category_' . $category['id']); ?>
+                                    <input type="hidden" name="action" value="delete_category">
+                                    <input type="hidden" name="id" value="<?php echo $category['id']; ?>">
+                                    <a href="#" onclick="if(confirm('<?php _e('Are you sure?', 'projects-map'); ?>')) { this.parentNode.submit(); return false; }" style="color:red;"><?php _e('Delete', 'projects-map'); ?></a>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php
+    }
+
+    public function add_category_page() {
+        if (isset($_GET['id'])) {
+            $category = Projects_Map_DB::get_category($_GET['id']);
+            if (!$category) {
+                wp_die(__('Category not found', 'projects-map'));
+            }
+        } else {
+            $category = array('id' => '', 'title' => '', 'color' => '#0080c0');
+        }
+        ?>
+        <div class="wrap">
+            <h1><?php echo isset($_GET['id']) ? __('Edit Category', 'projects-map') : __('Add New Category', 'projects-map'); ?></h1>
+            <form method="post" action="<?php echo admin_url('admin-post.php'); ?>">
+                <?php wp_nonce_field(isset($_GET['id']) ? 'edit_category_' . $_GET['id'] : 'add_category'); ?>
+                <input type="hidden" name="action" value="<?php echo isset($_GET['id']) ? 'edit_category' : 'add_category'; ?>">
+                <?php if (isset($_GET['id'])): ?>
+                    <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
+                <?php endif; ?>
+                <table class="form-table">
+                    <tr>
+                        <th><label for="title"><?php _e('Title', 'projects-map'); ?></label></th>
+                        <td><input type="text" name="title" id="title" value="<?php echo esc_attr($category['title']); ?>" required class="projects-map-input"></td>
+                    </tr>
+                    <tr>
+                        <th><label for="color"><?php _e('Color', 'projects-map'); ?></label></th>
+                        <td><input type="color" name="color" id="color" value="<?php echo esc_attr($category['color']); ?>" required class="projects-map-input"></td>
                     </tr>
                 </table>
                 <?php submit_button(); ?>
@@ -296,7 +390,7 @@ class Projects_Map_Admin {
             'description' => sanitize_textarea_field($_POST['description']),
             'image' => esc_url_raw($_POST['image']),
             'url' => esc_url_raw($_POST['url']),
-            'color' => sanitize_hex_color($_POST['color']) ?: 'blue'
+            'category_id' => intval($_POST['category_id'])
         );
         Projects_Map_DB::insert_project($data);
         wp_redirect(admin_url('admin.php?page=projects-map'));
@@ -315,7 +409,7 @@ class Projects_Map_Admin {
             'description' => sanitize_textarea_field($_POST['description']),
             'image' => esc_url_raw($_POST['image']),
             'url' => esc_url_raw($_POST['url']),
-            'color' => sanitize_hex_color($_POST['color']) ?: 'blue'
+            'category_id' => intval($_POST['category_id'])
         );
         Projects_Map_DB::update_project($_POST['id'], $data);
         wp_redirect(admin_url('admin.php?page=projects-map'));
@@ -328,6 +422,41 @@ class Projects_Map_Admin {
         }
         Projects_Map_DB::delete_project($_POST['id']);
         wp_redirect(admin_url('admin.php?page=projects-map'));
+        exit;
+    }
+
+    public function handle_add_category() {
+        if (!wp_verify_nonce($_POST['_wpnonce'], 'add_category') || !current_user_can('edit_posts')) {
+            wp_die(__('Security check failed', 'projects-map'));
+        }
+        $data = array(
+            'title' => sanitize_text_field($_POST['title']),
+            'color' => sanitize_hex_color($_POST['color']) ?: '#0080c0'
+        );
+        Projects_Map_DB::insert_category($data);
+        wp_redirect(admin_url('admin.php?page=projects-map-categories'));
+        exit;
+    }
+
+    public function handle_edit_category() {
+        if (!wp_verify_nonce($_POST['_wpnonce'], 'edit_category_' . $_POST['id']) || !current_user_can('edit_posts')) {
+            wp_die(__('Security check failed', 'projects-map'));
+        }
+        $data = array(
+            'title' => sanitize_text_field($_POST['title']),
+            'color' => sanitize_hex_color($_POST['color']) ?: '#0080c0'
+        );
+        Projects_Map_DB::update_category($_POST['id'], $data);
+        wp_redirect(admin_url('admin.php?page=projects-map-categories'));
+        exit;
+    }
+
+    public function handle_delete_category() {
+        if (!wp_verify_nonce($_POST['_wpnonce'], 'delete_category_' . $_POST['id']) || !current_user_can('edit_posts')) {
+            wp_die(__('Security check failed', 'projects-map'));
+        }
+        Projects_Map_DB::delete_category($_POST['id']);
+        wp_redirect(admin_url('admin.php?page=projects-map-categories'));
         exit;
     }
 }
