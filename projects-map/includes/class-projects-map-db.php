@@ -122,10 +122,19 @@ class Projects_Map_DB {
         $wpdb->delete($table_name, array('id' => $id));
     }
 
-    public static function get_category($id) {
+    public static function get_categories_with_projects() {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'projects_map_categories';
-        return $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", $id), ARRAY_A);
+        $table_name = $wpdb->prefix . 'projects_map';
+        $categories_table = $wpdb->prefix . 'projects_map_categories';
+        $results = $wpdb->get_results("
+            SELECT c.*, COUNT(p.id) as project_count
+            FROM $categories_table c
+            LEFT JOIN $table_name p ON c.id = p.category_id
+            GROUP BY c.id
+            HAVING project_count > 0
+            ORDER BY c.sort_order ASC, c.title ASC
+        ", ARRAY_A);
+        return $results;
     }
 }
 ?>
