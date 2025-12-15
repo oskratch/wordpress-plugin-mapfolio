@@ -32,7 +32,7 @@ class Projects_Map_Shortcode {
             <div class="projects-map-legend" style="margin-top: 20px;">
                 <ul style="list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 15px;">
                     <?php foreach ($categories as $category): ?>
-                        <li style="display: flex; align-items: center; font-size: 14px;">
+                        <li style="display: flex; align-items: center; font-size: 14px; margin-right: 10px;">
                             <span style="display: inline-block; width: 20px; height: 20px; background-color: <?php echo esc_attr($category['color']); ?>; margin-right: 8px; border-radius: 50%;"></span>
                             <span><?php echo esc_html($category['title']); ?></span>
                         </li>
