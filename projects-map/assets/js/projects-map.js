@@ -83,6 +83,35 @@
                 });
                 markers.addLayer(marker);
 
+                // When popup opens, ensure images have loaded before Leaflet calculates popup size.
+                // If an image loads after opening, update the popup and adjust map so popup stays visible.
+                marker.on('popupopen', function(e) {
+                    var popup = e.popup;
+                    var container = popup.getElement ? popup.getElement() : (popup._container || null);
+                    if (!container) return;
+                    var imgs = container.querySelectorAll('img');
+                    if (!imgs || imgs.length === 0) return;
+
+                    imgs.forEach(function(img) {
+                        if (img.complete) {
+                            try { popup.update(); } catch (err) {}
+                        } else {
+                            img.addEventListener('load', function() {
+                                try { popup.update(); } catch (err) {}
+                                // small timeout to let layout settle, then try to keep popup in view
+                                setTimeout(function() {
+                                    try {
+                                        // center map on popup latlng as fallback to ensure visibility
+                                        if (popup.getLatLng) {
+                                            map.panTo(popup.getLatLng(), { animate: false });
+                                        }
+                                    } catch (e) {}
+                                }, 50);
+                            });
+                        }
+                    });
+                });
+
                 if (debug) {
                     console.log('Marker added for project:', project.title);
                 }
