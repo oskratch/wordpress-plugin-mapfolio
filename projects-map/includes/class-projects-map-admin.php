@@ -46,14 +46,6 @@ class Projects_Map_Admin {
         );
         add_submenu_page(
             'projects-map',
-            __('Settings', 'projects-map'),
-            __('Settings', 'projects-map'),
-            'manage_options',
-            'projects-map-settings',
-            array($this, 'settings_page')
-        );
-        add_submenu_page(
-            'projects-map',
             __('Categories', 'projects-map'),
             __('Categories', 'projects-map'),
             'edit_posts',
@@ -67,6 +59,22 @@ class Projects_Map_Admin {
             'edit_posts',
             'projects-map-add-category',
             array($this, 'add_category_page')
+        );
+        add_submenu_page(
+            'projects-map',
+            __('Settings', 'projects-map'),
+            __('Settings', 'projects-map'),
+            'manage_options',
+            'projects-map-settings',
+            array($this, 'settings_page')
+        );
+        add_submenu_page(
+            'projects-map',
+            __('Info', 'projects-map'),
+            __('Info', 'projects-map'),
+            'edit_posts',
+            'projects-map-info',
+            array($this, 'info_page')
         );
     }
 
