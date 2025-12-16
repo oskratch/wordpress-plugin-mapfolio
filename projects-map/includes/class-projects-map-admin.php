@@ -406,14 +406,14 @@ class Projects_Map_Admin {
             wp_die(__('Security check failed', 'projects-map'));
         }
         $data = array(
-            'country' => sanitize_text_field($_POST['country']),
+            'country' => sanitize_text_field(wp_unslash($_POST['country'])),
             'lat' => floatval($_POST['lat']),
             'lng' => floatval($_POST['lng']),
-            'title' => sanitize_text_field($_POST['title']),
-            'description' => sanitize_textarea_field($_POST['description']),
-            'image' => esc_url_raw($_POST['image']),
-            'url' => esc_url_raw($_POST['url']),
-            'link_text' => sanitize_text_field($_POST['link_text']),
+            'title' => sanitize_text_field(wp_unslash($_POST['title'])),
+            'description' => sanitize_textarea_field(wp_unslash($_POST['description'])),
+            'image' => esc_url_raw(wp_unslash($_POST['image'])),
+            'url' => esc_url_raw(wp_unslash($_POST['url'])),
+            'link_text' => sanitize_text_field(wp_unslash($_POST['link_text'])),
             'category_id' => intval($_POST['category_id'])
         );
         Projects_Map_DB::insert_project($data);
@@ -426,14 +426,14 @@ class Projects_Map_Admin {
             wp_die(__('Security check failed', 'projects-map'));
         }
         $data = array(
-            'country' => sanitize_text_field($_POST['country']),
+            'country' => sanitize_text_field(wp_unslash($_POST['country'])),
             'lat' => floatval($_POST['lat']),
             'lng' => floatval($_POST['lng']),
-            'title' => sanitize_text_field($_POST['title']),
-            'description' => sanitize_textarea_field($_POST['description']),
-            'image' => esc_url_raw($_POST['image']),
-            'url' => esc_url_raw($_POST['url']),
-            'link_text' => sanitize_text_field($_POST['link_text']),
+            'title' => sanitize_text_field(wp_unslash($_POST['title'])),
+            'description' => sanitize_textarea_field(wp_unslash($_POST['description'])),
+            'image' => esc_url_raw(wp_unslash($_POST['image'])),
+            'url' => esc_url_raw(wp_unslash($_POST['url'])),
+            'link_text' => sanitize_text_field(wp_unslash($_POST['link_text'])),
             'category_id' => intval($_POST['category_id'])
         );
         Projects_Map_DB::update_project($_POST['id'], $data);

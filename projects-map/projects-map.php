@@ -131,6 +131,14 @@ function projects_map_enqueue_scripts() {
         
         // Localize script with data
         $projects = Projects_Map_DB::get_all_projects();
+        // Strip slashes from text fields for proper display in JS
+        foreach ($projects as &$project) {
+            $project['title'] = stripslashes($project['title']);
+            $project['description'] = stripslashes($project['description']);
+            if (isset($project['link_text'])) {
+                $project['link_text'] = stripslashes($project['link_text']);
+            }
+        }
         $min_zoom = get_option('projects_map_min_zoom', 1);
         $max_zoom = get_option('projects_map_max_zoom', 10);
         $default_zoom = get_option('projects_map_default_zoom', 2);
