@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define constants
-define('PROJECTS_MAP_VERSION', '1.0.3');
+define('PROJECTS_MAP_VERSION', '1.0.4');
 define('PROJECTS_MAP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('PROJECTS_MAP_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -39,6 +39,8 @@ function projects_map_upgrade_check() {
         Projects_Map_DB::create_table();
         // Add sort_order column to categories if not exists
         projects_map_add_sort_order_column();
+        // Add link_text column to projects if not exists
+        projects_map_add_link_text_column();
         // Migrate existing color data to categories
         projects_map_migrate_colors_to_categories();
         update_option('projects_map_version', PROJECTS_MAP_VERSION);
@@ -90,6 +92,15 @@ function projects_map_add_sort_order_column() {
     }
 }
 
+function projects_map_add_link_text_column() {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'projects_map';
+    $column_exists = $wpdb->get_var("SHOW COLUMNS FROM {$table_name} WHERE Field = 'link_text'");
+    if (!$column_exists) {
+        $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN link_text varchar(255) DEFAULT '' NOT NULL");
+    }
+}
+
 // Deactivation hook
 register_deactivation_hook(__FILE__, 'projects_map_deactivate');
 function projects_map_deactivate() {
@@ -132,7 +143,7 @@ function projects_map_enqueue_scripts() {
             'min_zoom' => $min_zoom,
             'default_zoom' => $default_zoom,
             'strings' => array(
-                'see_more' => __('See more', 'projects-map')
+                'read_more' => __('Read more', 'projects-map')
             )
         ));
     }

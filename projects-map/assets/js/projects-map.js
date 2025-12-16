@@ -70,7 +70,8 @@
                 popupContent += '<h3>' + project.title + '</h3>';
                 popupContent += '<p>' + project.description + '</p>';
                 if (project.url) {
-                    popupContent += '<a href="' + project.url + '"' + (newTab ? ' target="_blank"' : '') + '>' + projectsMapData.strings.see_more + '</a>';
+                    var linkText = (project.link_text && project.link_text.trim()) || projectsMapData.strings.read_more;
+                    popupContent += '<a href="' + project.url + '"' + (newTab ? ' target="_blank"' : '') + '>' + linkText + '</a>';
                 }
                 popupContent += '</div>';
                 marker.bindPopup(popupContent, {

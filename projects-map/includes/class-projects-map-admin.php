@@ -199,7 +199,7 @@ class Projects_Map_Admin {
             }
             if (!isset($project['color'])) $project['color'] = 'blue';
         } else {
-            $project = array('id' => '', 'country' => '', 'lat' => '', 'lng' => '', 'title' => '', 'description' => '', 'image' => '', 'url' => '', 'category_id' => 1);
+            $project = array('id' => '', 'country' => '', 'lat' => '', 'lng' => '', 'title' => '', 'description' => '', 'image' => '', 'url' => '', 'link_text' => '', 'category_id' => 1);
         }
         ?>
         <div class="wrap">
@@ -254,6 +254,13 @@ class Projects_Map_Admin {
                     <tr>
                         <th><label for="url"><?php _e('Project URL', 'projects-map'); ?></label></th>
                         <td><input type="url" name="url" id="url" value="<?php echo esc_attr($project['url']); ?>" class="projects-map-input"></td>
+                    </tr>
+                    <tr>
+                        <th><label for="link_text"><?php _e('Link Text', 'projects-map'); ?></label></th>
+                        <td>
+                            <input type="text" name="link_text" id="link_text" value="<?php echo esc_attr($project['link_text']); ?>" class="projects-map-input">
+                            <small><?php _e('Custom text for the link. If empty, defaults to "Read more".', 'projects-map'); ?></small>
+                        </td>
                     </tr>
                     <tr>
                         <th><label for="category_id"><?php _e('Category', 'projects-map'); ?></label></th>
@@ -406,6 +413,7 @@ class Projects_Map_Admin {
             'description' => sanitize_textarea_field($_POST['description']),
             'image' => esc_url_raw($_POST['image']),
             'url' => esc_url_raw($_POST['url']),
+            'link_text' => sanitize_text_field($_POST['link_text']),
             'category_id' => intval($_POST['category_id'])
         );
         Projects_Map_DB::insert_project($data);
@@ -425,6 +433,7 @@ class Projects_Map_Admin {
             'description' => sanitize_textarea_field($_POST['description']),
             'image' => esc_url_raw($_POST['image']),
             'url' => esc_url_raw($_POST['url']),
+            'link_text' => sanitize_text_field($_POST['link_text']),
             'category_id' => intval($_POST['category_id'])
         );
         Projects_Map_DB::update_project($_POST['id'], $data);

@@ -32,6 +32,7 @@ class Projects_Map_DB {
             description text NOT NULL,
             image varchar(500) DEFAULT '' NOT NULL,
             url varchar(500) DEFAULT '' NOT NULL,
+            link_text varchar(255) DEFAULT '' NOT NULL,
             category_id mediumint(9) DEFAULT 0 NOT NULL,
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             PRIMARY KEY (id)
