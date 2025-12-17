@@ -104,6 +104,12 @@ class Projects_Map_DB {
         return $results;
     }
 
+    public static function get_category($id) {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'projects_map_categories';
+        return $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", $id), ARRAY_A);
+    }
+
     public static function insert_category($data) {
         global $wpdb;
         $table_name = $wpdb->prefix . 'projects_map_categories';
