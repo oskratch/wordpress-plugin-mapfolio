@@ -65,7 +65,13 @@
                 var marker = L.marker([project.lat, project.lng], {icon: icon});
                 var popupContent = '<div class="project-popup">';
                 if (project.image) {
-                    popupContent += '<img src="' + project.image + '" alt="' + project.title + '">';
+                    // Determine if image is SVG (ignore query string and hash)
+                    var imgUrl = project.image || '';
+                    var imgUrlNoQuery = imgUrl.split('?')[0].split('#')[0];
+                    var isSvg = imgUrlNoQuery.toLowerCase().endsWith('.svg');
+                    var imgClass = isSvg ? ' class="is-svg"' : '';
+                    var imgStyle = isSvg ? 'style="display:block; margin-bottom:8px; height:80px !important; width:auto !important; max-width:none !important;"' : 'style="max-width:100px; display:block; margin-bottom:8px;"';
+                    popupContent += '<img src="' + project.image + '" alt="' + project.title + '"' + imgClass + ' ' + imgStyle + '>';
                 }
                 popupContent += '<h3>' + project.title + '</h3>';
                 popupContent += '<p>' + project.description + '</p>';

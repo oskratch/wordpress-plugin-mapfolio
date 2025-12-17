@@ -65,3 +65,10 @@
     height: auto !important;
     display: block !important;
 }
+
+/* SVG images used as logos/icons should be shown at a consistent height */
+.project-popup img.is-svg {
+    height: 80px !important;
+    width: auto !important;
+    max-width: none !important;
+}
