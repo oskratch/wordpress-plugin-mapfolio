@@ -355,7 +355,10 @@ class Projects_Map_Admin {
                     </tr>
                     <tr>
                         <th><label for="color"><?php _e('Color', 'projects-map'); ?></label></th>
-                        <td><input type="color" name="color" id="color" value="<?php echo esc_attr($category['color']); ?>" required class="projects-map-input"></td>
+                        <td>
+                            <input type="text" name="color" id="color" value="<?php echo esc_attr($category['color']); ?>" required class="projects-map-input" pattern="^#[0-9A-Fa-f]{6}$" placeholder="#0080c0">
+                            <small><?php _e('Enter a hexadecimal color code (e.g., #0080c0)', 'projects-map'); ?></small>
+                        </td>
                     </tr>
                     <tr>
                         <th><label for="sort_order"><?php _e('Sort Order', 'projects-map'); ?></label></th>
