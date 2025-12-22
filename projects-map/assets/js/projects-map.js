@@ -32,10 +32,12 @@
         var markers = L.markerClusterGroup();
         var newTab = $('#projects-map').data('new-tab');
 
-        // Calculate adaptive popup max width based on map container width
+        // Calculate adaptive popup max width based on map container width and screen size
         var mapContainer = $('#projects-map');
         var mapWidth = mapContainer.width();
-        var popupMaxWidth = Math.min(500, mapWidth - 40);
+        var screenWidth = window.innerWidth;
+        var isMobile = screenWidth < 768;
+        var popupMaxWidth = isMobile ? Math.min(250, Math.min(mapWidth, screenWidth) - 20) : Math.min(500, Math.min(mapWidth, screenWidth) - 40);
 
         if (debug) {
             console.log('Projects Map Debug:');
@@ -84,9 +86,9 @@
                     maxWidth: popupMaxWidth,
                     autoPan: true,
                     keepInView: true,
-                    autoPanPadding: [100, 50],
-                    autoPanPaddingTopLeft: [20, 20],
-                    autoPanPaddingBottomRight: [100, 50]
+                    autoPanPadding: isMobile ? [50, 25] : [100, 50],
+                    autoPanPaddingTopLeft: isMobile ? [10, 10] : [20, 20],
+                    autoPanPaddingBottomRight: isMobile ? [50, 25] : [100, 50]
                 });
                 markers.addLayer(marker);
 

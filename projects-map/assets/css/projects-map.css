@@ -73,3 +73,40 @@
     max-width: none !important;
     margin-bottom: 20px !important;
 }
+
+/* Mobile responsive styles */
+@media (max-width: 767px) {
+    .project-popup {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .project-popup h3 {
+        font-size: 16px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .project-popup p {
+        font-size: 13px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .project-popup a {
+        font-size: 13px !important;
+    }
+
+    .leaflet-container a.leaflet-popup-close-button {
+        width: 24px;
+        height: 24px;
+        font-size: 18px;
+        line-height: 22px;
+        top: 5px;
+        right: 5px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 3px;
+    }
+
+    .leaflet-popup-content-wrapper {
+        border-radius: 8px;
+    }
+}
