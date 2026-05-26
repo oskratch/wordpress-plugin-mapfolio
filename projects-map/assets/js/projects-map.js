@@ -25,8 +25,32 @@
             minZoom: projectsMapData.min_zoom
         }).setView([20, 0], projectsMapData.default_zoom);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        // Map tile layers based on selected style
+        var mapStyle = projectsMapData.map_style || 'openstreetmap';
+        var tileLayer, attribution;
+        
+        switch(mapStyle) {
+            case 'cartodb-positron':
+                tileLayer = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+                attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+                break;
+            case 'cartodb-voyager':
+                tileLayer = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+                attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+                break;
+            case 'esri-gray':
+                tileLayer = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+                attribution = 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ';
+                break;
+            case 'openstreetmap':
+            default:
+                tileLayer = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+                attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+                break;
+        }
+
+        L.tileLayer(tileLayer, {
+            attribution: attribution
         }).addTo(map);
 
         var markers = L.markerClusterGroup();

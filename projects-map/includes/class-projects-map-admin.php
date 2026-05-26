@@ -94,11 +94,13 @@ class Projects_Map_Admin {
         register_setting('projects_map_settings', 'projects_map_max_zoom', array('sanitize_callback' => 'absint'));
         register_setting('projects_map_settings', 'projects_map_min_zoom', array('sanitize_callback' => 'absint'));
         register_setting('projects_map_settings', 'projects_map_default_zoom', array('sanitize_callback' => 'absint'));
+        register_setting('projects_map_settings', 'projects_map_style', array('sanitize_callback' => 'sanitize_text_field'));
 
         add_settings_section('projects_map_general', __('General Settings', 'projects-map'), null, 'projects-map-settings');
 
         add_settings_field('projects_map_height', __('Map Height', 'projects-map'), array($this, 'height_field'), 'projects-map-settings', 'projects_map_general');
         add_settings_field('projects_map_new_tab', __('Open links in new tab', 'projects-map'), array($this, 'new_tab_field'), 'projects-map-settings', 'projects_map_general');
+        add_settings_field('projects_map_style', __('Map Style', 'projects-map'), array($this, 'map_style_field'), 'projects-map-settings', 'projects_map_general');
         add_settings_field('projects_map_max_zoom', __('Maximum Zoom Level', 'projects-map'), array($this, 'max_zoom_field'), 'projects-map-settings', 'projects_map_general');
         add_settings_field('projects_map_min_zoom', __('Minimum Zoom Level', 'projects-map'), array($this, 'min_zoom_field'), 'projects-map-settings', 'projects_map_general');
         add_settings_field('projects_map_default_zoom', __('Default Zoom Level', 'projects-map'), array($this, 'default_zoom_field'), 'projects-map-settings', 'projects_map_general');
@@ -113,6 +115,22 @@ class Projects_Map_Admin {
     public function new_tab_field() {
         $value = get_option('projects_map_new_tab', 0);
         echo '<input type="checkbox" name="projects_map_new_tab" value="1"' . checked(1, $value, false) . '>';
+    }
+
+    public function map_style_field() {
+        $value = get_option('projects_map_style', 'openstreetmap');
+        $styles = array(
+            'openstreetmap' => __('OpenStreetMap (default, detailed)', 'projects-map'),
+            'cartodb-positron' => __('CartoDB Positron (clean, minimal)', 'projects-map'),
+            'cartodb-voyager' => __('CartoDB Voyager (clean with colors)', 'projects-map'),
+            'esri-gray' => __('ESRI Gray Canvas (neutral gray)', 'projects-map')
+        );
+        echo '<select name="projects_map_style">';
+        foreach ($styles as $key => $label) {
+            echo '<option value="' . esc_attr($key) . '"' . selected($value, $key, false) . '>' . esc_html($label) . '</option>';
+        }
+        echo '</select>';
+        echo '<p class="description">' . __('Choose the map style. Minimalist options hide terrain details, rivers, and mountains.', 'projects-map') . '</p>';
     }
 
     public function max_zoom_field() {

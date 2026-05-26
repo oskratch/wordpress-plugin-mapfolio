@@ -143,6 +143,7 @@ function projects_map_enqueue_scripts() {
         $max_zoom = get_option('projects_map_max_zoom', 10);
         $default_zoom = get_option('projects_map_default_zoom', 2);
         $default_zoom = max($min_zoom, min($max_zoom, $default_zoom));
+        $map_style = get_option('projects_map_style', 'openstreetmap');
         wp_localize_script('projects-map-js', 'projectsMapData', array(
             'projects' => $projects,
             'ajax_url' => admin_url('admin-ajax.php'),
@@ -150,6 +151,7 @@ function projects_map_enqueue_scripts() {
             'max_zoom' => $max_zoom,
             'min_zoom' => $min_zoom,
             'default_zoom' => $default_zoom,
+            'map_style' => $map_style,
             'strings' => array(
                 'read_more' => __('Read more', 'projects-map')
             )
