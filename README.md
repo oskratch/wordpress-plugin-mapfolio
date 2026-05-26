@@ -5,20 +5,22 @@
 ![MySQL](https://img.shields.io/badge/MySQL-5.6%2B-orange.svg)
 ![License](https://img.shields.io/badge/License-GPL%20v2-green.svg)
 
-A WordPress plugin to display a world map with project locations. Allows creating project entries from the admin panel with fields: country, title, brief description, image, and URL. Displays a map using a shortcode, with clustering for countries and individual points on zoom.
+A professional WordPress plugin to create and display interactive maps with custom locations. Create multiple maps and manage locations (projects, stores, offices, restaurants, etc.) from the admin panel. Perfect for businesses with multiple locations, project portfolios, store locators, and more.
 
 ## Features
 
-- **Admin menu** to manage project entries and categories
-- **Custom database tables** for projects and categories
-- **Category system** with custom colors and sorting
+- **Multiple Maps**: Create unlimited maps, each with its own set of locations
+- **Universal Location System**: Add any type of location - projects, stores, offices, restaurants, etc.
+- **Admin menu** to manage maps, locations, and categories
+- **Custom database tables** for maps, locations, and categories
+- **Category system** with custom colors and sorting (shared across all maps)
 - **Map style selection**: Choose from multiple map styles (OpenStreetMap, CartoDB Positron, CartoDB Voyager, ESRI Gray Canvas)
-- **Settings page** for map configuration (height, map style, link behavior, legend visibility, zoom levels)
-- **Shortcode** to display the interactive map with customizable attributes
-- **Clustering**: shows project count per country when zoomed out, individual points when zoomed in
+- **Settings page** for global map configuration (height, map style, link behavior, legend visibility, zoom levels)
+- **Flexible shortcode** to display specific maps with customizable attributes
+- **Clustering**: shows location count per country when zoomed out, individual points when zoomed in
 - **Category-based marker colors** with automatic legend
-- **Media uploader** for project images (supports SVG with proper sizing)
-- **Interactive popups** with project details and "see more" link
+- **Media uploader** for location images (supports JPG, PNG, SVG with proper sizing)
+- **Interactive popups** with location details and "see more" link
 - **Mobile responsive** with optimized popup sizing and touch-friendly close buttons
 - **Customizable legend** (can be shown/hidden globally or per-page)
 - **Responsive admin forms**
@@ -28,9 +30,22 @@ A WordPress plugin to display a world map with project locations. Allows creatin
 
 1. Upload the `projects-map` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Use the shortcode `[projects_map]` to display the map on any page or post.
+3. Create your first map and add locations.
+4. Use the shortcode `[projects_map map="1"]` to display your map on any page or post.
 
 ## Usage
+
+### Creating Maps
+
+1. Go to "Projects Map" > "All Maps".
+2. Click "Add New Map".
+3. Enter:
+   - **Title**: Name of your map (e.g., "Our Stores", "Project Locations")
+   - **Slug**: Auto-generated URL-friendly identifier
+   - **Description**: Optional description of what this map shows
+4. Save the map.
+
+You can create multiple maps for different purposes (e.g., one map for stores, another for projects).
 
 ### Managing Categories
 
@@ -39,32 +54,33 @@ A WordPress plugin to display a world map with project locations. Allows creatin
 3. Set the category title, choose a color, and define the sort order.
 4. Save the category.
 
-Categories are used to organize projects and determine marker colors on the map. A legend with all active categories is automatically displayed below the map (can be disabled in settings).
+Categories are shared across all maps and used to organize locations and determine marker colors. A legend with all active categories is automatically displayed below the map (can be disabled in settings).
 
-### Adding Projects
+### Adding Locations
 
-1. Go to the WordPress admin dashboard.
-2. Navigate to "Projects Map" > "Add New Project".
+1. Go to "Projects Map" > "All Locations".
+2. Click "Add New Location".
 3. Fill in the fields:
+   - **Map**: Select which map this location belongs to
    - **Category**: Select from existing categories (determines marker color)
-   - **Country**: Project location country
+   - **Country**: Location country
    - **Latitude & Longitude**: Exact coordinates for the map marker
-   - **Title**: Project name
-   - **Description**: Brief project description
+   - **Title**: Location name
+   - **Description**: Brief description
    - **Image**: Upload or enter URL (supports JPG, PNG, SVG)
-   - **Project URL**: Link to project details
+   - **URL**: Link to more details
    - **Link Text**: Custom text for the link (optional, defaults to "Read more")
-4. Save the project.
+4. Save the location.
 
 ### Configuring Settings
 
 1. Go to "Projects Map" > "Settings".
-2. Configure the following options:
-   - **Map Height**: Default height for the map (e.g., 500px, 100%)
-   - **Open links in new tab**: Enable to open project links in a new browser tab
+2. Configure the following global options:
+   - **Map Height**: Default height for all maps (e.g., 500px, 100%)
+   - **Open links in new tab**: Enable to open location links in a new browser tab
    - **Map Style**: Choose between different map styles:
      - **OpenStreetMap** (default, detailed with terrain)
-     - **CartoDB Positron** (clean, minimal, no terrain details)
+     - **CartoDB Positron** (clean, minimal, no terrain details) ✨ Recommended for clean look
      - **CartoDB Voyager** (clean with subtle colors)
      - **ESRI Gray Canvas** (neutral gray, minimalist)
    - **Show legend below map**: Display or hide the category legend
@@ -72,29 +88,34 @@ Categories are used to organize projects and determine marker colors on the map.
    - **Minimum Zoom Level**: Limit how far users can zoom out (1-18)
    - **Default Zoom Level**: Initial zoom when the map loads (1-18)
 
-### Displaying the Map
+### Displaying Maps
 
-Insert the shortcode `[projects_map]` into any page or post content.
+Insert the shortcode into any page or post content. You must specify which map to display.
 
 #### Shortcode Attributes
 
 You can customize the map with attributes:
 
-- `height`: Map height, e.g., `[projects_map height="400px"]`
-- `new_tab`: Open links in new tab (0 or 1), e.g., `[projects_map new_tab="1"]`
-- `show_legend`: Display legend below map (0 or 1), e.g., `[projects_map show_legend="0"]`
-- `debug`: Enable debug mode (0 or 1), e.g., `[projects_map debug="1"]`
+- `map`: **Required** - Map ID or slug to display, e.g., `[projects_map map="1"]` or `[projects_map map="our-stores"]`
+- `height`: Map height, e.g., `[projects_map map="1" height="400px"]`
+- `new_tab`: Open links in new tab (0 or 1), e.g., `[projects_map map="1" new_tab="1"]`
+- `show_legend`: Display legend below map (0 or 1), e.g., `[projects_map map="1" show_legend="0"]`
+- `debug`: Enable debug mode (0 or 1), e.g., `[projects_map map="1" debug="1"]`
 
 **Examples:**
 
 ```
-[projects_map]
-[projects_map height="600px" new_tab="1"]
-[projects_map height="400px" show_legend="0"]
-[projects_map height="100%" new_tab="1" show_legend="1" debug="0"]
+[projects_map map="1"]
+[projects_map map="our-stores"]
+[projects_map map="1" height="600px" new_tab="1"]
+[projects_map map="project-locations" height="400px" show_legend="0"]
+[projects_map map="1" height="100%" new_tab="1" show_legend="1"]
 ```
 
-**Note:** Shortcode attributes override global settings for that specific instance of the map.
+**Note:** 
+- If no `map` parameter is specified, the first map in your database will be displayed.
+- Shortcode attributes override global settings for that specific instance of the map.
+- You can use either the map ID (number) or slug (text) as the `map` parameter value.
 
 ### Mobile Optimization
 

@@ -1,3 +1,8 @@
+.projects-map-container {
+    width: 100%;
+    height: auto;
+}
+
 #projects-map {
     width: 100%;
     height: auto;

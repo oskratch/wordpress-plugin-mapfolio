@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Projects Map
- * Description: A WordPress plugin to display a world map with project locations. Manage projects from admin and display via shortcode.
- * Version: 1.0.3
+ * Description: A WordPress plugin to display interactive maps with custom locations. Create multiple maps and manage locations (projects, stores, offices, etc.) from admin panel.
+ * Version: 2.0.0
  * Author: Òscar Periche
  * License: GPL v2 or later
  * Text Domain: projects-map
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define constants
-define('PROJECTS_MAP_VERSION', '1.0.5');
+define('PROJECTS_MAP_VERSION', '2.0.0');
 define('PROJECTS_MAP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('PROJECTS_MAP_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -49,38 +49,42 @@ function projects_map_upgrade_check() {
 
 function projects_map_migrate_colors_to_categories() {
     global $wpdb;
-    $table_name = $wpdb->prefix . 'projects_map';
+    $old_table = $wpdb->prefix . 'projects_map';
+    $locations_table = $wpdb->prefix . 'projects_map_locations';
     $categories_table = $wpdb->prefix . 'projects_map_categories';
 
+    // Check which table exists and has color column
+    $table_to_check = $wpdb->get_var("SHOW TABLES LIKE '$locations_table'") == $locations_table ? $locations_table : $old_table;
+    
     // Check if color column exists
-    $column_exists = $wpdb->get_results("SHOW COLUMNS FROM {$table_name} LIKE 'color'");
+    $column_exists = $wpdb->get_results("SHOW COLUMNS FROM {$table_to_check} LIKE 'color'");
     if (empty($column_exists)) {
         return; // Already migrated
     }
 
-    // Get projects with old color column
-    $projects = $wpdb->get_results("SELECT id, color FROM $table_name WHERE color IS NOT NULL AND color != ''", ARRAY_A);
+    // Get locations with old color column
+    $locations = $wpdb->get_results("SELECT id, color FROM $table_to_check WHERE color IS NOT NULL AND color != ''", ARRAY_A);
 
-    foreach ($projects as $project) {
+    foreach ($locations as $location) {
         // Find or create category by color
-        $category = $wpdb->get_row($wpdb->prepare("SELECT id FROM $categories_table WHERE color = %s", $project['color']), ARRAY_A);
+        $category = $wpdb->get_row($wpdb->prepare("SELECT id FROM $categories_table WHERE color = %s", $location['color']), ARRAY_A);
         if (!$category) {
             // Create new category
             $wpdb->insert($categories_table, array(
-                'title' => 'Migrated - ' . $project['color'],
-                'color' => $project['color'],
+                'title' => 'Migrated - ' . $location['color'],
+                'color' => $location['color'],
                 'sort_order' => 0
             ));
             $category_id = $wpdb->insert_id;
         } else {
             $category_id = $category['id'];
         }
-        // Update project
-        $wpdb->update($table_name, array('category_id' => $category_id), array('id' => $project['id']));
+        // Update location
+        $wpdb->update($table_to_check, array('category_id' => $category_id), array('id' => $location['id']));
     }
 
     // Drop old color column
-    $wpdb->query("ALTER TABLE {$table_name} DROP COLUMN color");
+    $wpdb->query("ALTER TABLE {$table_to_check} DROP COLUMN color");
 }
 
 function projects_map_add_sort_order_column() {
@@ -94,10 +98,15 @@ function projects_map_add_sort_order_column() {
 
 function projects_map_add_link_text_column() {
     global $wpdb;
-    $table_name = $wpdb->prefix . 'projects_map';
-    $column_exists = $wpdb->get_var("SHOW COLUMNS FROM {$table_name} WHERE Field = 'link_text'");
+    $old_table = $wpdb->prefix . 'projects_map';
+    $locations_table = $wpdb->prefix . 'projects_map_locations';
+    
+    // Check which table exists
+    $table_to_check = $wpdb->get_var("SHOW TABLES LIKE '$locations_table'") == $locations_table ? $locations_table : $old_table;
+    
+    $column_exists = $wpdb->get_var("SHOW COLUMNS FROM {$table_to_check} WHERE Field = 'link_text'");
     if (!$column_exists) {
-        $wpdb->query("ALTER TABLE {$table_name} ADD COLUMN link_text varchar(255) DEFAULT '' NOT NULL");
+        $wpdb->query("ALTER TABLE {$table_to_check} ADD COLUMN link_text varchar(255) DEFAULT '' NOT NULL");
     }
 }
 
@@ -129,23 +138,15 @@ function projects_map_enqueue_scripts() {
         wp_enqueue_script('projects-map-js', PROJECTS_MAP_PLUGIN_URL . 'assets/js/projects-map.js', array('jquery', 'leaflet-js', 'leaflet-markercluster-js'), PROJECTS_MAP_VERSION, true);
         wp_enqueue_style('projects-map-css', PROJECTS_MAP_PLUGIN_URL . 'assets/css/projects-map.css', array(), PROJECTS_MAP_VERSION);
         
-        // Localize script with data
-        $projects = Projects_Map_DB::get_all_projects();
-        // Strip slashes from text fields for proper display in JS
-        foreach ($projects as &$project) {
-            $project['title'] = stripslashes($project['title']);
-            $project['description'] = stripslashes($project['description']);
-            if (isset($project['link_text'])) {
-                $project['link_text'] = stripslashes($project['link_text']);
-            }
-        }
+        // Get global settings
         $min_zoom = get_option('projects_map_min_zoom', 1);
         $max_zoom = get_option('projects_map_max_zoom', 10);
         $default_zoom = get_option('projects_map_default_zoom', 2);
         $default_zoom = max($min_zoom, min($max_zoom, $default_zoom));
         $map_style = get_option('projects_map_style', 'openstreetmap');
-        wp_localize_script('projects-map-js', 'projectsMapData', array(
-            'projects' => $projects,
+        
+        // Localize script with global data
+        wp_localize_script('projects-map-js', 'projectsMapGlobal', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('projects_map_nonce'),
             'max_zoom' => $max_zoom,
@@ -157,5 +158,31 @@ function projects_map_enqueue_scripts() {
             )
         ));
     }
+}
+
+// AJAX handler to get locations for a specific map
+add_action('wp_ajax_get_map_locations', 'projects_map_ajax_get_locations');
+add_action('wp_ajax_nopriv_get_map_locations', 'projects_map_ajax_get_locations');
+function projects_map_ajax_get_locations() {
+    check_ajax_referer('projects_map_nonce', 'nonce');
+    
+    $map_id = isset($_POST['map_id']) ? intval($_POST['map_id']) : 0;
+    if (!$map_id) {
+        wp_send_json_error('Invalid map ID');
+        return;
+    }
+    
+    $locations = Projects_Map_DB::get_all_locations($map_id);
+    
+    // Strip slashes from text fields
+    foreach ($locations as &$location) {
+        $location['title'] = stripslashes($location['title']);
+        $location['description'] = stripslashes($location['description']);
+        if (isset($location['link_text'])) {
+            $location['link_text'] = stripslashes($location['link_text']);
+        }
+    }
+    
+    wp_send_json_success($locations);
 }
 ?>

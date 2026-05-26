@@ -2,31 +2,31 @@
     'use strict';
 
     $(document).ready(function() {
-        if ($('#projects-map').length) {
-            initMap();
-        }
+        $('.projects-map-container').each(function() {
+            initMap($(this));
+        });
     });
 
-    function initMap() {
-        var debug = $('#projects-map').data('debug');
+    function initMap($container) {
+        var mapId = $container.data('map-id');
+        var debug = $container.data('debug');
+        var containerId = $container.attr('id');
         
         if (debug) {
             console.log('=== PROJECTS MAP PLUGIN LOADED ===');
             console.log('jQuery version:', $.fn.jquery);
             console.log('Leaflet loaded:', typeof L !== 'undefined');
-            console.log('Projects Map: Document ready, map container found');
-            console.log('Projects Map: Initializing map...');
-            console.log('Projects Map: Raw debug data attribute:', $('#projects-map').attr('data-debug'));
-            console.log('Projects Map: Parsed debug value:', debug, 'Type:', typeof debug);
+            console.log('Map ID:', mapId);
+            console.log('Container ID:', containerId);
         }
         
-        var map = L.map('projects-map', {
-            maxZoom: projectsMapData.max_zoom,
-            minZoom: projectsMapData.min_zoom
-        }).setView([20, 0], projectsMapData.default_zoom);
+        var map = L.map(containerId, {
+            maxZoom: projectsMapGlobal.max_zoom,
+            minZoom: projectsMapGlobal.min_zoom
+        }).setView([20, 0], projectsMapGlobal.default_zoom);
 
         // Map tile layers based on selected style
-        var mapStyle = projectsMapData.map_style || 'openstreetmap';
+        var mapStyle = projectsMapGlobal.map_style || 'openstreetmap';
         var tileLayer, attribution;
         
         switch(mapStyle) {
@@ -54,28 +54,124 @@
         }).addTo(map);
 
         var markers = L.markerClusterGroup();
-        var newTab = $('#projects-map').data('new-tab');
+        var newTab = $container.data('new-tab');
 
         // Calculate adaptive popup max width based on map container width and screen size
-        var mapContainer = $('#projects-map');
-        var mapWidth = mapContainer.width();
+        var mapWidth = $container.width();
         var screenWidth = window.innerWidth;
         var isMobile = screenWidth < 768;
         var popupMaxWidth = isMobile ? Math.min(250, Math.min(mapWidth, screenWidth) - 20) : Math.min(500, Math.min(mapWidth, screenWidth) - 40);
 
-        if (debug) {
-            console.log('Projects Map Debug:');
-            console.log('- jQuery loaded:', typeof $ !== 'undefined');
-            console.log('- Map container exists:', mapContainer.length > 0);
-            console.log('- Map width:', mapWidth);
-            console.log('- Projects count:', projectsMapData.projects.length);
-            console.log('- Projects data:', projectsMapData.projects);
-            console.log('- Max zoom:', projectsMapData.max_zoom);
-            console.log('- Min zoom:', projectsMapData.min_zoom);
-            console.log('- Default zoom:', projectsMapData.default_zoom);
-        }
+        // Load locations via AJAX
+        $.ajax({
+            url: projectsMapGlobal.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'get_map_locations',
+                map_id: mapId,
+                nonce: projectsMapGlobal.nonce
+            },
+            success: function(response) {
+                if (response.success && response.data) {
+                    var locations = response.data;
+                    
+                    if (debug) {
+                        console.log('Locations loaded:', locations.length);
+                        console.log('Locations data:', locations);
+                    }
 
-        projectsMapData.projects.forEach(function(project, index) {
+                    locations.forEach(function(location, index) {
+                        if (debug) {
+                            console.log('Processing location ' + index + ':', location);
+                        }
+
+                        try {
+                            var icon = L.divIcon({
+                                className: 'custom-marker',
+                                html: '<div style="background-color: ' + (location.category_color || location.color || '#0080c0') + '; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 4px rgba(0,0,0,0.5);"></div>',
+                                iconSize: [20, 20],
+                                iconAnchor: [10, 10]
+                            });
+
+                            var marker = L.marker([location.lat, location.lng], {icon: icon});
+                            var popupContent = '<div class="project-popup">';
+                            if (location.image) {
+                                // Determine if image is SVG (ignore query string and hash)
+                                var imgUrl = location.image || '';
+                                var imgUrlNoQuery = imgUrl.split('?')[0].split('#')[0];
+                                var isSvg = imgUrlNoQuery.toLowerCase().endsWith('.svg');
+                                var imgClass = isSvg ? ' class="is-svg"' : '';
+                                var imgStyle = isSvg ? 'style="display:block; margin-bottom:8px; height:40px !important; width:auto !important; max-width:none !important;"' : 'style="max-width:100px; display:block; margin-bottom:8px;"';
+                                popupContent += '<img src="' + location.image + '" alt="' + location.title + '"' + imgClass + ' ' + imgStyle + '>';
+                            }
+                            popupContent += '<h3>' + location.title + '</h3>';
+                            popupContent += '<p>' + location.description + '</p>';
+                            if (location.url) {
+                                var linkText = (location.link_text && location.link_text.trim()) || projectsMapGlobal.strings.read_more;
+                                popupContent += '<a href="' + location.url + '"' + (newTab ? ' target="_blank"' : '') + '>' + linkText + '</a>';
+                            }
+                            popupContent += '</div>';
+                            marker.bindPopup(popupContent, {
+                                maxWidth: popupMaxWidth,
+                                autoPan: true,
+                                keepInView: true,
+                                autoPanPadding: isMobile ? [50, 25] : [100, 50],
+                                autoPanPaddingTopLeft: isMobile ? [10, 10] : [20, 20],
+                                autoPanPaddingBottomRight: isMobile ? [50, 25] : [100, 50]
+                            });
+                            markers.addLayer(marker);
+
+                            // When popup opens, ensure images have loaded before Leaflet calculates popup size.
+                            // If an image loads after opening, update the popup and adjust map so popup stays visible.
+                            marker.on('popupopen', function(e) {
+                                var popup = e.popup;
+                                var container = popup.getElement ? popup.getElement() : (popup._container || null);
+                                if (!container) return;
+                                var imgs = container.querySelectorAll('img');
+                                if (!imgs || imgs.length === 0) return;
+
+                                imgs.forEach(function(img) {
+                                    if (img.complete) {
+                                        try { popup.update(); } catch (err) {}
+                                    } else {
+                                        img.addEventListener('load', function() {
+                                            try { popup.update(); } catch (err) {}
+                                            // small timeout to let layout settle, then try to keep popup in view
+                                            setTimeout(function() {
+                                                try {
+                                                    // center map on popup latlng as fallback to ensure visibility
+                                                    if (popup.getLatLng) {
+                                                        map.panTo(popup.getLatLng(), { animate: false });
+                                                    }
+                                                } catch (e) {}
+                                            }, 50);
+                                        });
+                                    }
+                                });
+                            });
+
+                            if (debug) {
+                                console.log('Marker added for location:', location.title);
+                            }
+                        } catch (error) {
+                            console.error('Error creating marker for location:', location, error);
+                        }
+                    });
+
+                    map.addLayer(markers);
+
+                    if (debug) {
+                        console.log('Map initialization complete');
+                    }
+                } else {
+                    console.error('Failed to load locations:', response);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX error loading locations:', error);
+            }
+        });
+    }
             if (debug) {
                 console.log('Processing project ' + index + ':', project);
             }
