@@ -30,8 +30,8 @@ class Projects_Map_Admin {
 
     public function add_admin_menu() {
         add_menu_page(
-            __('Projects Map', 'projects-map'),
-            __('Projects Map', 'projects-map'),
+            __('Maps & Locations', 'projects-map'),
+            __('Maps & Locations', 'projects-map'),
             'edit_posts',
             'projects-map',
             array($this, 'maps_page'),
@@ -235,7 +235,8 @@ class Projects_Map_Admin {
                             <td><?php echo $location_count; ?></td>
                             <td>
                                 <a href="<?php echo admin_url('admin.php?page=projects-map-add-map&id=' . $map['id']); ?>"><?php _e('Edit', 'projects-map'); ?></a> |
-                                <a href="<?php echo admin_url('admin.php?page=projects-map-locations&map_id=' . $map['id']); ?>"><?php _e('View Locations', 'projects-map'); ?></a>
+                                <a href="<?php echo admin_url('admin.php?page=projects-map-locations&map_id=' . $map['id']); ?>"><?php _e('View Locations', 'projects-map'); ?></a> |
+                                <a href="<?php echo admin_url('admin.php?page=projects-map-add-location&map_id=' . $map['id']); ?>"><?php _e('Add Location', 'projects-map'); ?></a>
                                 <?php if ($map['id'] != 1): ?>
                                  |
                                 <form method="post" action="<?php echo admin_url('admin-post.php'); ?>" style="display:inline;">
@@ -465,7 +466,9 @@ class Projects_Map_Admin {
             }
             if (!isset($location['map_id'])) $location['map_id'] = 1;
         } else {
-            $location = array('id' => '', 'map_id' => 1, 'country' => '', 'lat' => '', 'lng' => '', 'title' => '', 'description' => '', 'image' => '', 'url' => '', 'link_text' => '', 'category_id' => 1);
+            // Pre-select map from URL parameter if provided
+            $default_map_id = isset($_GET['map_id']) ? intval($_GET['map_id']) : 1;
+            $location = array('id' => '', 'map_id' => $default_map_id, 'country' => '', 'lat' => '', 'lng' => '', 'title' => '', 'description' => '', 'image' => '', 'url' => '', 'link_text' => '', 'category_id' => 1);
         }
         
         $maps = Projects_Map_DB::get_all_maps();
