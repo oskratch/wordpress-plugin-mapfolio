@@ -14,12 +14,14 @@ class Projects_Map_Shortcode {
         $atts = shortcode_atts(array(
             'height' => get_option('projects_map_height', '500px'),
             'new_tab' => get_option('projects_map_new_tab', 0),
+            'show_legend' => get_option('projects_map_show_legend', 1),
             'debug' => 0
         ), $atts);
 
         $width = '100%';
         $height = esc_attr($atts['height']);
         $new_tab = intval($atts['new_tab']);
+        $show_legend = intval($atts['show_legend']);
         $debug = intval($atts['debug']);
 
         // Get categories with projects
@@ -28,7 +30,7 @@ class Projects_Map_Shortcode {
         ob_start();
         ?>
         <div id="projects-map" data-new-tab="<?php echo $new_tab; ?>" data-debug="<?php echo $debug; ?>" style="width: <?php echo $width; ?>; height: <?php echo $height; ?>;"></div>
-        <?php if (!empty($categories)): ?>
+        <?php if ($show_legend && !empty($categories)): ?>
             <div class="projects-map-legend" style="margin-top: 20px;">
                 <ul style="list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 15px;">
                     <?php foreach ($categories as $category): ?>
