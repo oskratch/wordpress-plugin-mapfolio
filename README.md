@@ -37,7 +37,7 @@ A professional WordPress plugin to create and display interactive maps with cust
 
 ### Creating Maps
 
-1. Go to "Projects Map" > "All Maps".
+1. Go to "Maps & Locations" > "All Maps".
 2. Click "Add New Map".
 3. Enter:
    - **Title**: Name of your map (e.g., "Our Stores", "Project Locations")
@@ -47,9 +47,11 @@ A professional WordPress plugin to create and display interactive maps with cust
 
 You can create multiple maps for different purposes (e.g., one map for stores, another for projects).
 
+**Quick Access**: From the "All Maps" list, you can quickly add locations to a specific map using the "Add Location" button next to each map.
+
 ### Managing Categories
 
-1. Go to "Projects Map" > "Categories".
+1. Go to "Maps & Locations" > "Categories".
 2. View existing categories or click "Add New Category".
 3. Set the category title, choose a color, and define the sort order.
 4. Save the category.
@@ -58,10 +60,10 @@ Categories are shared across all maps and used to organize locations and determi
 
 ### Adding Locations
 
-1. Go to "Projects Map" > "All Locations".
-2. Click "Add New Location".
+1. Go to "Maps & Locations" > "All Locations".
+2. Click "Add New Location" (or use the "Add Location" button next to a specific map in "All Maps").
 3. Fill in the fields:
-   - **Map**: Select which map this location belongs to
+   - **Map**: Select which map this location belongs to (pre-selected if you used the quick button)
    - **Category**: Select from existing categories (determines marker color)
    - **Country**: Location country
    - **Latitude & Longitude**: Exact coordinates for the map marker
@@ -74,7 +76,7 @@ Categories are shared across all maps and used to organize locations and determi
 
 ### Configuring Settings
 
-1. Go to "Projects Map" > "Settings".
+1. Go to "Maps & Locations" > "Settings".
 2. Configure the following global options:
    - **Map Height**: Default height for all maps (e.g., 500px, 100%)
    - **Open links in new tab**: Enable to open location links in a new browser tab
@@ -133,7 +135,7 @@ When debug mode is enabled (`debug="1"`), the plugin outputs detailed informatio
 
 - jQuery loading status
 - Map container existence
-- Project data and count
+- Location data and count
 - Marker creation process
 - JavaScript errors
 
