@@ -23,7 +23,7 @@
         var map = L.map(containerId, {
             maxZoom: projectsMapGlobal.max_zoom,
             minZoom: projectsMapGlobal.min_zoom
-        }).setView([20, 0], projectsMapGlobal.default_zoom);
+        });
 
         // Map tile layers based on selected style
         var mapStyle = projectsMapGlobal.map_style || 'openstreetmap';
@@ -159,6 +159,29 @@
                     });
 
                     map.addLayer(markers);
+
+                    // Auto-fit map to show all locations with appropriate padding
+                    if (locations.length > 0) {
+                        try {
+                            var bounds = markers.getBounds();
+                            if (bounds.isValid()) {
+                                map.fitBounds(bounds, {
+                                    padding: [50, 50], // Add 50px padding on all sides
+                                    maxZoom: projectsMapGlobal.default_zoom // Don't zoom in too much for single locations
+                                });
+                            } else {
+                                // Fallback if bounds are invalid
+                                map.setView([20, 0], projectsMapGlobal.default_zoom);
+                            }
+                        } catch (e) {
+                            console.error('Error fitting bounds:', e);
+                            // Fallback to default view
+                            map.setView([20, 0], projectsMapGlobal.default_zoom);
+                        }
+                    } else {
+                        // No locations, use default view
+                        map.setView([20, 0], projectsMapGlobal.default_zoom);
+                    }
 
                     if (debug) {
                         console.log('Map initialization complete');
