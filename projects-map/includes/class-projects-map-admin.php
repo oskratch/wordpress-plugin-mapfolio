@@ -120,6 +120,7 @@ class Projects_Map_Admin {
 
     public function register_settings() {
         register_setting('projects_map_settings', 'projects_map_height', array('sanitize_callback' => 'sanitize_text_field'));
+        register_setting('projects_map_settings', 'projects_map_height_mobile', array('sanitize_callback' => 'sanitize_text_field'));
         register_setting('projects_map_settings', 'projects_map_new_tab', array('sanitize_callback' => 'absint'));
         register_setting('projects_map_settings', 'projects_map_max_zoom', array('sanitize_callback' => 'absint'));
         register_setting('projects_map_settings', 'projects_map_min_zoom', array('sanitize_callback' => 'absint'));
@@ -130,6 +131,7 @@ class Projects_Map_Admin {
         add_settings_section('projects_map_general', __('General Settings', 'projects-map'), null, 'projects-map-settings');
 
         add_settings_field('projects_map_height', __('Map Height', 'projects-map'), array($this, 'height_field'), 'projects-map-settings', 'projects_map_general');
+        add_settings_field('projects_map_height_mobile', __('Map Height (Mobile)', 'projects-map'), array($this, 'height_mobile_field'), 'projects-map-settings', 'projects_map_general');
         add_settings_field('projects_map_new_tab', __('Open links in new tab', 'projects-map'), array($this, 'new_tab_field'), 'projects-map-settings', 'projects_map_general');
         add_settings_field('projects_map_style', __('Map Style', 'projects-map'), array($this, 'map_style_field'), 'projects-map-settings', 'projects_map_general');
         add_settings_field('projects_map_show_legend', __('Show legend below map', 'projects-map'), array($this, 'show_legend_field'), 'projects-map-settings', 'projects_map_general');
@@ -141,7 +143,13 @@ class Projects_Map_Admin {
     public function height_field() {
         $value = get_option('projects_map_height', '500px');
         echo '<input type="text" name="projects_map_height" value="' . esc_attr($value) . '" placeholder="500px">';
-        echo '<p class="description">' . __('You can use % or px, e.g., 100% or 500px', 'projects-map') . '</p>';
+        echo '<p class="description">' . __('Desktop height. You can use % or px, e.g., 100% or 500px', 'projects-map') . '</p>';
+    }
+
+    public function height_mobile_field() {
+        $value = get_option('projects_map_height_mobile', '350px');
+        echo '<input type="text" name="projects_map_height_mobile" value="' . esc_attr($value) . '" placeholder="350px">';
+        echo '<p class="description">' . __('Mobile height (applied below 768px). You can use % or px, e.g., 70vh or 350px', 'projects-map') . '</p>';
     }
 
     public function new_tab_field() {
@@ -796,10 +804,11 @@ class Projects_Map_Admin {
             <ul>
                 <li><code>map</code>: <?php _e('Map slug or ID to display (default: shows all locations from all maps)', 'projects-map'); ?></li>
                 <li><code>height</code>: <?php _e('Map height (default: 500px)', 'projects-map'); ?></li>
+                <li><code>mobile_height</code>: <?php _e('Map height on mobile devices below 768px (default: 350px)', 'projects-map'); ?></li>
                 <li><code>new_tab</code>: <?php _e('Open links in new tab (0 or 1, default: 0)', 'projects-map'); ?></li>
                 <li><code>debug</code>: <?php _e('Enable debug mode (0 or 1, default: 0)', 'projects-map'); ?></li>
             </ul>
-            <p><?php _e('Example: [projects_map map="main-map" height="600px" new_tab="1" debug="1"]', 'projects-map'); ?></p>
+            <p><?php _e('Example: [projects_map map="main-map" height="600px" mobile_height="360px" new_tab="1" debug="1"]', 'projects-map'); ?></p>
             <h2><?php _e('Debug Mode', 'projects-map'); ?></h2>
             <p><?php _e('When debug mode is enabled, detailed information is logged to the browser console to help troubleshoot issues:', 'projects-map'); ?></p>
             <ul>

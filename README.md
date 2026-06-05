@@ -78,7 +78,8 @@ Categories are shared across all maps and used to organize locations and determi
 
 1. Go to "Maps & Locations" > "Settings".
 2. Configure the following global options:
-   - **Map Height**: Default height for all maps (e.g., 500px, 100%)
+   - **Map Height**: Default desktop height for maps (e.g., 500px, 100%)
+   - **Map Height (Mobile)**: Default height for mobile devices below 768px (e.g., 350px, 70vh)
    - **Open links in new tab**: Enable to open location links in a new browser tab
    - **Map Style**: Choose between different map styles:
      - **OpenStreetMap** (default, detailed with terrain)
@@ -100,6 +101,7 @@ You can customize the map with attributes:
 
 - `map`: **Required** - Map ID or slug to display, e.g., `[projects_map map="1"]` or `[projects_map map="our-stores"]`
 - `height`: Map height, e.g., `[projects_map map="1" height="400px"]`
+- `mobile_height`: Map height for mobile devices (< 768px), e.g., `[projects_map map="1" mobile_height="320px"]`
 - `new_tab`: Open links in new tab (0 or 1), e.g., `[projects_map map="1" new_tab="1"]`
 - `show_legend`: Display legend below map (0 or 1), e.g., `[projects_map map="1" show_legend="0"]`
 - `debug`: Enable debug mode (0 or 1), e.g., `[projects_map map="1" debug="1"]`
@@ -110,6 +112,7 @@ You can customize the map with attributes:
 [projects_map map="1"]
 [projects_map map="our-stores"]
 [projects_map map="1" height="600px" new_tab="1"]
+[projects_map map="1" height="600px" mobile_height="340px" new_tab="1"]
 [projects_map map="project-locations" height="400px" show_legend="0"]
 [projects_map map="1" height="100%" new_tab="1" show_legend="1"]
 ```

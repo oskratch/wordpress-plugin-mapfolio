@@ -14,6 +14,7 @@ class Projects_Map_Shortcode {
         $atts = shortcode_atts(array(
             'map' => '', // Map ID or slug
             'height' => get_option('projects_map_height', '500px'),
+            'mobile_height' => get_option('projects_map_height_mobile', '350px'),
             'new_tab' => get_option('projects_map_new_tab', 0),
             'show_legend' => get_option('projects_map_show_legend', 1),
             'debug' => 0
@@ -41,6 +42,7 @@ class Projects_Map_Shortcode {
 
         $width = '100%';
         $height = esc_attr($atts['height']);
+        $mobile_height = esc_attr($atts['mobile_height']);
         $new_tab = intval($atts['new_tab']);
         $show_legend = intval($atts['show_legend']);
         $debug = intval($atts['debug']);
@@ -54,6 +56,13 @@ class Projects_Map_Shortcode {
         ob_start();
         ?>
         <div id="<?php echo $map_container_id; ?>" class="projects-map-container" data-map-id="<?php echo $map_id; ?>" data-new-tab="<?php echo $new_tab; ?>" data-debug="<?php echo $debug; ?>" style="width: <?php echo $width; ?>; height: <?php echo $height; ?>;"></div>
+        <style>
+            @media (max-width: 767px) {
+                #<?php echo esc_attr($map_container_id); ?> {
+                    height: <?php echo $mobile_height; ?> !important;
+                }
+            }
+        </style>
         <?php if ($show_legend && !empty($categories)): ?>
             <div class="projects-map-legend" style="margin-top: 20px;">
                 <ul style="list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 15px;">
