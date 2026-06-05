@@ -57,7 +57,7 @@ class Projects_Map_Shortcode {
         ?>
         <div id="<?php echo $map_container_id; ?>" class="projects-map-container" data-map-id="<?php echo $map_id; ?>" data-new-tab="<?php echo $new_tab; ?>" data-debug="<?php echo $debug; ?>" style="width: <?php echo $width; ?>; height: <?php echo $height; ?>;"></div>
         <style>
-            @media (max-width: 767px) {
+            @media (max-width: 957px) {
                 #<?php echo esc_attr($map_container_id); ?> {
                     height: <?php echo $mobile_height; ?> !important;
                 }

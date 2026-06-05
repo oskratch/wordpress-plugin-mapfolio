@@ -26,6 +26,10 @@
     background: transparent;
 }
 
+.marker-cluster-small div {
+    background-color: #29B246 !important;
+}
+
 .project-popup {
     /* max-width set dynamically in JS */
     padding: 10px;
