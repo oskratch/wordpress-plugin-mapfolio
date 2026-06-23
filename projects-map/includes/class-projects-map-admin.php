@@ -129,17 +129,19 @@ class Projects_Map_Admin {
         register_setting('projects_map_settings', 'projects_map_show_legend', array('sanitize_callback' => 'absint'));
         register_setting('projects_map_settings', 'projects_map_legend_bg', array('sanitize_callback' => 'sanitize_text_field'));
 
-        add_settings_section('projects_map_general', __('General Settings', 'projects-map'), null, 'projects-map-settings');
+        add_settings_section('projects_map_display', __('Map Display', 'projects-map'), null, 'projects-map-settings');
+        add_settings_section('projects_map_legend_section', __('Legend', 'projects-map'), null, 'projects-map-settings');
+        add_settings_section('projects_map_zoom_section', __('Zoom Levels', 'projects-map'), null, 'projects-map-settings');
 
-        add_settings_field('projects_map_height', __('Map Height', 'projects-map'), array($this, 'height_field'), 'projects-map-settings', 'projects_map_general');
-        add_settings_field('projects_map_height_mobile', __('Map Height (Mobile/Tablet)', 'projects-map'), array($this, 'height_mobile_field'), 'projects-map-settings', 'projects_map_general');
-        add_settings_field('projects_map_new_tab', __('Open links in new tab', 'projects-map'), array($this, 'new_tab_field'), 'projects-map-settings', 'projects_map_general');
-        add_settings_field('projects_map_style', __('Map Style', 'projects-map'), array($this, 'map_style_field'), 'projects-map-settings', 'projects_map_general');
-        add_settings_field('projects_map_show_legend', __('Show legend below map', 'projects-map'), array($this, 'show_legend_field'), 'projects-map-settings', 'projects_map_general');
-        add_settings_field('projects_map_legend_bg', __('Legend background color', 'projects-map'), array($this, 'legend_bg_field'), 'projects-map-settings', 'projects_map_general');
-        add_settings_field('projects_map_max_zoom', __('Maximum Zoom Level', 'projects-map'), array($this, 'max_zoom_field'), 'projects-map-settings', 'projects_map_general');
-        add_settings_field('projects_map_min_zoom', __('Minimum Zoom Level', 'projects-map'), array($this, 'min_zoom_field'), 'projects-map-settings', 'projects_map_general');
-        add_settings_field('projects_map_default_zoom', __('Default Zoom Level', 'projects-map'), array($this, 'default_zoom_field'), 'projects-map-settings', 'projects_map_general');
+        add_settings_field('projects_map_height', __('Map Height', 'projects-map'), array($this, 'height_field'), 'projects-map-settings', 'projects_map_display');
+        add_settings_field('projects_map_height_mobile', __('Map Height (Mobile/Tablet)', 'projects-map'), array($this, 'height_mobile_field'), 'projects-map-settings', 'projects_map_display');
+        add_settings_field('projects_map_new_tab', __('Open links in new tab', 'projects-map'), array($this, 'new_tab_field'), 'projects-map-settings', 'projects_map_display');
+        add_settings_field('projects_map_style', __('Map Style', 'projects-map'), array($this, 'map_style_field'), 'projects-map-settings', 'projects_map_display');
+        add_settings_field('projects_map_show_legend', __('Show legend below map', 'projects-map'), array($this, 'show_legend_field'), 'projects-map-settings', 'projects_map_legend_section');
+        add_settings_field('projects_map_legend_bg', __('Legend background color', 'projects-map'), array($this, 'legend_bg_field'), 'projects-map-settings', 'projects_map_legend_section');
+        add_settings_field('projects_map_max_zoom', __('Maximum Zoom Level', 'projects-map'), array($this, 'max_zoom_field'), 'projects-map-settings', 'projects_map_zoom_section');
+        add_settings_field('projects_map_min_zoom', __('Minimum Zoom Level', 'projects-map'), array($this, 'min_zoom_field'), 'projects-map-settings', 'projects_map_zoom_section');
+        add_settings_field('projects_map_default_zoom', __('Default Zoom Level', 'projects-map'), array($this, 'default_zoom_field'), 'projects-map-settings', 'projects_map_zoom_section');
     }
 
     public function height_field() {
@@ -183,8 +185,12 @@ class Projects_Map_Admin {
 
     public function legend_bg_field() {
         $value = get_option('projects_map_legend_bg', '');
-        echo '<input type="text" name="projects_map_legend_bg" value="' . esc_attr($value) . '" placeholder="#ffffff">';
-        echo '<p class="description">' . __('Background color for the legend block. Leave empty for transparent. Accepts any CSS color value (e.g., #ffffff, rgba(255,255,255,0.9)). Can be overridden per shortcode with legend_bg="..."', 'projects-map') . '</p>';
+        $is_hex = preg_match('/^#[0-9A-Fa-f]{6}$/', $value);
+        $picker_value = $is_hex ? $value : '#ffffff';
+        echo '<input type="color" id="projects_map_legend_bg_picker" value="' . esc_attr($picker_value) . '" style="vertical-align: middle; margin-right: 6px;">';
+        echo '<input type="text" name="projects_map_legend_bg" id="projects_map_legend_bg" value="' . esc_attr($value) . '" placeholder="' . esc_attr__('transparent', 'projects-map') . '" style="width: 140px; vertical-align: middle;">';
+        echo '<p class="description">' . __('Leave empty for transparent. The color picker sets hex values; for rgba or named colors, type directly in the text field. Can be overridden per shortcode with legend_bg="..."', 'projects-map') . '</p>';
+        echo '<script>document.getElementById("projects_map_legend_bg_picker").addEventListener("input", function() { document.getElementById("projects_map_legend_bg").value = this.value; });</script>';
     }
 
     public function max_zoom_field() {
@@ -208,7 +214,7 @@ class Projects_Map_Admin {
     public function settings_page() {
         ?>
         <div class="wrap">
-            <h1><?php _e('Projects Map Settings', 'projects-map'); ?></h1>
+            <h1><?php _e('Maps & Locations Settings', 'projects-map'); ?></h1>
             <form method="post" action="options.php">
                 <?php
                 settings_fields('projects_map_settings');
@@ -224,6 +230,7 @@ class Projects_Map_Admin {
 
     public function maps_page() {
         $maps = Projects_Map_DB::get_all_maps();
+        $location_counts = Projects_Map_DB::get_location_counts_by_map();
         ?>
         <div class="wrap">
             <h1 class="wp-heading-inline"><?php _e('All Maps', 'projects-map'); ?></h1>
@@ -240,9 +247,8 @@ class Projects_Map_Admin {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($maps as $map): 
-                        $locations = Projects_Map_DB::get_all_locations($map['id']);
-                        $location_count = count($locations);
+                    <?php foreach ($maps as $map):
+                        $location_count = isset($location_counts[$map['id']]) ? $location_counts[$map['id']] : 0;
                     ?>
                         <tr>
                             <td><strong><?php echo esc_html($map['title']); ?></strong></td>
@@ -748,8 +754,7 @@ class Projects_Map_Admin {
                     <tr>
                         <th><label for="color"><?php _e('Color', 'projects-map'); ?></label></th>
                         <td>
-                            <input type="text" name="color" id="color" value="<?php echo esc_attr($category['color']); ?>" required class="projects-map-input" pattern="^#[0-9A-Fa-f]{6}$" placeholder="#0080c0">
-                            <small><?php _e('Enter a hexadecimal color code (e.g., #0080c0)', 'projects-map'); ?></small>
+                            <input type="color" name="color" id="color" value="<?php echo esc_attr($category['color']); ?>" required>
                         </td>
                     </tr>
                     <tr>
@@ -805,18 +810,20 @@ class Projects_Map_Admin {
     public function info_page() {
         ?>
         <div class="wrap">
-            <h1><?php _e('Projects Map Info', 'projects-map'); ?></h1>
-            <p><?php _e('To display the projects map on your site, use the following shortcode:', 'projects-map'); ?></p>
-            <code>[projects_map]</code>
+            <h1><?php _e('Maps & Locations Info', 'projects-map'); ?></h1>
+            <p><?php _e('To display a map on your site, use the following shortcode:', 'projects-map'); ?></p>
+            <code>[projects_map map="your-map-slug"]</code>
             <h2><?php _e('Shortcode Attributes', 'projects-map'); ?></h2>
             <ul>
-                <li><code>map</code>: <?php _e('Map slug or ID to display (default: shows all locations from all maps)', 'projects-map'); ?></li>
-                <li><code>height</code>: <?php _e('Map height (default: 500px)', 'projects-map'); ?></li>
-                <li><code>mobile_height</code>: <?php _e('Map height on mobile devices below 957px (default: 350px)', 'projects-map'); ?></li>
-                <li><code>new_tab</code>: <?php _e('Open links in new tab (0 or 1, default: 0)', 'projects-map'); ?></li>
-                <li><code>debug</code>: <?php _e('Enable debug mode (0 or 1, default: 0)', 'projects-map'); ?></li>
+                <li><code>map</code>: <?php _e('Map slug or ID to display (required)', 'projects-map'); ?></li>
+                <li><code>height</code>: <?php _e('Map height, e.g. 500px or 100% (default: global setting)', 'projects-map'); ?></li>
+                <li><code>mobile_height</code>: <?php _e('Map height on screens below 957px, e.g. 350px or 70vh (default: global setting)', 'projects-map'); ?></li>
+                <li><code>new_tab</code>: <?php _e('Open links in new tab (0 or 1, default: global setting)', 'projects-map'); ?></li>
+                <li><code>show_legend</code>: <?php _e('Show category legend below map (0 or 1, default: global setting)', 'projects-map'); ?></li>
+                <li><code>legend_bg</code>: <?php _e('Background color for the legend block, e.g. #ffffff or rgba(255,255,255,0.9) (default: transparent)', 'projects-map'); ?></li>
+                <li><code>debug</code>: <?php _e('Enable debug mode, logs details to browser console (0 or 1, default: 0)', 'projects-map'); ?></li>
             </ul>
-            <p><?php _e('Example: [projects_map map="main-map" height="600px" mobile_height="360px" new_tab="1" debug="1"]', 'projects-map'); ?></p>
+            <p><?php _e('Example: [projects_map map="main-map" height="600px" mobile_height="360px" new_tab="1" show_legend="1" legend_bg="#f5f5f5"]', 'projects-map'); ?></p>
             <h2><?php _e('Debug Mode', 'projects-map'); ?></h2>
             <p><?php _e('When debug mode is enabled, detailed information is logged to the browser console to help troubleshoot issues:', 'projects-map'); ?></p>
             <ul>

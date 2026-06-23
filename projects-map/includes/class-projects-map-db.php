@@ -90,6 +90,17 @@ class Projects_Map_DB {
     }
 
     // Maps methods
+    public static function get_location_counts_by_map() {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'projects_map_locations';
+        $results = $wpdb->get_results("SELECT map_id, COUNT(*) as count FROM $table_name GROUP BY map_id", ARRAY_A);
+        $counts = array();
+        foreach ($results as $row) {
+            $counts[$row['map_id']] = intval($row['count']);
+        }
+        return $counts;
+    }
+
     public static function get_all_maps() {
         global $wpdb;
         $table_name = $wpdb->prefix . 'projects_map_maps';
