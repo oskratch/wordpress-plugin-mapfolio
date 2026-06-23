@@ -322,6 +322,90 @@ class Projects_Map_Admin {
                         <td><textarea name="description" id="description" rows="5" class="projects-map-input"><?php echo esc_textarea($map['description']); ?></textarea></td>
                     </tr>
                 </table>
+
+                <?php
+                $ms_data = array();
+                if (!empty($map['settings'])) {
+                    $decoded = json_decode($map['settings'], true);
+                    if (is_array($decoded)) $ms_data = $decoded;
+                }
+                $ms_get = function($key) use ($ms_data) {
+                    return isset($ms_data[$key]) ? strval($ms_data[$key]) : '';
+                };
+                $map_styles = array(
+                    'openstreetmap'    => __('OpenStreetMap (default, detailed)', 'projects-map'),
+                    'cartodb-positron' => __('CartoDB Positron (clean, minimal)', 'projects-map'),
+                    'cartodb-voyager'  => __('CartoDB Voyager (clean with colors)', 'projects-map'),
+                    'esri-gray'        => __('ESRI Gray Canvas (neutral gray)', 'projects-map'),
+                );
+                ?>
+                <h2 style="margin-top: 2em;"><?php _e('Per-Map Settings', 'projects-map'); ?></h2>
+                <p class="description"><?php _e('These settings override the global defaults for this map only. Leave any field as "Global default" to inherit the value set in Settings.', 'projects-map'); ?></p>
+                <table class="form-table">
+                    <tr>
+                        <th><label for="ms_new_tab"><?php _e('Open links in new tab', 'projects-map'); ?></label></th>
+                        <td>
+                            <select name="ms_new_tab" id="ms_new_tab">
+                                <option value=""><?php printf(__('— Global default (%s) —', 'projects-map'), get_option('projects_map_new_tab', 0) ? __('Yes') : __('No')); ?></option>
+                                <option value="1" <?php selected($ms_get('new_tab'), '1'); ?>><?php _e('Yes', 'projects-map'); ?></option>
+                                <option value="0" <?php selected($ms_get('new_tab'), '0'); ?>><?php _e('No', 'projects-map'); ?></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="ms_show_legend"><?php _e('Show legend', 'projects-map'); ?></label></th>
+                        <td>
+                            <select name="ms_show_legend" id="ms_show_legend">
+                                <option value=""><?php printf(__('— Global default (%s) —', 'projects-map'), get_option('projects_map_show_legend', 1) ? __('Yes') : __('No')); ?></option>
+                                <option value="1" <?php selected($ms_get('show_legend'), '1'); ?>><?php _e('Yes', 'projects-map'); ?></option>
+                                <option value="0" <?php selected($ms_get('show_legend'), '0'); ?>><?php _e('No', 'projects-map'); ?></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="ms_legend_bg"><?php _e('Legend background color', 'projects-map'); ?></label></th>
+                        <td>
+                            <?php
+                            $ms_legend_bg = $ms_get('legend_bg');
+                            $picker_val   = preg_match('/^#[0-9A-Fa-f]{6}$/', $ms_legend_bg) ? $ms_legend_bg : '#ffffff';
+                            ?>
+                            <input type="color" id="ms_legend_bg_picker" value="<?php echo esc_attr($picker_val); ?>" style="vertical-align: middle; margin-right: 6px;">
+                            <input type="text" name="ms_legend_bg" id="ms_legend_bg" value="<?php echo esc_attr($ms_legend_bg); ?>" placeholder="<?php esc_attr_e('Global default (transparent)', 'projects-map'); ?>" style="width: 200px; vertical-align: middle;">
+                            <script>document.getElementById('ms_legend_bg_picker').addEventListener('input', function() { document.getElementById('ms_legend_bg').value = this.value; });</script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="ms_map_style"><?php _e('Map style', 'projects-map'); ?></label></th>
+                        <td>
+                            <select name="ms_map_style" id="ms_map_style" class="projects-map-input">
+                                <?php
+                                $global_style       = get_option('projects_map_style', 'openstreetmap');
+                                $global_style_label = isset($map_styles[$global_style]) ? $map_styles[$global_style] : $global_style;
+                                ?>
+                                <option value=""><?php printf(__('— Global default (%s) —', 'projects-map'), esc_html($global_style_label)); ?></option>
+                                <?php foreach ($map_styles as $key => $label): ?>
+                                    <option value="<?php echo esc_attr($key); ?>" <?php selected($ms_get('map_style'), $key); ?>><?php echo esc_html($label); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><?php _e('Zoom levels', 'projects-map'); ?></th>
+                        <td>
+                            <label><?php _e('Min', 'projects-map'); ?>
+                                <input type="number" name="ms_min_zoom" value="<?php echo esc_attr($ms_get('min_zoom')); ?>" min="1" max="18" placeholder="<?php echo intval(get_option('projects_map_min_zoom', 1)); ?>" style="width: 65px; margin: 0 16px 0 4px;">
+                            </label>
+                            <label><?php _e('Max', 'projects-map'); ?>
+                                <input type="number" name="ms_max_zoom" value="<?php echo esc_attr($ms_get('max_zoom')); ?>" min="1" max="18" placeholder="<?php echo intval(get_option('projects_map_max_zoom', 10)); ?>" style="width: 65px; margin: 0 16px 0 4px;">
+                            </label>
+                            <label><?php _e('Default', 'projects-map'); ?>
+                                <input type="number" name="ms_default_zoom" value="<?php echo esc_attr($ms_get('default_zoom')); ?>" min="1" max="18" placeholder="<?php echo intval(get_option('projects_map_default_zoom', 2)); ?>" style="width: 65px; margin: 0 0 0 4px;">
+                            </label>
+                            <p class="description"><?php _e('Leave empty to use the global default (shown as placeholder).', 'projects-map'); ?></p>
+                        </td>
+                    </tr>
+                </table>
+
                 <?php submit_button(); ?>
             </form>
         </div>
@@ -355,22 +439,49 @@ class Projects_Map_Admin {
         <?php
     }
 
+    private function collect_map_settings() {
+        $settings = array();
+        if (isset($_POST['ms_new_tab']) && $_POST['ms_new_tab'] !== '') {
+            $settings['new_tab'] = intval($_POST['ms_new_tab']);
+        }
+        if (isset($_POST['ms_show_legend']) && $_POST['ms_show_legend'] !== '') {
+            $settings['show_legend'] = intval($_POST['ms_show_legend']);
+        }
+        if (isset($_POST['ms_legend_bg']) && $_POST['ms_legend_bg'] !== '') {
+            $settings['legend_bg'] = sanitize_text_field(wp_unslash($_POST['ms_legend_bg']));
+        }
+        if (isset($_POST['ms_map_style']) && $_POST['ms_map_style'] !== '') {
+            $settings['map_style'] = sanitize_text_field(wp_unslash($_POST['ms_map_style']));
+        }
+        if (isset($_POST['ms_min_zoom']) && $_POST['ms_min_zoom'] !== '') {
+            $settings['min_zoom'] = intval($_POST['ms_min_zoom']);
+        }
+        if (isset($_POST['ms_max_zoom']) && $_POST['ms_max_zoom'] !== '') {
+            $settings['max_zoom'] = intval($_POST['ms_max_zoom']);
+        }
+        if (isset($_POST['ms_default_zoom']) && $_POST['ms_default_zoom'] !== '') {
+            $settings['default_zoom'] = intval($_POST['ms_default_zoom']);
+        }
+        return json_encode($settings);
+    }
+
     public function handle_add_map() {
         if (!wp_verify_nonce($_POST['_wpnonce'], 'add_map') || !current_user_can('edit_posts')) {
             wp_die(__('Security check failed', 'projects-map'));
         }
-        
+
         $title = sanitize_text_field(wp_unslash($_POST['title']));
-        $slug = isset($_POST['slug']) && $_POST['slug'] !== '' 
-            ? sanitize_title(wp_unslash($_POST['slug'])) 
+        $slug = isset($_POST['slug']) && $_POST['slug'] !== ''
+            ? sanitize_title(wp_unslash($_POST['slug']))
             : sanitize_title($title);
-        
+
         $data = array(
-            'title' => $title,
-            'slug' => $slug,
-            'description' => sanitize_textarea_field(wp_unslash($_POST['description']))
+            'title'       => $title,
+            'slug'        => $slug,
+            'description' => sanitize_textarea_field(wp_unslash($_POST['description'])),
+            'settings'    => $this->collect_map_settings(),
         );
-        
+
         Projects_Map_DB::insert_map($data);
         wp_redirect(admin_url('admin.php?page=projects-map'));
         exit;
@@ -380,18 +491,19 @@ class Projects_Map_Admin {
         if (!wp_verify_nonce($_POST['_wpnonce'], 'edit_map_' . $_POST['id']) || !current_user_can('edit_posts')) {
             wp_die(__('Security check failed', 'projects-map'));
         }
-        
+
         $title = sanitize_text_field(wp_unslash($_POST['title']));
-        $slug = isset($_POST['slug']) && $_POST['slug'] !== '' 
-            ? sanitize_title(wp_unslash($_POST['slug'])) 
+        $slug = isset($_POST['slug']) && $_POST['slug'] !== ''
+            ? sanitize_title(wp_unslash($_POST['slug']))
             : sanitize_title($title);
-        
+
         $data = array(
-            'title' => $title,
-            'slug' => $slug,
-            'description' => sanitize_textarea_field(wp_unslash($_POST['description']))
+            'title'       => $title,
+            'slug'        => $slug,
+            'description' => sanitize_textarea_field(wp_unslash($_POST['description'])),
+            'settings'    => $this->collect_map_settings(),
         );
-        
+
         Projects_Map_DB::update_map($_POST['id'], $data);
         wp_redirect(admin_url('admin.php?page=projects-map'));
         exit;
@@ -811,19 +923,33 @@ class Projects_Map_Admin {
         ?>
         <div class="wrap">
             <h1><?php _e('Maps & Locations Info', 'projects-map'); ?></h1>
-            <p><?php _e('To display a map on your site, use the following shortcode:', 'projects-map'); ?></p>
+
+            <h2><?php _e('Settings Hierarchy', 'projects-map'); ?></h2>
+            <p><?php _e('Settings are resolved in this order (first match wins):', 'projects-map'); ?></p>
+            <ol>
+                <li><strong><?php _e('Shortcode attribute', 'projects-map'); ?></strong> — <?php _e('overrides everything for that specific instance', 'projects-map'); ?></li>
+                <li><strong><?php _e('Per-map setting', 'projects-map'); ?></strong> — <?php _e('set in the map\'s edit form, applies to all instances of that map', 'projects-map'); ?></li>
+                <li><strong><?php _e('Global setting', 'projects-map'); ?></strong> — <?php _e('the default configured in Settings, applies to all maps unless overridden', 'projects-map'); ?></li>
+            </ol>
+            <p><?php _e('Height and mobile height are shortcode + global only (they depend on page layout, not the map itself).', 'projects-map'); ?></p>
+
+            <h2><?php _e('Shortcode', 'projects-map'); ?></h2>
+            <p><?php _e('Insert a map into any page or post:', 'projects-map'); ?></p>
             <code>[projects_map map="your-map-slug"]</code>
+
             <h2><?php _e('Shortcode Attributes', 'projects-map'); ?></h2>
             <ul>
-                <li><code>map</code>: <?php _e('Map slug or ID to display (required)', 'projects-map'); ?></li>
-                <li><code>height</code>: <?php _e('Map height, e.g. 500px or 100% (default: global setting)', 'projects-map'); ?></li>
-                <li><code>mobile_height</code>: <?php _e('Map height on screens below 957px, e.g. 350px or 70vh (default: global setting)', 'projects-map'); ?></li>
-                <li><code>new_tab</code>: <?php _e('Open links in new tab (0 or 1, default: global setting)', 'projects-map'); ?></li>
-                <li><code>show_legend</code>: <?php _e('Show category legend below map (0 or 1, default: global setting)', 'projects-map'); ?></li>
-                <li><code>legend_bg</code>: <?php _e('Background color for the legend block, e.g. #ffffff or rgba(255,255,255,0.9) (default: transparent)', 'projects-map'); ?></li>
-                <li><code>debug</code>: <?php _e('Enable debug mode, logs details to browser console (0 or 1, default: 0)', 'projects-map'); ?></li>
+                <li><code>map</code>: <?php _e('Map slug or ID to display', 'projects-map'); ?></li>
+                <li><code>height</code>: <?php _e('Map height, e.g. 500px or 100%', 'projects-map'); ?></li>
+                <li><code>mobile_height</code>: <?php _e('Map height on screens below 957px, e.g. 350px or 70vh', 'projects-map'); ?></li>
+                <li><code>new_tab</code>: <?php _e('Open links in new tab (0 or 1)', 'projects-map'); ?></li>
+                <li><code>show_legend</code>: <?php _e('Show category legend (0 or 1)', 'projects-map'); ?></li>
+                <li><code>legend_bg</code>: <?php _e('Legend background color, e.g. #ffffff or rgba(255,255,255,0.9)', 'projects-map'); ?></li>
+                <li><code>map_style</code>: <?php _e('Map tile style: openstreetmap, cartodb-positron, cartodb-voyager, esri-gray', 'projects-map'); ?></li>
+                <li><code>min_zoom</code>, <code>max_zoom</code>, <code>default_zoom</code>: <?php _e('Zoom level limits and initial zoom (1–18)', 'projects-map'); ?></li>
+                <li><code>debug</code>: <?php _e('Log debug info to browser console (0 or 1)', 'projects-map'); ?></li>
             </ul>
-            <p><?php _e('Example: [projects_map map="main-map" height="600px" mobile_height="360px" new_tab="1" show_legend="1" legend_bg="#f5f5f5"]', 'projects-map'); ?></p>
+            <p><?php _e('Example:', 'projects-map'); ?> <code>[projects_map map="main-map" height="600px" mobile_height="360px" new_tab="1" show_legend="1" legend_bg="#f5f5f5" map_style="cartodb-positron" min_zoom="2" max_zoom="12" default_zoom="4"]</code></p>
             <h2><?php _e('Debug Mode', 'projects-map'); ?></h2>
             <p><?php _e('When debug mode is enabled, detailed information is logged to the browser console to help troubleshoot issues:', 'projects-map'); ?></p>
             <ul>

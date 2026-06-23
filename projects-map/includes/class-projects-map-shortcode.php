@@ -11,53 +11,84 @@ class Projects_Map_Shortcode {
     }
 
     public function render_map($atts) {
+        // null = not explicitly passed; allows 3-level resolution: shortcode → map → global
         $atts = shortcode_atts(array(
-            'map' => '', // Map ID or slug
-            'height' => get_option('projects_map_height', '500px'),
-            'mobile_height' => get_option('projects_map_height_mobile', '350px'),
-            'new_tab' => get_option('projects_map_new_tab', 0),
-            'show_legend' => get_option('projects_map_show_legend', 1),
-            'legend_bg' => get_option('projects_map_legend_bg', ''),
-            'debug' => 0
+            'map'          => '',
+            'height'       => null,
+            'mobile_height'=> null,
+            'new_tab'      => null,
+            'show_legend'  => null,
+            'legend_bg'    => null,
+            'map_style'    => null,
+            'min_zoom'     => null,
+            'max_zoom'     => null,
+            'default_zoom' => null,
+            'debug'        => 0,
         ), $atts);
 
-        // Get map ID
+        // Resolve map record
         $map_id = null;
+        $map    = null;
         if (!empty($atts['map'])) {
             $map = Projects_Map_DB::get_map($atts['map']);
-            if ($map) {
-                $map_id = $map['id'];
-            }
+            if ($map) $map_id = $map['id'];
         } else {
-            // Get first map if no map specified
             $maps = Projects_Map_DB::get_all_maps();
             if (!empty($maps)) {
                 $map_id = $maps[0]['id'];
+                $map    = $maps[0];
             }
         }
 
-        // If no map found, return empty
         if (!$map_id) {
             return '<p>' . __('No map found. Please create a map first.', 'projects-map') . '</p>';
         }
 
-        $width = '100%';
-        $height = esc_attr($atts['height']);
-        $mobile_height = esc_attr($atts['mobile_height']);
-        $new_tab = intval($atts['new_tab']);
-        $show_legend = intval($atts['show_legend']);
-        $legend_bg = sanitize_text_field($atts['legend_bg']);
-        $debug = intval($atts['debug']);
+        // Map-level settings (JSON stored in maps.settings column)
+        $ms = array();
+        if (!empty($map['settings'])) {
+            $decoded = json_decode($map['settings'], true);
+            if (is_array($decoded)) $ms = $decoded;
+        }
 
-        // Get categories with locations for this map
-        $categories = Projects_Map_DB::get_categories_with_projects($map_id);
+        // Resolve: shortcode attr → map setting → global default
+        $height        = $atts['height']        ?? $ms['height']        ?? get_option('projects_map_height', '500px');
+        $mobile_height = $atts['mobile_height'] ?? $ms['mobile_height'] ?? get_option('projects_map_height_mobile', '350px');
+        $new_tab       = $atts['new_tab']       ?? $ms['new_tab']       ?? get_option('projects_map_new_tab', 0);
+        $show_legend   = $atts['show_legend']   ?? $ms['show_legend']   ?? get_option('projects_map_show_legend', 1);
+        $legend_bg     = $atts['legend_bg']     ?? $ms['legend_bg']     ?? get_option('projects_map_legend_bg', '');
+        $map_style     = $atts['map_style']     ?? $ms['map_style']     ?? get_option('projects_map_style', 'openstreetmap');
+        $min_zoom      = $atts['min_zoom']      ?? $ms['min_zoom']      ?? get_option('projects_map_min_zoom', 1);
+        $max_zoom      = $atts['max_zoom']      ?? $ms['max_zoom']      ?? get_option('projects_map_max_zoom', 10);
+        $default_zoom  = $atts['default_zoom']  ?? $ms['default_zoom']  ?? get_option('projects_map_default_zoom', 2);
+        $debug         = intval($atts['debug']);
 
-        // Generate unique map ID for this instance
+        // Sanitize
+        $height        = esc_attr($height);
+        $mobile_height = esc_attr($mobile_height);
+        $new_tab       = intval($new_tab);
+        $show_legend   = intval($show_legend);
+        $legend_bg     = sanitize_text_field($legend_bg);
+        $map_style     = sanitize_text_field($map_style);
+        $min_zoom      = intval($min_zoom);
+        $max_zoom      = intval($max_zoom);
+        $default_zoom  = max($min_zoom, min($max_zoom, intval($default_zoom)));
+
+        $categories       = Projects_Map_DB::get_categories_with_projects($map_id);
         $map_container_id = 'projects-map-' . $map_id . '-' . uniqid();
 
         ob_start();
         ?>
-        <div id="<?php echo $map_container_id; ?>" class="projects-map-container" data-map-id="<?php echo $map_id; ?>" data-new-tab="<?php echo $new_tab; ?>" data-debug="<?php echo $debug; ?>" style="width: <?php echo $width; ?>; height: <?php echo $height; ?>;"></div>
+        <div id="<?php echo $map_container_id; ?>"
+             class="projects-map-container"
+             data-map-id="<?php echo $map_id; ?>"
+             data-new-tab="<?php echo $new_tab; ?>"
+             data-debug="<?php echo $debug; ?>"
+             data-map-style="<?php echo esc_attr($map_style); ?>"
+             data-min-zoom="<?php echo $min_zoom; ?>"
+             data-max-zoom="<?php echo $max_zoom; ?>"
+             data-default-zoom="<?php echo $default_zoom; ?>"
+             style="width: 100%; height: <?php echo $height; ?>;"></div>
         <style>
             @media (max-width: 957px) {
                 #<?php echo esc_attr($map_container_id); ?> {

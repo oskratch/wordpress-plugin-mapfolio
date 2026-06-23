@@ -20,13 +20,18 @@
             console.log('Container ID:', containerId);
         }
         
+        // Per-map settings (set by shortcode via data attributes, fall back to global)
+        var maxZoom     = parseInt($container.data('max-zoom'))     || projectsMapGlobal.max_zoom;
+        var minZoom     = parseInt($container.data('min-zoom'))     || projectsMapGlobal.min_zoom;
+        var defaultZoom = parseInt($container.data('default-zoom')) || projectsMapGlobal.default_zoom;
+        var mapStyle    = $container.data('map-style')              || projectsMapGlobal.map_style || 'openstreetmap';
+
         var map = L.map(containerId, {
-            maxZoom: projectsMapGlobal.max_zoom,
-            minZoom: projectsMapGlobal.min_zoom
+            maxZoom: maxZoom,
+            minZoom: minZoom
         });
 
         // Map tile layers based on selected style
-        var mapStyle = projectsMapGlobal.map_style || 'openstreetmap';
         var tileLayer, attribution;
         
         switch(mapStyle) {
@@ -167,20 +172,20 @@
                             if (bounds.isValid()) {
                                 map.fitBounds(bounds, {
                                     padding: [50, 50], // Add 50px padding on all sides
-                                    maxZoom: projectsMapGlobal.default_zoom // Don't zoom in too much for single locations
+                                    maxZoom: defaultZoom // Don't zoom in too much for single locations
                                 });
                             } else {
                                 // Fallback if bounds are invalid
-                                map.setView([20, 0], projectsMapGlobal.default_zoom);
+                                map.setView([20, 0], defaultZoom);
                             }
                         } catch (e) {
                             console.error('Error fitting bounds:', e);
                             // Fallback to default view
-                            map.setView([20, 0], projectsMapGlobal.default_zoom);
+                            map.setView([20, 0], defaultZoom);
                         }
                     } else {
                         // No locations, use default view
-                        map.setView([20, 0], projectsMapGlobal.default_zoom);
+                        map.setView([20, 0], defaultZoom);
                     }
 
                     if (debug) {
