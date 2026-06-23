@@ -127,6 +127,7 @@ class Projects_Map_Admin {
         register_setting('projects_map_settings', 'projects_map_default_zoom', array('sanitize_callback' => 'absint'));
         register_setting('projects_map_settings', 'projects_map_style', array('sanitize_callback' => 'sanitize_text_field'));
         register_setting('projects_map_settings', 'projects_map_show_legend', array('sanitize_callback' => 'absint'));
+        register_setting('projects_map_settings', 'projects_map_legend_bg', array('sanitize_callback' => 'sanitize_text_field'));
 
         add_settings_section('projects_map_general', __('General Settings', 'projects-map'), null, 'projects-map-settings');
 
@@ -135,6 +136,7 @@ class Projects_Map_Admin {
         add_settings_field('projects_map_new_tab', __('Open links in new tab', 'projects-map'), array($this, 'new_tab_field'), 'projects-map-settings', 'projects_map_general');
         add_settings_field('projects_map_style', __('Map Style', 'projects-map'), array($this, 'map_style_field'), 'projects-map-settings', 'projects_map_general');
         add_settings_field('projects_map_show_legend', __('Show legend below map', 'projects-map'), array($this, 'show_legend_field'), 'projects-map-settings', 'projects_map_general');
+        add_settings_field('projects_map_legend_bg', __('Legend background color', 'projects-map'), array($this, 'legend_bg_field'), 'projects-map-settings', 'projects_map_general');
         add_settings_field('projects_map_max_zoom', __('Maximum Zoom Level', 'projects-map'), array($this, 'max_zoom_field'), 'projects-map-settings', 'projects_map_general');
         add_settings_field('projects_map_min_zoom', __('Minimum Zoom Level', 'projects-map'), array($this, 'min_zoom_field'), 'projects-map-settings', 'projects_map_general');
         add_settings_field('projects_map_default_zoom', __('Default Zoom Level', 'projects-map'), array($this, 'default_zoom_field'), 'projects-map-settings', 'projects_map_general');
@@ -177,6 +179,12 @@ class Projects_Map_Admin {
         $value = get_option('projects_map_show_legend', 1);
         echo '<input type="checkbox" name="projects_map_show_legend" value="1"' . checked(1, $value, false) . '>';
         echo '<p class="description">' . __('Display the category legend below the map', 'projects-map') . '</p>';
+    }
+
+    public function legend_bg_field() {
+        $value = get_option('projects_map_legend_bg', '');
+        echo '<input type="text" name="projects_map_legend_bg" value="' . esc_attr($value) . '" placeholder="#ffffff">';
+        echo '<p class="description">' . __('Background color for the legend block. Leave empty for transparent. Accepts any CSS color value (e.g., #ffffff, rgba(255,255,255,0.9)). Can be overridden per shortcode with legend_bg="..."', 'projects-map') . '</p>';
     }
 
     public function max_zoom_field() {
