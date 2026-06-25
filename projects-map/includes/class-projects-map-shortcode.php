@@ -76,9 +76,13 @@ class Projects_Map_Shortcode {
 
         $categories       = Projects_Map_DB::get_categories_with_projects($map_id);
         $map_container_id = 'projects-map-' . $map_id . '-' . uniqid();
+        $fit_container    = ($height === 'fit');
+        $wrapper_id       = $map_container_id . '-wrapper';
 
         ob_start();
-        ?>
+        if ($fit_container): ?>
+        <div id="<?php echo esc_attr($wrapper_id); ?>" style="height: 100%; display: flex; flex-direction: column; width: 100%;">
+        <?php endif; ?>
         <div id="<?php echo $map_container_id; ?>"
              class="projects-map-container"
              data-map-id="<?php echo $map_id; ?>"
@@ -88,10 +92,10 @@ class Projects_Map_Shortcode {
              data-min-zoom="<?php echo $min_zoom; ?>"
              data-max-zoom="<?php echo $max_zoom; ?>"
              data-default-zoom="<?php echo $default_zoom; ?>"
-             style="width: 100%; height: <?php echo $height; ?>;"></div>
+             style="width: 100%; <?php echo $fit_container ? 'flex: 1; min-height: 0;' : 'height: ' . $height . ';'; ?>"></div>
         <style>
             @media (max-width: 957px) {
-                #<?php echo esc_attr($map_container_id); ?> {
+                #<?php echo esc_attr($fit_container ? $wrapper_id : $map_container_id); ?> {
                     height: <?php echo $mobile_height; ?> !important;
                 }
             }
@@ -103,7 +107,7 @@ class Projects_Map_Shortcode {
             }
         ?>
             <div class="projects-map-legend" style="<?php echo $legend_style; ?>">
-                <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 15px;">
+                <ul style="list-style: none; margin: 0; padding: 0 20px; display: flex; flex-wrap: wrap; gap: 15px;">
                     <?php foreach ($categories as $category): ?>
                         <li style="display: flex; align-items: center; font-size: 14px; margin-right: 10px;">
                             <span style="display: inline-block; width: 20px; height: 20px; background-color: <?php echo esc_attr($category['color']); ?>; margin-right: 8px; border-radius: 50%;"></span>
@@ -112,6 +116,9 @@ class Projects_Map_Shortcode {
                     <?php endforeach; ?>
                 </ul>
             </div>
+        <?php endif; ?>
+        <?php if ($fit_container): ?>
+        </div>
         <?php endif; ?>
         <?php
         return ob_get_clean();

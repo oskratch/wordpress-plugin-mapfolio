@@ -147,7 +147,8 @@ class Projects_Map_Admin {
     public function height_field() {
         $value = get_option('projects_map_height', '500px');
         echo '<input type="text" name="projects_map_height" value="' . esc_attr($value) . '" placeholder="500px">';
-        echo '<p class="description">' . __('Desktop height. You can use % or px, e.g., 100% or 500px', 'projects-map') . '</p>';
+        echo '<p class="description">' . __('Desktop height. Examples: <code>500px</code>, <code>70vh</code>, <code>100%</code>.', 'projects-map') . '</p>';
+        echo '<p class="description" style="margin-top:6px; padding:6px 10px; background:#f0f6fc; border-left:3px solid #2271b1;">' . __('<strong>Tip:</strong> Use <code>fit</code> to make the map fill the parent container height, with the legend shown below. The parent element must have a defined height (set via your theme or page builder). Note: <code>100%</code> is <em>not</em> the same — it hides the legend.', 'projects-map') . '</p>';
     }
 
     public function height_mobile_field() {
@@ -940,7 +941,7 @@ class Projects_Map_Admin {
             <h2><?php _e('Shortcode Attributes', 'projects-map'); ?></h2>
             <ul>
                 <li><code>map</code>: <?php _e('Map slug or ID to display', 'projects-map'); ?></li>
-                <li><code>height</code>: <?php _e('Map height, e.g. 500px or 100%', 'projects-map'); ?></li>
+                <li><code>height</code>: <?php _e('Map height, e.g. 500px, 70vh, or "fit" to fill the parent container height', 'projects-map'); ?></li>
                 <li><code>mobile_height</code>: <?php _e('Map height on screens below 957px, e.g. 350px or 70vh', 'projects-map'); ?></li>
                 <li><code>new_tab</code>: <?php _e('Open links in new tab (0 or 1)', 'projects-map'); ?></li>
                 <li><code>show_legend</code>: <?php _e('Show category legend (0 or 1)', 'projects-map'); ?></li>

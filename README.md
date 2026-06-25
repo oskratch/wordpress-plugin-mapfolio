@@ -74,7 +74,7 @@ This means you can set sensible global defaults, override specific maps that nee
 Go to **Maps & Locations → Settings** to configure global defaults, organised in three sections:
 
 **Map Display**
-- **Map Height** — Desktop height (px, %, vh). Default: `500px`
+- **Map Height** — Desktop height. Accepts `px`, `%`, `vh`, or `fit` to fill the parent container. Default: `500px`. See [Fit Container Mode](#fit-container-mode).
 - **Map Height (Mobile/Tablet)** — Applied below 957px. Default: `350px`
 - **Open links in new tab** — Default link behaviour
 - **Map Style** — Tile layer for all maps
@@ -102,7 +102,7 @@ You can use either the map **slug** or numeric **ID** as the `map` value.
 | Attribute | Description | Example |
 |---|---|---|
 | `map` | Map slug or ID | `map="our-stores"` |
-| `height` | Desktop map height | `height="600px"` |
+| `height` | Desktop map height (`px`, `%`, `vh`, or `fit`) | `height="600px"` or `height="fit"` |
 | `mobile_height` | Height on screens ≤ 957px | `mobile_height="320px"` |
 | `new_tab` | Open links in new tab (0/1) | `new_tab="1"` |
 | `show_legend` | Show category legend (0/1) | `show_legend="0"` |
@@ -125,7 +125,20 @@ Shortcode attributes always take precedence over per-map settings and global set
 [projects_map map="project-locations" show_legend="0"]
 [projects_map map="city-guide" map_style="cartodb-positron" min_zoom="10" max_zoom="16" default_zoom="12"]
 [projects_map map="1" legend_bg="rgba(255,255,255,0.9)" show_legend="1"]
+[projects_map map="1" height="fit" mobile_height="400px"]
 ```
+
+### Fit Container Mode
+
+Use `height="fit"` to make the map fill the full height of its parent container, with the legend displayed below the map within that same space.
+
+The plugin wraps the map and legend in a `flex-column` container set to `height: 100%`. The map expands to fill all available space; the legend takes its natural height at the bottom.
+
+**Requirements:**
+- The parent element must have a defined height (set via your theme, page builder, or custom CSS). If the parent has no height, `height: 100%` has nothing to fill.
+- Use `mobile_height` to set a fixed fallback height on screens ≤ 957px (e.g. `mobile_height="400px"`), since parent containers often don't have a fixed height on mobile.
+
+> **Note:** `height="100%"` is *not* equivalent — it makes the map fill the parent but pushes the legend out of view. Use `fit` instead.
 
 ### Mobile Optimisation
 
