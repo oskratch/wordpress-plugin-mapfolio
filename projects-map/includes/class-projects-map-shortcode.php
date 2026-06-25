@@ -97,13 +97,13 @@ class Projects_Map_Shortcode {
             }
         </style>
         <?php if ($show_legend && !empty($categories)):
-            $legend_style = 'margin-top: 20px;';
+            $legend_style = '';
             if ($legend_bg) {
-                $legend_style .= ' background-color: ' . esc_attr($legend_bg) . '; padding: 10px;';
+                $legend_style .= 'background-color: ' . esc_attr($legend_bg) . '; padding: 10px;';
             }
         ?>
             <div class="projects-map-legend" style="<?php echo $legend_style; ?>">
-                <ul style="list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 15px;">
+                <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 15px;">
                     <?php foreach ($categories as $category): ?>
                         <li style="display: flex; align-items: center; font-size: 14px; margin-right: 10px;">
                             <span style="display: inline-block; width: 20px; height: 20px; background-color: <?php echo esc_attr($category['color']); ?>; margin-right: 8px; border-radius: 50%;"></span>
