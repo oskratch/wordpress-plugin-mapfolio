@@ -74,6 +74,32 @@ class Projects_Map_Shortcode {
         $max_zoom      = intval($max_zoom);
         $default_zoom  = max($min_zoom, min($max_zoom, intval($default_zoom)));
 
+        // Fallback enqueue for page builders that store shortcodes outside post_content
+        // (e.g. Elementor, Divi raw-HTML modules) which bypass the has_shortcode() check.
+        if (!wp_script_is('projects-map-js', 'enqueued')) {
+            wp_enqueue_style('leaflet-css', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
+            wp_enqueue_script('leaflet-js', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', array(), null, true);
+            wp_enqueue_style('leaflet-markercluster-css', 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css');
+            wp_enqueue_style('leaflet-markercluster-default-css', 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css');
+            wp_enqueue_script('leaflet-markercluster-js', 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js', array('leaflet-js'), null, true);
+            wp_enqueue_script('projects-map-js', PROJECTS_MAP_PLUGIN_URL . 'assets/js/projects-map.js', array('jquery', 'leaflet-js', 'leaflet-markercluster-js'), PROJECTS_MAP_VERSION, true);
+            wp_enqueue_style('projects-map-css', PROJECTS_MAP_PLUGIN_URL . 'assets/css/projects-map.css', array(), PROJECTS_MAP_VERSION);
+
+            $min_zoom_g     = get_option('projects_map_min_zoom', 1);
+            $max_zoom_g     = get_option('projects_map_max_zoom', 10);
+            $default_zoom_g = get_option('projects_map_default_zoom', 2);
+            $default_zoom_g = max($min_zoom_g, min($max_zoom_g, $default_zoom_g));
+            wp_localize_script('projects-map-js', 'projectsMapGlobal', array(
+                'ajax_url'     => admin_url('admin-ajax.php'),
+                'nonce'        => wp_create_nonce('projects_map_nonce'),
+                'map_style'    => get_option('projects_map_style', 'openstreetmap'),
+                'min_zoom'     => intval($min_zoom_g),
+                'max_zoom'     => intval($max_zoom_g),
+                'default_zoom' => intval($default_zoom_g),
+                'strings'      => array('read_more' => __('Read more', 'projects-map')),
+            ));
+        }
+
         $categories       = Projects_Map_DB::get_categories_with_projects($map_id);
         $map_container_id = 'projects-map-' . $map_id . '-' . uniqid();
         $fit_container    = ($height === 'fit');
