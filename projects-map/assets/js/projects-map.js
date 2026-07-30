@@ -58,7 +58,21 @@
             attribution: attribution
         }).addTo(map);
 
-        var markers = L.markerClusterGroup();
+        var clusterColorSmall = projectsMapGlobal.cluster_color_small || '#29B246';
+        var clusterColorLarge = projectsMapGlobal.cluster_color_large || '#E67E22';
+
+        var markers = L.markerClusterGroup({
+            iconCreateFunction: function(cluster) {
+                var count = cluster.getChildCount();
+                var color = count < 10 ? clusterColorSmall : clusterColorLarge;
+                var size = count < 10 ? 40 : (count < 100 ? 48 : 56);
+                return L.divIcon({
+                    className: 'custom-marker-cluster',
+                    html: '<div style="background-color: ' + color + '; width: ' + size + 'px; height: ' + size + 'px; line-height: ' + size + 'px; border-radius: 50%; text-align: center; color: #fff; font-weight: bold; border: 3px solid rgba(255,255,255,0.7); box-shadow: 0 0 4px rgba(0,0,0,0.5);">' + count + '</div>',
+                    iconSize: L.point(size, size)
+                });
+            }
+        });
         var newTab = $container.data('new-tab');
 
         // Calculate adaptive popup max width based on map container width and screen size

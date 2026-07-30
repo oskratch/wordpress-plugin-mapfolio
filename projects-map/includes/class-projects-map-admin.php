@@ -128,9 +128,12 @@ class Projects_Map_Admin {
         register_setting('projects_map_settings', 'projects_map_style', array('sanitize_callback' => 'sanitize_text_field'));
         register_setting('projects_map_settings', 'projects_map_show_legend', array('sanitize_callback' => 'absint'));
         register_setting('projects_map_settings', 'projects_map_legend_bg', array('sanitize_callback' => 'sanitize_text_field'));
+        register_setting('projects_map_settings', 'projects_map_cluster_color_small', array('sanitize_callback' => 'sanitize_hex_color'));
+        register_setting('projects_map_settings', 'projects_map_cluster_color_large', array('sanitize_callback' => 'sanitize_hex_color'));
 
         add_settings_section('projects_map_display', __('Map Display', 'projects-map'), null, 'projects-map-settings');
         add_settings_section('projects_map_legend_section', __('Legend', 'projects-map'), null, 'projects-map-settings');
+        add_settings_section('projects_map_cluster_section', __('Cluster Colors', 'projects-map'), null, 'projects-map-settings');
         add_settings_section('projects_map_zoom_section', __('Zoom Levels', 'projects-map'), null, 'projects-map-settings');
 
         add_settings_field('projects_map_height', __('Map Height', 'projects-map'), array($this, 'height_field'), 'projects-map-settings', 'projects_map_display');
@@ -139,6 +142,8 @@ class Projects_Map_Admin {
         add_settings_field('projects_map_style', __('Map Style', 'projects-map'), array($this, 'map_style_field'), 'projects-map-settings', 'projects_map_display');
         add_settings_field('projects_map_show_legend', __('Show legend below map', 'projects-map'), array($this, 'show_legend_field'), 'projects-map-settings', 'projects_map_legend_section');
         add_settings_field('projects_map_legend_bg', __('Legend background color', 'projects-map'), array($this, 'legend_bg_field'), 'projects-map-settings', 'projects_map_legend_section');
+        add_settings_field('projects_map_cluster_color_small', __('Cluster color (2-9 locations)', 'projects-map'), array($this, 'cluster_color_small_field'), 'projects-map-settings', 'projects_map_cluster_section');
+        add_settings_field('projects_map_cluster_color_large', __('Cluster color (10+ locations)', 'projects-map'), array($this, 'cluster_color_large_field'), 'projects-map-settings', 'projects_map_cluster_section');
         add_settings_field('projects_map_max_zoom', __('Maximum Zoom Level', 'projects-map'), array($this, 'max_zoom_field'), 'projects-map-settings', 'projects_map_zoom_section');
         add_settings_field('projects_map_min_zoom', __('Minimum Zoom Level', 'projects-map'), array($this, 'min_zoom_field'), 'projects-map-settings', 'projects_map_zoom_section');
         add_settings_field('projects_map_default_zoom', __('Default Zoom Level', 'projects-map'), array($this, 'default_zoom_field'), 'projects-map-settings', 'projects_map_zoom_section');
@@ -192,6 +197,22 @@ class Projects_Map_Admin {
         echo '<input type="text" name="projects_map_legend_bg" id="projects_map_legend_bg" value="' . esc_attr($value) . '" placeholder="' . esc_attr__('transparent', 'projects-map') . '" style="width: 140px; vertical-align: middle;">';
         echo '<p class="description">' . __('Leave empty for transparent. The color picker sets hex values; for rgba or named colors, type directly in the text field. Can be overridden per shortcode with legend_bg="..."', 'projects-map') . '</p>';
         echo '<script>document.getElementById("projects_map_legend_bg_picker").addEventListener("input", function() { document.getElementById("projects_map_legend_bg").value = this.value; });</script>';
+    }
+
+    public function cluster_color_small_field() {
+        $value = get_option('projects_map_cluster_color_small', '#29B246');
+        echo '<input type="color" id="projects_map_cluster_color_small_picker" value="' . esc_attr($value) . '" style="vertical-align: middle; margin-right: 6px;">';
+        echo '<input type="text" name="projects_map_cluster_color_small" id="projects_map_cluster_color_small" value="' . esc_attr($value) . '" style="width: 100px; vertical-align: middle;">';
+        echo '<p class="description">' . __('Color for clusters grouping 2 to 9 locations. Type a hex value directly or use the color picker.', 'projects-map') . '</p>';
+        echo '<script>document.getElementById("projects_map_cluster_color_small_picker").addEventListener("input", function() { document.getElementById("projects_map_cluster_color_small").value = this.value; });</script>';
+    }
+
+    public function cluster_color_large_field() {
+        $value = get_option('projects_map_cluster_color_large', '#E67E22');
+        echo '<input type="color" id="projects_map_cluster_color_large_picker" value="' . esc_attr($value) . '" style="vertical-align: middle; margin-right: 6px;">';
+        echo '<input type="text" name="projects_map_cluster_color_large" id="projects_map_cluster_color_large" value="' . esc_attr($value) . '" style="width: 100px; vertical-align: middle;">';
+        echo '<p class="description">' . __('Color for clusters grouping 10 or more locations. Type a hex value directly or use the color picker.', 'projects-map') . '</p>';
+        echo '<script>document.getElementById("projects_map_cluster_color_large_picker").addEventListener("input", function() { document.getElementById("projects_map_cluster_color_large").value = this.value; });</script>';
     }
 
     public function max_zoom_field() {

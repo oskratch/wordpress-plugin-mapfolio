@@ -26,8 +26,9 @@
     background: transparent;
 }
 
-.marker-cluster-small div {
-    background-color: #29B246 !important;
+.custom-marker-cluster {
+    border: none;
+    background: transparent;
 }
 
 .project-popup {

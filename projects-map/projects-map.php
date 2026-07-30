@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Maps & Locations
  * Description: A WordPress plugin to display interactive maps with custom locations. Create multiple maps and manage locations (projects, stores, offices, etc.) from admin panel.
- * Version: 2.0.0
+ * Version: 2.1.0
  * Author: Òscar Periche
  * License: GPL v2 or later
  * Text Domain: projects-map
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define constants
-define('PROJECTS_MAP_VERSION', '2.0.0');
+define('PROJECTS_MAP_VERSION', '2.1.0');
 define('PROJECTS_MAP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('PROJECTS_MAP_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -144,7 +144,9 @@ function projects_map_enqueue_scripts() {
         $default_zoom = get_option('projects_map_default_zoom', 2);
         $default_zoom = max($min_zoom, min($max_zoom, $default_zoom));
         $map_style = get_option('projects_map_style', 'openstreetmap');
-        
+        $cluster_color_small = get_option('projects_map_cluster_color_small', '#29B246');
+        $cluster_color_large = get_option('projects_map_cluster_color_large', '#E67E22');
+
         // Localize script with global data
         wp_localize_script('projects-map-js', 'projectsMapGlobal', array(
             'ajax_url' => admin_url('admin-ajax.php'),
@@ -153,6 +155,8 @@ function projects_map_enqueue_scripts() {
             'min_zoom' => $min_zoom,
             'default_zoom' => $default_zoom,
             'map_style' => $map_style,
+            'cluster_color_small' => $cluster_color_small,
+            'cluster_color_large' => $cluster_color_large,
             'strings' => array(
                 'read_more' => __('Read more', 'projects-map')
             )
