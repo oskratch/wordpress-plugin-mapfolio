@@ -33,14 +33,18 @@
 
         // Map tile layers based on selected style
         var tileLayer, attribution;
-        
+
+        // CARTO basemaps require an API key since Aug 2026; append it when configured
+        var cartoApiKey = projectsMapGlobal.carto_api_key || '';
+        var cartoKeyQuery = cartoApiKey ? '?key=' + encodeURIComponent(cartoApiKey) : '';
+
         switch(mapStyle) {
             case 'cartodb-positron':
-                tileLayer = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+                tileLayer = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png' + cartoKeyQuery;
                 attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
                 break;
             case 'cartodb-voyager':
-                tileLayer = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+                tileLayer = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png' + cartoKeyQuery;
                 attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
                 break;
             case 'esri-gray':

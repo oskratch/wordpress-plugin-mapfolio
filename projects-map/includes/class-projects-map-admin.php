@@ -126,6 +126,7 @@ class Projects_Map_Admin {
         register_setting('projects_map_settings', 'projects_map_min_zoom', array('sanitize_callback' => 'absint'));
         register_setting('projects_map_settings', 'projects_map_default_zoom', array('sanitize_callback' => 'absint'));
         register_setting('projects_map_settings', 'projects_map_style', array('sanitize_callback' => 'sanitize_text_field'));
+        register_setting('projects_map_settings', 'projects_map_carto_api_key', array('sanitize_callback' => 'sanitize_text_field'));
         register_setting('projects_map_settings', 'projects_map_show_legend', array('sanitize_callback' => 'absint'));
         register_setting('projects_map_settings', 'projects_map_legend_bg', array('sanitize_callback' => 'sanitize_text_field'));
         register_setting('projects_map_settings', 'projects_map_cluster_color_small', array('sanitize_callback' => 'sanitize_hex_color'));
@@ -140,6 +141,7 @@ class Projects_Map_Admin {
         add_settings_field('projects_map_height_mobile', __('Map Height (Mobile/Tablet)', 'projects-map'), array($this, 'height_mobile_field'), 'projects-map-settings', 'projects_map_display');
         add_settings_field('projects_map_new_tab', __('Open links in new tab', 'projects-map'), array($this, 'new_tab_field'), 'projects-map-settings', 'projects_map_display');
         add_settings_field('projects_map_style', __('Map Style', 'projects-map'), array($this, 'map_style_field'), 'projects-map-settings', 'projects_map_display');
+        add_settings_field('projects_map_carto_api_key', __('CARTO API key', 'projects-map'), array($this, 'carto_api_key_field'), 'projects-map-settings', 'projects_map_display');
         add_settings_field('projects_map_show_legend', __('Show legend below map', 'projects-map'), array($this, 'show_legend_field'), 'projects-map-settings', 'projects_map_legend_section');
         add_settings_field('projects_map_legend_bg', __('Legend background color', 'projects-map'), array($this, 'legend_bg_field'), 'projects-map-settings', 'projects_map_legend_section');
         add_settings_field('projects_map_cluster_color_small', __('Cluster color (2-9 locations)', 'projects-map'), array($this, 'cluster_color_small_field'), 'projects-map-settings', 'projects_map_cluster_section');
@@ -181,6 +183,16 @@ class Projects_Map_Admin {
         }
         echo '</select>';
         echo '<p class="description">' . __('Choose the map style. Minimalist options hide terrain details, rivers, and mountains.', 'projects-map') . '</p>';
+    }
+
+    public function carto_api_key_field() {
+        $value = get_option('projects_map_carto_api_key', '');
+        echo '<input type="text" name="projects_map_carto_api_key" value="' . esc_attr($value) . '" class="regular-text" autocomplete="off">';
+        echo '<p class="description">' . sprintf(
+            /* translators: %s: link to the CARTO API key request page */
+            __('Only needed for the CartoDB Positron / Voyager styles. Since August 2026 CARTO requires an API key for its basemaps; without one the map shows an "API KEY REQUIRED" watermark. Get a free key at %s, or leave this empty and pick another style such as ESRI Gray Canvas.', 'projects-map'),
+            '<a href="https://carto.com/basemaps/apikey/" target="_blank" rel="noopener noreferrer">carto.com/basemaps/apikey</a>'
+        ) . '</p>';
     }
 
     public function show_legend_field() {

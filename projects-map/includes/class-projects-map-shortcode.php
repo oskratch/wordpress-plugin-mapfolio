@@ -93,6 +93,7 @@ class Projects_Map_Shortcode {
                 'ajax_url'     => admin_url('admin-ajax.php'),
                 'nonce'        => wp_create_nonce('projects_map_nonce'),
                 'map_style'    => get_option('projects_map_style', 'openstreetmap'),
+                'carto_api_key' => get_option('projects_map_carto_api_key', ''),
                 'min_zoom'     => intval($min_zoom_g),
                 'max_zoom'     => intval($max_zoom_g),
                 'default_zoom' => intval($default_zoom_g),
