@@ -14,7 +14,7 @@ A professional WordPress plugin to create and display interactive maps with cust
 - **Universal Location System**: Add any type of location with title, description, image, URL and category
 - **Category system** with custom colors, sort order, and automatic legend (shared across all maps)
 - **Map style selection**: OpenStreetMap, CartoDB Positron, CartoDB Voyager, ESRI Gray Canvas
-- **Clustering**: shows location count per region when zoomed out, individual markers when zoomed in
+- **Clustering**: shows location count per region when zoomed out, individual markers when zoomed in — with configurable cluster colors
 - **Flexible shortcode** with per-instance attribute overrides
 - **Media uploader** for location images (JPG, PNG, SVG)
 - **Mobile responsive** with optimized popup sizing and touch-friendly controls
@@ -78,10 +78,15 @@ Go to **Maps & Locations → Settings** to configure global defaults, organised 
 - **Map Height (Mobile/Tablet)** — Applied below 957px. Default: `350px`
 - **Open links in new tab** — Default link behaviour
 - **Map Style** — Tile layer for all maps
+- **CARTO API key** — Only needed for the CartoDB Positron / Voyager styles. Since August 2026 CARTO requires an API key for its basemaps; without one the map shows an *"API KEY REQUIRED"* watermark. When filled, the key is appended as `?key=` to the CARTO tile URLs. Get a free key at [carto.com/basemaps/apikey](https://carto.com/basemaps/apikey/), or leave this empty and pick another style such as ESRI Gray Canvas.
 
 **Legend**
 - **Show legend below map** — Global legend visibility
 - **Legend background color** — Accepts any CSS color (`#ffffff`, `rgba(255,255,255,0.9)`, etc.). Leave empty for transparent.
+
+**Cluster Colors**
+- **Cluster color (2-9 locations)** — Color for clusters grouping 2 to 9 locations. Hex value or color picker. Default: `#29B246`
+- **Cluster color (10+ locations)** — Color for clusters grouping 10 or more locations. Hex value or color picker. Default: `#E67E22`
 
 **Zoom Levels**
 - **Minimum / Maximum Zoom** — Allowed zoom range (1–18)
