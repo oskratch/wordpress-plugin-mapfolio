@@ -52,6 +52,7 @@
     font-weight: 400 !important;
     text-transform: uppercase;
     line-height: 1.2 !important;
+    overflow-wrap: break-word;
 }
 
 .project-popup p {
@@ -72,8 +73,11 @@
 
 .project-popup img {
     margin-bottom: 10px !important;
+    width: 100% !important;
     max-width: 100% !important;
     height: auto !important;
+    max-height: 200px;
+    object-fit: cover;
     display: block !important;
 }
 

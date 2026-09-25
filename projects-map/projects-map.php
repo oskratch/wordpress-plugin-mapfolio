@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Maps & Locations
  * Description: A WordPress plugin to display interactive maps with custom locations. Create multiple maps and manage locations (projects, stores, offices, etc.) from admin panel.
- * Version: 2.2.0
+ * Version: 2.2.1
  * Author: Òscar Periche
  * License: GPL v2 or later
  * Text Domain: projects-map
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define constants
-define('PROJECTS_MAP_VERSION', '2.2.0');
+define('PROJECTS_MAP_VERSION', '2.2.1');
 define('PROJECTS_MAP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('PROJECTS_MAP_PLUGIN_URL', plugin_dir_url(__FILE__));
 

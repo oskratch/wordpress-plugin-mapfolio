@@ -79,11 +79,12 @@
         });
         var newTab = $container.data('new-tab');
 
-        // Calculate adaptive popup max width based on map container width and screen size
+        // Fixed popup width (clamped to the map/screen size) so every popup looks the same
+        // regardless of title length; the image adapts to this width.
         var mapWidth = $container.width();
         var screenWidth = window.innerWidth;
         var isMobile = screenWidth < 768;
-        var popupMaxWidth = isMobile ? Math.min(250, Math.min(mapWidth, screenWidth) - 20) : Math.min(500, Math.min(mapWidth, screenWidth) - 40);
+        var popupWidth = isMobile ? Math.min(250, Math.min(mapWidth, screenWidth) - 20) : Math.min(320, Math.min(mapWidth, screenWidth) - 40);
 
         // Load locations via AJAX
         $.ajax({
@@ -124,7 +125,7 @@
                                 var imgUrlNoQuery = imgUrl.split('?')[0].split('#')[0];
                                 var isSvg = imgUrlNoQuery.toLowerCase().endsWith('.svg');
                                 var imgClass = isSvg ? ' class="is-svg"' : '';
-                                var imgStyle = isSvg ? 'style="display:block; margin-bottom:8px; height:40px !important; width:auto !important; max-width:none !important;"' : 'style="max-width:100px; display:block; margin-bottom:8px;"';
+                                var imgStyle = isSvg ? 'style="display:block; margin-bottom:8px; height:40px !important; width:auto !important; max-width:none !important;"' : '';
                                 popupContent += '<img src="' + location.image + '" alt="' + location.title + '"' + imgClass + ' ' + imgStyle + '>';
                             }
                             popupContent += '<h3>' + location.title + '</h3>';
@@ -135,7 +136,8 @@
                             }
                             popupContent += '</div>';
                             marker.bindPopup(popupContent, {
-                                maxWidth: popupMaxWidth,
+                                minWidth: popupWidth,
+                                maxWidth: popupWidth,
                                 autoPan: true,
                                 keepInView: true,
                                 autoPanPadding: isMobile ? [50, 25] : [100, 50],
