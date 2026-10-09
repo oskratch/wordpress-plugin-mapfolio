@@ -1,0 +1,112 @@
+/* Mapfolio admin */
+
+.mapfolio-swatch {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    vertical-align: middle;
+}
+
+.mapfolio-col-count {
+    width: 90px;
+}
+
+/* Shortcode with copy button */
+.mapfolio-shortcode {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    max-width: 100%;
+}
+
+.mapfolio-shortcode input {
+    width: 260px;
+    max-width: 100%;
+    background: #f6f7f7;
+}
+
+/* Several small fields on one line */
+.mapfolio-inline-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    align-items: center;
+}
+
+.mapfolio-inline-fields label {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.mapfolio-inline-fields input[type="number"]:not(.small-text) {
+    width: 140px;
+}
+
+/* Color picker + text field */
+.mapfolio-color-field {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.mapfolio-color-field input[type="color"] {
+    width: 40px;
+    height: 30px;
+    padding: 0 2px;
+    cursor: pointer;
+}
+
+/* Location form */
+.mapfolio-image-field {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.mapfolio-image-preview {
+    display: block;
+    max-width: 150px;
+    max-height: 100px;
+    margin-top: 8px;
+    border: 1px solid #dcdcde;
+}
+
+.mapfolio-image-preview[hidden] {
+    display: none;
+}
+
+.mapfolio-geocode {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.mapfolio-geocode-status {
+    color: #646970;
+}
+
+.mapfolio-location-picker {
+    width: 100%;
+    max-width: 700px;
+    height: 360px;
+    border: 1px solid #c3c4c7;
+    cursor: crosshair;
+}
+
+/* Help page */
+.mapfolio-help-table {
+    max-width: 900px;
+}
+
+.mapfolio-help-table td:first-child {
+    width: 140px;
+}
+
+.mapfolio-color-field input.small-text {
+    width: 90px;
+}

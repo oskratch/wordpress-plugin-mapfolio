@@ -1,0 +1,36 @@
+name: Release
+
+# When a release is published on GitHub, build the installable plugin zip and attach it to the release.
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.release.tag_name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check that the tag matches the plugin version
+        run: |
+          TAG_VERSION="${TAG#v}"
+          HEADER_VERSION=$(grep -oP '^\s*\*\s*Version:\s*\K\S+' mapfolio/mapfolio.php)
+          CONSTANT_VERSION=$(grep -oP "define\('MAPFOLIO_VERSION', '\K[^']+" mapfolio/mapfolio.php)
+          echo "Tag: $TAG_VERSION / Header: $HEADER_VERSION / Constant: $CONSTANT_VERSION"
+          if [ "$TAG_VERSION" != "$HEADER_VERSION" ] || [ "$TAG_VERSION" != "$CONSTANT_VERSION" ]; then
+            echo "::error::The tag version must match the Version header and MAPFOLIO_VERSION in mapfolio/mapfolio.php"
+            exit 1
+          fi
+
+      - name: Build the plugin zip
+        run: zip -r "mapfolio-${TAG#v}.zip" mapfolio -x '*.DS_Store'
+
+      - name: Attach the zip to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$TAG" "mapfolio-${TAG#v}.zip" --clobber

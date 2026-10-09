@@ -1,0 +1,739 @@
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Mapfolio 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/oskratch/wordpress-plugin-mapfolio/issues\n"
+"PO-Revision-Date: 2026-10-09 22:03+0000\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: mapfolio\n"
+
+#. Description of the plugin
+msgid "Interactive maps with your own locations (projects, stores, offices…). Create several maps, group locations in color-coded categories and embed them anywhere with a shortcode."
+msgstr "Mapas interactivos con tus propias ubicaciones (proyectos, tiendas, oficinas…). Crea varios mapas, agrupa las ubicaciones en categorías de colores e insértalos donde quieras con un shortcode."
+
+#: mapfolio.php:81 includes/class-mapfolio-admin.php:260 includes/class-mapfolio-admin.php:431
+msgid "Map not found."
+msgstr "No se ha encontrado el mapa."
+
+#: includes/class-mapfolio-admin.php:35 includes/class-mapfolio-admin.php:43 includes/class-mapfolio-admin.php:43 includes/class-mapfolio-admin.php:198 includes/class-mapfolio-admin.php:1037
+msgid "Maps"
+msgstr "Mapas"
+
+#: includes/class-mapfolio-admin.php:44 includes/class-mapfolio-admin.php:44 includes/class-mapfolio-admin.php:209 includes/class-mapfolio-admin.php:502 includes/class-mapfolio-admin.php:739 includes/class-mapfolio-admin.php:1047
+msgid "Locations"
+msgstr "Ubicaciones"
+
+#: includes/class-mapfolio-admin.php:45 includes/class-mapfolio-admin.php:45 includes/class-mapfolio-admin.php:728 includes/class-mapfolio-admin.php:1042
+msgid "Categories"
+msgstr "Categorías"
+
+#: includes/class-mapfolio-admin.php:46 includes/class-mapfolio-admin.php:997
+msgid "Mapfolio Settings"
+msgstr "Ajustes de Mapfolio"
+
+#: includes/class-mapfolio-admin.php:46 includes/class-mapfolio-admin.php:115
+msgid "Settings"
+msgstr "Ajustes"
+
+#: includes/class-mapfolio-admin.php:47 includes/class-mapfolio-admin.php:1030
+msgid "Mapfolio Help"
+msgstr "Ayuda de Mapfolio"
+
+#: includes/class-mapfolio-admin.php:47
+msgid "Help"
+msgstr "Ayuda"
+
+#: includes/class-mapfolio-admin.php:72
+msgid "Choose image"
+msgstr "Elegir imagen"
+
+#: includes/class-mapfolio-admin.php:73
+msgid "Use this image"
+msgstr "Usar esta imagen"
+
+#: includes/class-mapfolio-admin.php:74
+msgid "Copied!"
+msgstr "¡Copiado!"
+
+#: includes/class-mapfolio-admin.php:75
+msgid "Searching…"
+msgstr "Buscando…"
+
+#: includes/class-mapfolio-admin.php:76
+msgid "No results found."
+msgstr "No se han encontrado resultados."
+
+#: includes/class-mapfolio-admin.php:77
+msgid "The search failed. Please try again or set the position on the map."
+msgstr "La búsqueda ha fallado. Vuelve a intentarlo o marca la posición en el mapa."
+
+#: includes/class-mapfolio-admin.php:92
+msgid "Map saved."
+msgstr "Mapa guardado."
+
+#: includes/class-mapfolio-admin.php:93
+msgid "Map deleted. Its locations have been moved to the default map."
+msgstr "Mapa eliminado. Sus ubicaciones se han movido al mapa predeterminado."
+
+#: includes/class-mapfolio-admin.php:94
+msgid "Location saved."
+msgstr "Ubicación guardada."
+
+#: includes/class-mapfolio-admin.php:95
+msgid "Location deleted."
+msgstr "Ubicación eliminada."
+
+#. translators: %d: number of deleted locations
+#: includes/class-mapfolio-admin.php:97
+#, php-format
+msgid "%d location deleted."
+msgid_plural "%d locations deleted."
+msgstr[0] "%d ubicación eliminada."
+msgstr[1] "%d ubicaciones eliminadas."
+
+#: includes/class-mapfolio-admin.php:98
+msgid "Category saved."
+msgstr "Categoría guardada."
+
+#: includes/class-mapfolio-admin.php:99
+msgid "Category deleted. Its locations have been moved to the default category."
+msgstr "Categoría eliminada. Sus ubicaciones se han movido a la categoría predeterminada."
+
+#: includes/class-mapfolio-admin.php:147 includes/class-mapfolio-locations-table.php:87
+msgid "Sorry, you are not allowed to do that."
+msgstr "Lo siento, no tienes permiso para hacer esto."
+
+#: includes/class-mapfolio-admin.php:153
+msgid "Error"
+msgstr "Error"
+
+#: includes/class-mapfolio-admin.php:174 includes/class-mapfolio-locations-table.php:48 includes/class-mapfolio-locations-table.php:153
+msgid "Delete"
+msgstr "Eliminar"
+
+#: includes/class-mapfolio-admin.php:199 includes/class-mapfolio-admin.php:278
+msgid "Add new map"
+msgstr "Añadir mapa"
+
+#: includes/class-mapfolio-admin.php:202
+msgid "Each map shows its own set of locations. Copy a map's shortcode and paste it into any page or post."
+msgstr "Cada mapa muestra su propio conjunto de ubicaciones. Copia el shortcode de un mapa y pégalo en cualquier página o entrada."
+
+#: includes/class-mapfolio-admin.php:207 includes/class-mapfolio-admin.php:288 includes/class-mapfolio-admin.php:569 includes/class-mapfolio-admin.php:737 includes/class-mapfolio-admin.php:795 includes/class-mapfolio-locations-table.php:27
+msgid "Title"
+msgstr "Título"
+
+#: includes/class-mapfolio-admin.php:208 includes/class-mapfolio-admin.php:249 includes/class-mapfolio-admin.php:300 includes/class-mapfolio-admin.php:1052
+msgid "Shortcode"
+msgstr "Shortcode"
+
+#: includes/class-mapfolio-admin.php:210 includes/class-mapfolio-admin.php:305 includes/class-mapfolio-admin.php:597
+msgid "Description"
+msgstr "Descripción"
+
+#: includes/class-mapfolio-admin.php:224 includes/class-mapfolio-admin.php:754
+msgid "Default"
+msgstr "Predeterminado"
+
+#: includes/class-mapfolio-admin.php:227 includes/class-mapfolio-admin.php:757 includes/class-mapfolio-locations-table.php:148
+msgid "Edit"
+msgstr "Editar"
+
+#: includes/class-mapfolio-admin.php:228
+msgid "View locations"
+msgstr "Ver ubicaciones"
+
+#: includes/class-mapfolio-admin.php:229 includes/class-mapfolio-admin.php:660
+msgid "Add location"
+msgstr "Añadir ubicación"
+
+#: includes/class-mapfolio-admin.php:231
+msgid "Delete this map? Its locations will not be deleted: they will be moved to the default map."
+msgstr "¿Eliminar este mapa? Sus ubicaciones no se eliminarán: se moverán al mapa predeterminado."
+
+#: includes/class-mapfolio-admin.php:250
+msgid "Copy"
+msgstr "Copiar"
+
+#: includes/class-mapfolio-admin.php:272 includes/class-mapfolio-admin.php:350 includes/class-mapfolio-admin.php:360 includes/class-mapfolio-admin.php:374
+msgid "Yes"
+msgstr "Sí"
+
+#: includes/class-mapfolio-admin.php:272 includes/class-mapfolio-admin.php:351 includes/class-mapfolio-admin.php:361 includes/class-mapfolio-admin.php:375
+msgid "No"
+msgstr "No"
+
+#. translators: %s: value of the global setting
+#: includes/class-mapfolio-admin.php:275
+#, php-format
+msgid "Global default (%s)"
+msgstr "Valor global (%s)"
+
+#: includes/class-mapfolio-admin.php:278
+msgid "Edit map"
+msgstr "Editar mapa"
+
+#: includes/class-mapfolio-admin.php:279
+msgid "Back to maps"
+msgstr "Volver a los mapas"
+
+#: includes/class-mapfolio-admin.php:292
+msgid "Slug"
+msgstr "Slug"
+
+#: includes/class-mapfolio-admin.php:295
+msgid "Used in the shortcode to identify the map. Only lowercase letters, numbers and hyphens. Leave it empty to generate it from the title."
+msgstr "Se usa en el shortcode para identificar el mapa. Solo letras minúsculas, números y guiones. Déjalo vacío para generarlo a partir del título."
+
+#: includes/class-mapfolio-admin.php:308
+msgid "Internal note, not shown on the website."
+msgstr "Nota interna, no se muestra en la web."
+
+#: includes/class-mapfolio-admin.php:313 includes/class-mapfolio-admin.php:1070
+msgid "Map settings"
+msgstr "Ajustes del mapa"
+
+#: includes/class-mapfolio-admin.php:314
+msgid "Override the global settings for this map only. Options left on \"Global default\" use the value from Mapfolio → Settings."
+msgstr "Cambia los ajustes globales solo para este mapa. Las opciones que dejes en «Valor global» usan el valor de Mapfolio → Ajustes."
+
+#: includes/class-mapfolio-admin.php:317 includes/class-mapfolio-admin.php:899
+msgid "Map style"
+msgstr "Estilo del mapa"
+
+#: includes/class-mapfolio-admin.php:329
+msgid "Zoom levels"
+msgstr "Niveles de zoom"
+
+#: includes/class-mapfolio-admin.php:332
+msgid "Minimum"
+msgstr "Mínimo"
+
+#: includes/class-mapfolio-admin.php:335
+msgid "Maximum"
+msgstr "Máximo"
+
+#: includes/class-mapfolio-admin.php:338
+msgid "Initial"
+msgstr "Inicial"
+
+#: includes/class-mapfolio-admin.php:342
+msgid "From 1 (whole world) to 18 (street level). Leave empty to use the global value, shown in grey."
+msgstr "De 1 (todo el mundo) a 18 (nivel de calle). Déjalo vacío para usar el valor global, que se muestra en gris."
+
+#: includes/class-mapfolio-admin.php:346
+msgid "Show legend"
+msgstr "Mostrar leyenda"
+
+#: includes/class-mapfolio-admin.php:356
+msgid "Filter by clicking the legend"
+msgstr "Filtrar al hacer clic en la leyenda"
+
+#: includes/class-mapfolio-admin.php:366
+msgid "Legend background color"
+msgstr "Color de fondo de la leyenda"
+
+#: includes/class-mapfolio-admin.php:367 includes/class-mapfolio-admin.php:929
+msgid "transparent"
+msgstr "transparente"
+
+#: includes/class-mapfolio-admin.php:370
+msgid "Open links in a new tab"
+msgstr "Abrir los enlaces en una pestaña nueva"
+
+#: includes/class-mapfolio-admin.php:381
+msgid "Update map"
+msgstr "Actualizar mapa"
+
+#: includes/class-mapfolio-admin.php:381
+msgid "Add map"
+msgstr "Añadir mapa"
+
+#: includes/class-mapfolio-admin.php:436 includes/class-mapfolio-admin.php:676 includes/class-mapfolio-admin.php:826
+msgid "The title is required."
+msgstr "El título es obligatorio."
+
+#: includes/class-mapfolio-admin.php:467
+msgid "The default map cannot be deleted."
+msgstr "El mapa predeterminado no se puede eliminar."
+
+#: includes/class-mapfolio-admin.php:484
+msgid "Locations per page"
+msgstr "Ubicaciones por página"
+
+#: includes/class-mapfolio-admin.php:509 includes/class-mapfolio-admin.php:558
+msgid "Add new location"
+msgstr "Añadir ubicación"
+
+#. translators: %s: search query
+#: includes/class-mapfolio-admin.php:514
+#, php-format
+msgid "Search results for: %s"
+msgstr "Resultados de búsqueda de: %s"
+
+#: includes/class-mapfolio-admin.php:523
+msgid "Search locations"
+msgstr "Buscar ubicaciones"
+
+#: includes/class-mapfolio-admin.php:536 includes/class-mapfolio-admin.php:671
+msgid "Location not found."
+msgstr "No se ha encontrado la ubicación."
+
+#: includes/class-mapfolio-admin.php:558
+msgid "Edit location"
+msgstr "Editar ubicación"
+
+#: includes/class-mapfolio-admin.php:559
+msgid "Back to locations"
+msgstr "Volver a las ubicaciones"
+
+#: includes/class-mapfolio-admin.php:566
+msgid "Content"
+msgstr "Contenido"
+
+#: includes/class-mapfolio-admin.php:573 includes/class-mapfolio-admin.php:885 includes/class-mapfolio-locations-table.php:29
+msgid "Map"
+msgstr "Mapa"
+
+#: includes/class-mapfolio-admin.php:583 includes/class-mapfolio-locations-table.php:28
+msgid "Category"
+msgstr "Categoría"
+
+#: includes/class-mapfolio-admin.php:591
+msgid "The category sets the marker color."
+msgstr "La categoría determina el color del marcador."
+
+#: includes/class-mapfolio-admin.php:592
+msgid "Manage categories"
+msgstr "Gestionar categorías"
+
+#: includes/class-mapfolio-admin.php:601
+msgid "Image"
+msgstr "Imagen"
+
+#: includes/class-mapfolio-admin.php:605
+msgid "Select image"
+msgstr "Seleccionar imagen"
+
+#: includes/class-mapfolio-admin.php:608
+msgid "Shown at the top of the popup. SVG images (logos) are displayed at a fixed height."
+msgstr "Se muestra en la parte superior de la ventana emergente. Las imágenes SVG (logotipos) se muestran con una altura fija."
+
+#: includes/class-mapfolio-admin.php:612
+msgid "Link"
+msgstr "Enlace"
+
+#: includes/class-mapfolio-admin.php:616
+msgid "Link text"
+msgstr "Texto del enlace"
+
+#: includes/class-mapfolio-admin.php:618 includes/functions.php:131
+msgid "Read more"
+msgstr "Leer más"
+
+#: includes/class-mapfolio-admin.php:619
+msgid "Leave empty to use \"Read more\"."
+msgstr "Déjalo vacío para usar «Leer más»."
+
+#: includes/class-mapfolio-admin.php:624
+msgid "Position"
+msgstr "Posición"
+
+#: includes/class-mapfolio-admin.php:627
+msgid "Find a place"
+msgstr "Buscar un lugar"
+
+#: includes/class-mapfolio-admin.php:630
+msgid "Address, city or place"
+msgstr "Dirección, ciudad o lugar"
+
+#: includes/class-mapfolio-admin.php:631
+msgid "Search"
+msgstr "Buscar"
+
+#: includes/class-mapfolio-admin.php:635
+msgid "Search for a place, click on the map or drag the marker to set the position. You can also type the coordinates."
+msgstr "Busca un lugar, haz clic en el mapa o arrastra el marcador para fijar la posición. También puedes escribir las coordenadas."
+
+#: includes/class-mapfolio-admin.php:639
+msgid "Coordinates"
+msgstr "Coordenadas"
+
+#: includes/class-mapfolio-admin.php:642
+msgid "Latitude"
+msgstr "Latitud"
+
+#: includes/class-mapfolio-admin.php:645
+msgid "Longitude"
+msgstr "Longitud"
+
+#: includes/class-mapfolio-admin.php:652 includes/class-mapfolio-locations-table.php:30
+msgid "Country"
+msgstr "País"
+
+#: includes/class-mapfolio-admin.php:655
+msgid "Optional. Only used to search and sort locations in the admin."
+msgstr "Opcional. Solo se usa para buscar y ordenar las ubicaciones en el administrador."
+
+#: includes/class-mapfolio-admin.php:660
+msgid "Update location"
+msgstr "Actualizar ubicación"
+
+#: includes/class-mapfolio-admin.php:682
+msgid "Please enter a valid latitude (-90 to 90) and longitude (-180 to 180)."
+msgstr "Introduce una latitud (de -90 a 90) y una longitud (de -180 a 180) válidas."
+
+#: includes/class-mapfolio-admin.php:729 includes/class-mapfolio-admin.php:786
+msgid "Add new category"
+msgstr "Añadir categoría"
+
+#: includes/class-mapfolio-admin.php:732
+msgid "Categories are shared by all maps. They set the marker color and are listed in the legend below each map, in the order shown here."
+msgstr "Las categorías son comunes a todos los mapas. Determinan el color de los marcadores y aparecen en la leyenda de debajo de cada mapa, en el orden que se muestra aquí."
+
+#: includes/class-mapfolio-admin.php:738 includes/class-mapfolio-admin.php:799
+msgid "Color"
+msgstr "Color"
+
+#: includes/class-mapfolio-admin.php:740 includes/class-mapfolio-admin.php:803
+msgid "Order"
+msgstr "Orden"
+
+#: includes/class-mapfolio-admin.php:759
+msgid "Delete this category? Its locations will not be deleted: they will be moved to the default category."
+msgstr "¿Eliminar esta categoría? Sus ubicaciones no se eliminarán: se moverán a la categoría predeterminada."
+
+#: includes/class-mapfolio-admin.php:779 includes/class-mapfolio-admin.php:821
+msgid "Category not found."
+msgstr "No se ha encontrado la categoría."
+
+#: includes/class-mapfolio-admin.php:786
+msgid "Edit category"
+msgstr "Editar categoría"
+
+#: includes/class-mapfolio-admin.php:787
+msgid "Back to categories"
+msgstr "Volver a las categorías"
+
+#: includes/class-mapfolio-admin.php:806
+msgid "Position in the legend. Lower numbers come first; categories with the same number are sorted alphabetically."
+msgstr "Posición en la leyenda. Los números más bajos van primero; las categorías con el mismo número se ordenan alfabéticamente."
+
+#: includes/class-mapfolio-admin.php:810
+msgid "Update category"
+msgstr "Actualizar categoría"
+
+#: includes/class-mapfolio-admin.php:810
+msgid "Add category"
+msgstr "Añadir categoría"
+
+#: includes/class-mapfolio-admin.php:849
+msgid "The default category cannot be deleted."
+msgstr "La categoría predeterminada no se puede eliminar."
+
+#: includes/class-mapfolio-admin.php:886
+msgid "Zoom"
+msgstr "Zoom"
+
+#: includes/class-mapfolio-admin.php:887 includes/class-mapfolio-admin.php:922
+msgid "Legend"
+msgstr "Leyenda"
+
+#: includes/class-mapfolio-admin.php:888
+msgid "Clusters"
+msgstr "Agrupaciones"
+
+#: includes/class-mapfolio-admin.php:889
+msgid "When locations are close together they are grouped in a numbered circle (cluster) until you zoom in."
+msgstr "Cuando las ubicaciones están cerca unas de otras se agrupan en un círculo numerado hasta que se acerca el zoom."
+
+#: includes/class-mapfolio-admin.php:893
+msgid "Height"
+msgstr "Altura"
+
+#: includes/class-mapfolio-admin.php:894
+msgid "Examples: 500px, 70vh. Use \"fit\" to fill the height of the parent element (which must have a fixed height) with the legend below the map."
+msgstr "Ejemplos: 500px, 70vh. Usa «fit» para ocupar la altura del elemento contenedor (que debe tener una altura fija) con la leyenda debajo del mapa."
+
+#: includes/class-mapfolio-admin.php:896
+msgid "Height on mobile and tablet"
+msgstr "Altura en móvil y tableta"
+
+#: includes/class-mapfolio-admin.php:897
+msgid "Applied on screens up to 957px wide. Examples: 350px, 60vh."
+msgstr "Se aplica en pantallas de hasta 957px de ancho. Ejemplos: 350px, 60vh."
+
+#: includes/class-mapfolio-admin.php:901
+msgid "The minimal styles hide terrain, rivers and mountains so the markers stand out."
+msgstr "Los estilos minimalistas ocultan el relieve, los ríos y las montañas para que destaquen los marcadores."
+
+#: includes/class-mapfolio-admin.php:903
+msgid "CARTO API key"
+msgstr "Clave de API de CARTO"
+
+#. translators: %s: link to the CARTO API key page
+#: includes/class-mapfolio-admin.php:906
+#, php-format
+msgid "Only needed for the CARTO styles. Since August 2026 CARTO requires a key for its basemaps; without one the map shows an \"API KEY REQUIRED\" watermark. Get a free key at %s, or choose another style."
+msgstr "Solo es necesaria para los estilos de CARTO. Desde agosto de 2026 CARTO exige una clave para sus mapas base; sin ella el mapa muestra la marca de agua «API KEY REQUIRED». Consigue una clave gratuita en %s o elige otro estilo."
+
+#: includes/class-mapfolio-admin.php:910
+msgid "Links"
+msgstr "Enlaces"
+
+#: includes/class-mapfolio-admin.php:911
+msgid "Open the links of the popups in a new tab"
+msgstr "Abrir los enlaces de las ventanas emergentes en una pestaña nueva"
+
+#: includes/class-mapfolio-admin.php:913
+msgid "Minimum zoom"
+msgstr "Zoom mínimo"
+
+#: includes/class-mapfolio-admin.php:914
+msgid "How far out visitors can zoom. 1 shows the whole world."
+msgstr "Hasta dónde pueden alejarse los visitantes. 1 muestra todo el mundo."
+
+#: includes/class-mapfolio-admin.php:916
+msgid "Maximum zoom"
+msgstr "Zoom máximo"
+
+#: includes/class-mapfolio-admin.php:917
+msgid "How far in visitors can zoom. 18 is street level."
+msgstr "Hasta dónde pueden acercarse los visitantes. 18 es el nivel de calle."
+
+#: includes/class-mapfolio-admin.php:919
+msgid "Initial zoom"
+msgstr "Zoom inicial"
+
+#: includes/class-mapfolio-admin.php:920
+msgid "The map fits all its locations on load, but never zooms in further than this level."
+msgstr "Al cargarse, el mapa se ajusta para mostrar todas sus ubicaciones, pero nunca se acerca más allá de este nivel."
+
+#: includes/class-mapfolio-admin.php:923
+msgid "Show the list of categories below the map"
+msgstr "Mostrar la lista de categorías debajo del mapa"
+
+#: includes/class-mapfolio-admin.php:925 includes/class-mapfolio-locations-table.php:124
+msgid "Filter"
+msgstr "Filtrar"
+
+#: includes/class-mapfolio-admin.php:926
+msgid "Let visitors show or hide categories by clicking them in the legend"
+msgstr "Permitir que los visitantes muestren u oculten categorías haciendo clic en la leyenda"
+
+#: includes/class-mapfolio-admin.php:928
+msgid "Background color"
+msgstr "Color de fondo"
+
+#: includes/class-mapfolio-admin.php:930
+msgid "Leave empty for a transparent background. Also accepts rgba() and color names."
+msgstr "Déjalo vacío para un fondo transparente. También acepta rgba() y nombres de colores."
+
+#: includes/class-mapfolio-admin.php:932
+msgid "Color (2–9 locations)"
+msgstr "Color (2–9 ubicaciones)"
+
+#: includes/class-mapfolio-admin.php:933
+msgid "Color (10 or more locations)"
+msgstr "Color (10 ubicaciones o más)"
+
+#: includes/class-mapfolio-admin.php:953
+msgid "The maximum zoom cannot be lower than the minimum zoom. It has been set to the minimum."
+msgstr "El zoom máximo no puede ser inferior al mínimo. Se ha igualado al mínimo."
+
+#: includes/class-mapfolio-admin.php:999
+msgid "Default values for all maps. Each map can override some of them in its own settings, and each shortcode can override them again with attributes."
+msgstr "Valores predeterminados para todos los mapas. Cada mapa puede cambiar algunos en sus propios ajustes, y cada shortcode puede volver a cambiarlos con atributos."
+
+#: includes/class-mapfolio-admin.php:1015
+msgid "Slug or ID of the map. Without it, the default map is shown."
+msgstr "Slug o ID del mapa. Si no se indica, se muestra el mapa predeterminado."
+
+#: includes/class-mapfolio-admin.php:1016
+msgid "Height of the map, e.g. 500px, 70vh, or fit to fill the parent element."
+msgstr "Altura del mapa, p. ej. 500px, 70vh, o fit para ocupar el elemento contenedor."
+
+#: includes/class-mapfolio-admin.php:1017
+msgid "Height on screens up to 957px wide, e.g. 350px or 60vh."
+msgstr "Altura en pantallas de hasta 957px de ancho, p. ej. 350px o 60vh."
+
+#: includes/class-mapfolio-admin.php:1018
+msgid "Map style: openstreetmap, cartodb-positron, cartodb-voyager or esri-gray."
+msgstr "Estilo del mapa: openstreetmap, cartodb-positron, cartodb-voyager o esri-gray."
+
+#: includes/class-mapfolio-admin.php:1019
+msgid "Minimum zoom level (1–18)."
+msgstr "Nivel de zoom mínimo (1–18)."
+
+#: includes/class-mapfolio-admin.php:1020
+msgid "Maximum zoom level (1–18)."
+msgstr "Nivel de zoom máximo (1–18)."
+
+#: includes/class-mapfolio-admin.php:1021
+msgid "Initial zoom level (1–18)."
+msgstr "Nivel de zoom inicial (1–18)."
+
+#: includes/class-mapfolio-admin.php:1022
+msgid "Show the category legend: 1 (yes) or 0 (no)."
+msgstr "Mostrar la leyenda de categorías: 1 (sí) o 0 (no)."
+
+#: includes/class-mapfolio-admin.php:1023
+msgid "Legend background color, e.g. #ffffff or rgba(255,255,255,0.9)."
+msgstr "Color de fondo de la leyenda, p. ej. #ffffff o rgba(255,255,255,0.9)."
+
+#: includes/class-mapfolio-admin.php:1024
+msgid "Let visitors filter the map by clicking the legend: 1 (yes) or 0 (no)."
+msgstr "Permitir que los visitantes filtren el mapa haciendo clic en la leyenda: 1 (sí) o 0 (no)."
+
+#: includes/class-mapfolio-admin.php:1025
+msgid "Open the links in a new tab: 1 (yes) or 0 (no)."
+msgstr "Abrir los enlaces en una pestaña nueva: 1 (sí) o 0 (no)."
+
+#: includes/class-mapfolio-admin.php:1026
+msgid "Log debugging information to the browser console: 1 (yes) or 0 (no)."
+msgstr "Mostrar información de depuración en la consola del navegador: 1 (sí) o 0 (no)."
+
+#: includes/class-mapfolio-admin.php:1032
+msgid "Getting started"
+msgstr "Primeros pasos"
+
+#. translators: %s: link to the Maps page
+#: includes/class-mapfolio-admin.php:1036
+#, php-format
+msgid "Go to %s. A default map is already created; you can rename it or add more maps."
+msgstr "Ve a %s. Ya hay un mapa predeterminado creado; puedes cambiarle el nombre o añadir más mapas."
+
+#. translators: %s: link to the Categories page
+#: includes/class-mapfolio-admin.php:1041
+#, php-format
+msgid "In %s, create the categories you need and choose their colors."
+msgstr "En %s, crea las categorías que necesites y elige sus colores."
+
+#. translators: %s: link to the Locations page
+#: includes/class-mapfolio-admin.php:1046
+#, php-format
+msgid "In %s, add your locations. Search for a place or click on the map to set each position."
+msgstr "En %s, añade tus ubicaciones. Busca un lugar o haz clic en el mapa para fijar cada posición."
+
+#: includes/class-mapfolio-admin.php:1049
+msgid "Copy the shortcode of the map from the Maps list and paste it into any page or post."
+msgstr "Copia el shortcode del mapa desde la lista de Mapas y pégalo en cualquier página o entrada."
+
+#: includes/class-mapfolio-admin.php:1054
+msgid "Optional attributes:"
+msgstr "Atributos opcionales:"
+
+#: includes/class-mapfolio-admin.php:1065
+msgid "Example:"
+msgstr "Ejemplo:"
+
+#: includes/class-mapfolio-admin.php:1067
+msgid "Which setting wins?"
+msgstr "¿Qué ajuste tiene prioridad?"
+
+#: includes/class-mapfolio-admin.php:1069
+msgid "Shortcode attribute"
+msgstr "Atributo del shortcode"
+
+#: includes/class-mapfolio-admin.php:1069
+msgid "applies only to that shortcode."
+msgstr "se aplica solo a ese shortcode."
+
+#: includes/class-mapfolio-admin.php:1070
+msgid "apply everywhere that map is shown."
+msgstr "se aplican allí donde se muestre ese mapa."
+
+#: includes/class-mapfolio-admin.php:1071
+msgid "Global settings"
+msgstr "Ajustes globales"
+
+#: includes/class-mapfolio-admin.php:1071
+msgid "apply to all maps."
+msgstr "se aplican a todos los mapas."
+
+#: includes/class-mapfolio-admin.php:1073
+msgid "The height can only be set in the shortcode or in the global settings, because it depends on where the map is placed."
+msgstr "La altura solo se puede definir en el shortcode o en los ajustes globales, porque depende de dónde se coloca el mapa."
+
+#: includes/class-mapfolio-admin.php:1075
+msgid "Something does not work?"
+msgstr "¿Algo no funciona?"
+
+#: includes/class-mapfolio-admin.php:1076
+msgid "Add debug=\"1\" to the shortcode and open the browser console: Mapfolio will log what it loads and any errors it finds."
+msgstr "Añade debug=\"1\" al shortcode y abre la consola del navegador: Mapfolio mostrará lo que carga y los errores que encuentre."
+
+#. translators: %s: link to the GitHub repository
+#: includes/class-mapfolio-admin.php:1079
+#, php-format
+msgid "Documentation, bug reports and suggestions: %s"
+msgstr "Documentación, errores y sugerencias: %s"
+
+#: includes/class-mapfolio-db.php:81
+msgid "Main map"
+msgstr "Mapa principal"
+
+#: includes/class-mapfolio-db.php:91
+msgid "General"
+msgstr "General"
+
+#: includes/class-mapfolio-locations-table.php:110
+msgid "Filter by map"
+msgstr "Filtrar por mapa"
+
+#: includes/class-mapfolio-locations-table.php:112
+msgid "All maps"
+msgstr "Todos los mapas"
+
+#: includes/class-mapfolio-locations-table.php:117
+msgid "Filter by category"
+msgstr "Filtrar por categoría"
+
+#: includes/class-mapfolio-locations-table.php:119
+msgid "All categories"
+msgstr "Todas las categorías"
+
+#: includes/class-mapfolio-locations-table.php:130
+msgid "No locations found."
+msgstr "No se han encontrado ubicaciones."
+
+#. translators: %s: location title
+#: includes/class-mapfolio-locations-table.php:138
+#, php-format
+msgid "Select %s"
+msgstr "Seleccionar %s"
+
+#: includes/class-mapfolio-locations-table.php:152
+msgid "Delete this location?"
+msgstr "¿Eliminar esta ubicación?"
+
+#. translators: %s: value of the "map" shortcode attribute
+#: includes/class-mapfolio-shortcode.php:35
+#, php-format
+msgid "Mapfolio: map \"%s\" not found."
+msgstr "Mapfolio: no se ha encontrado el mapa «%s»."
+
+#: includes/class-mapfolio-shortcode.php:110
+msgid "Show or hide this category on the map"
+msgstr "Mostrar u ocultar esta categoría en el mapa"
+
+#: includes/functions.php:14
+msgid "OpenStreetMap (detailed)"
+msgstr "OpenStreetMap (detallado)"
+
+#: includes/functions.php:15
+msgid "CARTO Positron (clean, minimal)"
+msgstr "CARTO Positron (limpio, minimalista)"
+
+#: includes/functions.php:16
+msgid "CARTO Voyager (clean, with colors)"
+msgstr "CARTO Voyager (limpio, con colores)"
+
+#: includes/functions.php:17
+msgid "Esri Gray Canvas (neutral gray)"
+msgstr "Esri Gray Canvas (gris neutro)"
+

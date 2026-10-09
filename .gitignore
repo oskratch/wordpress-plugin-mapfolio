@@ -1,0 +1,10 @@
+# Local tooling
+.claude/
+CLAUDE.md
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.dev/

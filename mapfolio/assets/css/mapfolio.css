@@ -1,0 +1,207 @@
+/* ==================== Map container ==================== */
+
+.mapfolio-container {
+    width: 100%;
+}
+
+.mapfolio-fit-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.mapfolio-container.mapfolio-fit {
+    flex: 1;
+    min-height: 0;
+}
+
+.mapfolio-container.leaflet-container a.leaflet-popup-close-button {
+    top: 5px;
+    right: 5px;
+}
+
+/* ==================== Markers ==================== */
+
+.mapfolio-marker,
+.mapfolio-cluster {
+    border: none;
+    background: transparent;
+}
+
+.mapfolio-marker-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+}
+
+.mapfolio-cluster-bubble {
+    border-radius: 50%;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    border: 3px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+}
+
+/* ==================== Popup ==================== */
+
+.mapfolio-popup {
+    padding: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.mapfolio-popup h3 {
+    margin: 0 !important;
+    font-size: 20px !important;
+    font-weight: 400 !important;
+    text-transform: uppercase;
+    line-height: 1.2 !important;
+    overflow-wrap: break-word;
+}
+
+.mapfolio-popup p {
+    margin: 0.6em 0 0 !important;
+    font-size: 16px !important;
+}
+
+.mapfolio-popup a {
+    display: inline-block;
+    margin-top: 0.8em;
+    color: #000 !important;
+    text-decoration: underline !important;
+    font-weight: normal !important;
+    font-size: 16px !important;
+}
+
+.mapfolio-popup a:hover {
+    text-decoration: none !important;
+}
+
+.mapfolio-popup img {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: 200px;
+    margin-bottom: 10px !important;
+    object-fit: cover;
+}
+
+/* SVG images (logos, icons) are shown at a consistent height instead of full width */
+.mapfolio-popup img.is-svg {
+    width: auto !important;
+    max-width: none !important;
+    height: 40px !important;
+    margin-bottom: 20px !important;
+}
+
+/* ==================== Legend ==================== */
+
+.mapfolio-legend[style] {
+    padding: 10px;
+}
+
+.mapfolio-legend ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px 25px;
+    margin: 0;
+    padding: 10px 20px 0;
+    list-style: none;
+}
+
+.mapfolio-legend li {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    font-size: 14px;
+}
+
+.mapfolio-legend-item {
+    display: inline-flex;
+    align-items: center;
+}
+
+.mapfolio-legend-swatch {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    box-sizing: border-box;
+    transition: background-color 0.15s;
+}
+
+/* Clickable legend: reset theme button styles */
+.mapfolio-legend button.mapfolio-legend-item {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+    text-transform: none;
+    letter-spacing: inherit;
+    cursor: pointer;
+}
+
+.mapfolio-legend button.mapfolio-legend-item:hover .mapfolio-legend-label {
+    text-decoration: underline;
+}
+
+.mapfolio-legend button.mapfolio-legend-item:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
+/* Hidden category: hollow swatch and faded label */
+.mapfolio-legend button.mapfolio-legend-item[aria-pressed="false"] .mapfolio-legend-swatch {
+    background-color: transparent !important;
+}
+
+.mapfolio-legend button.mapfolio-legend-item[aria-pressed="false"] .mapfolio-legend-label {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
+/* ==================== Mobile ==================== */
+
+@media (max-width: 767px) {
+    .mapfolio-popup {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .mapfolio-popup h3 {
+        font-size: 17px !important;
+    }
+
+    .mapfolio-popup p,
+    .mapfolio-popup a {
+        font-size: 14px !important;
+    }
+
+    .mapfolio-container.leaflet-container a.leaflet-popup-close-button {
+        width: 24px;
+        height: 24px;
+        font-size: 18px;
+        line-height: 22px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 3px;
+    }
+
+    .mapfolio-container .leaflet-popup-content-wrapper {
+        border-radius: 8px;
+    }
+}
